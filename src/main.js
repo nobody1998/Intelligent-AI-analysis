@@ -6,6 +6,7 @@ import "../src/assets/css/reset200802.css";
 import VueI18n from "vue-i18n";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
+import "../src/theme/element/index.css"
 
 // 引入语言文件
 import en from "./locales/en.json";
