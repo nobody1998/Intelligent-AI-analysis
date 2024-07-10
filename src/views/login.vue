@@ -9,7 +9,7 @@
           <div class="loginForm_header">
             <div class="loginForm_header_title"></div>
             <div class="loginForm_header_btn" @click="switchLanguage">
-              {{ $t("qie-huan-en") }}
+              切换En
             </div>
           </div>
           <div class="loginForm_body">
@@ -20,41 +20,39 @@
               label-width="80px"
             >
               <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane :label="$t('zhang-hao-deng-lu')" name="1">
+                <el-tab-pane label="账号登录" name="1">
                   <el-form-item label="" prop="name">
                     <el-input
                       v-model="form.name"
-                      :placeholder="
-                        $t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang')
+                      placeholder="
+                       请输入手机号码/电子邮箱
                       "
                     ></el-input>
                   </el-form-item>
                   <el-form-item label="" prop="password">
                     <el-input
                       v-model="form.password"
-                      :placeholder="$t('qing-shu-ru-mi-ma')"
+                      placeholder="请输入密码"
                     ></el-input>
                   </el-form-item>
                   <el-form-item label="">
-                    <el-checkbox v-model="form.remember">{{
-                      $t("ji-zhu-mi-ma")
-                    }}</el-checkbox>
+                    <el-checkbox v-model="form.remember">记住密码</el-checkbox>
                   </el-form-item>
-                  {{ $t("wang-ji-mi-ma") }}
+                  忘记密码？
                 </el-tab-pane>
-                <el-tab-pane :label="$t('yan-zheng-ma-deng-lu')" name="2">
+                <el-tab-pane label="验证码登录" name="2">
                   <el-form-item label="" prop="name">
                     <el-input
                       v-model="form.name"
-                      :placeholder="
-                        $t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang')
+                      placeholder="
+                        请输入手机号码
                       "
                     ></el-input>
                   </el-form-item>
                   <el-form-item label="" prop="password">
                     <el-input
                       v-model="form.password"
-                      :placeholder="$t('qing-shu-ru-mi-ma')"
+                      placeholder="请输入验证码"
                     ></el-input>
                   </el-form-item>
                 </el-tab-pane>
@@ -69,7 +67,7 @@
 
 <script>
 export default {
-  // name: "Login",
+  name: "Login",
   data() {
     return {
       activeName: "1",
@@ -81,14 +79,14 @@ export default {
         name: [
           {
             required: true,
-            message: this.$t("qing-shu-ru-yong-hu-ming"),
+            message: "请输入手机号码/电子邮箱",
             trigger: "blur",
           },
         ],
         password: [
           {
             required: true,
-            message: this.$t("qing-shu-ru-yong-hu-ming-0"),
+            message: "请输入密码",
             trigger: "blur",
           },
         ],

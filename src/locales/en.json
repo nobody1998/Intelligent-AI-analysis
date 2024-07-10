@@ -1,12 +1,3 @@
 {
-  "qing-shu-ru-yong-hu-ming-0": "Please enter username",
-  "qing-shu-ru-yong-hu-ming": "Please enter username",
-  "login": "Login",
-  "yan-zheng-ma-deng-lu": "Verification code login",
-  "qing-shu-ru-mi-ma": "Please enter password",
-  "qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang": "Please enter phone number/email",
-  "zhang-hao-deng-lu": "Account login",
-  "qie-huan-en": "Switch ZH",
-  "ji-zhu-mi-ma": "Remember password",
-  "wang-ji-mi-ma": "Forgot password?"
+  "login": "Login"
 }
