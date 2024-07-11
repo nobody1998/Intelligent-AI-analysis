@@ -22,7 +22,7 @@
     <div class="header_right">
       <div class="header_right_btn">
         <el-button>套餐</el-button>
-        <el-button type="primary">登录</el-button>
+        <el-button type="primary" @click="toLogin">登录</el-button>
       </div>
     </div>
   </div>
@@ -67,6 +67,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    toLogin() {
+      this.$router.push("/login");
+    },
   },
 };
 </script>
