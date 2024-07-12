@@ -22,7 +22,8 @@
     <div class="header_right">
       <div class="header_right_btn">
         <el-button>套餐</el-button>
-        <el-button type="primary" @click="toLogin">登录</el-button>
+        <img v-if="isLogin" src="../assets/img/login_bg.png" alt="头像" />
+        <el-button v-else type="primary" @click="toLogin">登录</el-button>
       </div>
     </div>
   </div>
@@ -33,6 +34,7 @@ export default {
   name: "Header",
   data() {
     return {
+      isLogin: false,
       value: "CN",
       options: [
         {
@@ -156,6 +158,13 @@ export default {
   &_right {
     &_btn {
       display: flex;
+      img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-left: 24px;
+      }
     }
   }
 }
