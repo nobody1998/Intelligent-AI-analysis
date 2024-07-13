@@ -147,7 +147,79 @@
         </div>
       </div>
     </div>
-    <div class="homePage_main"></div>
+    <div class="homePage_main">
+      <div class="homePage_main_item" v-for="(item, index) in 10" :key="index">
+        <div class="listItem_top">
+          <div class="listItem_top_left">
+            <div class="listItem_top_left_img">
+              <img
+                src="https://bpic.51yuansu.com/pic3/cover/03/67/79/65be2e88aa2ba_800.jpg?x-oss-process=image/sharpen,100"
+              />
+            </div>
+            <div class="listItem_top_left_main">
+              <div class="itemTopText_top">Chris evans</div>
+              <div class="itemTopText_main">
+                <img
+                  v-for="(item, index) in 2"
+                  :key="index"
+                  src="https://bpic.51yuansu.com/pic3/cover/03/67/79/65be2e88aa2ba_800.jpg?x-oss-process=image/sharpen,100"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="listItem_top_right">
+            <i class="el-icon-more"></i>
+          </div>
+        </div>
+        <div class="listItem_main">
+          <div class="listItem_main_content">
+            <img src="../assets/img/login_bg.png" />
+          </div>
+          <div class="listItem_main_footer">
+            <div class="listItem_main_footer_title">
+              游戏vlog白船在水面上白船在水面上漂立法上的控件撒反对
+            </div>
+            <div class="listItem_main_footer_attribute">
+              <div class="listItem_main_footer_attribute_left">游戏素材</div>
+              <div class="listItem_main_footer_attribute_right">2024-07-04</div>
+            </div>
+          </div>
+        </div>
+        <div class="listItem_foot">
+          <div class="listItem_foot_item">
+            <div class="listItem_foot_item_num">1.6k</div>
+            <div class="listItem_foot_item_num">点赞</div>
+          </div>
+          <el-divider direction="vertical"></el-divider>
+          <div class="listItem_foot_item">
+            <div class="listItem_foot_item_num">1.6k</div>
+            <div class="listItem_foot_item_num">点赞</div>
+          </div>
+          <el-divider direction="vertical"></el-divider>
+          <div class="listItem_foot_item">
+            <div class="listItem_foot_item_num">1.6k</div>
+            <div class="listItem_foot_item_num">点赞</div>
+          </div>
+          <el-divider direction="vertical"></el-divider>
+          <div class="listItem_foot_item">
+            <div class="listItem_foot_item_num">1.6k</div>
+            <div class="listItem_foot_item_num">点赞</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="homePage_footer">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage4"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="prev, pager, next, sizes, total, jumper"
+        :total="400"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -156,6 +228,7 @@ export default {
   name: "HomePage",
   data() {
     return {
+      currentPage4: 4,
       chooseTab: 2,
       input3: "",
       value1: "",
@@ -374,6 +447,14 @@ export default {
       ],
     };
   },
+  methods: {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+  },
 };
 </script>
 
@@ -460,7 +541,8 @@ export default {
 }
 
 .homePage {
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: #f4f4f5;
   &_search {
     &_input {
@@ -691,6 +773,173 @@ export default {
         margin-bottom: 0;
       }
     }
+  }
+  &_main {
+    margin: 40px 24px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    &_item {
+      flex-shrink: 0;
+      // width: 330px;
+      width: 312px;
+      margin-bottom: 24px;
+      background: #ffffff;
+      box-shadow: 0px 20px 60px 0px rgba(46, 33, 61, 0.08);
+      border-radius: 10px 10px 10px 10px;
+      overflow: hidden;
+      .listItem {
+        &_top {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px;
+          padding-top: 23px;
+          &_left {
+            display: flex;
+            &_img {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              overflow: hidden;
+              img {
+                width: 40px;
+                height: 40px;
+              }
+            }
+            &_main {
+              margin-left: 12px;
+              .itemTopText {
+                &_top {
+                  height: 18px;
+                  font-family: PingFang SC, PingFang SC;
+                  font-weight: 500;
+                  font-size: 12px;
+                  color: #333333;
+                  line-height: 14px;
+                  text-align: left;
+                  font-style: normal;
+                  text-transform: none;
+                }
+                &_main {
+                  display: flex;
+                  align-items: center;
+                  img {
+                    width: 18px;
+                    height: 18px;
+                  }
+                  img:not(:last-child) {
+                    margin-right: 4px;
+                  }
+                }
+              }
+            }
+          }
+          &_right {
+            .el-icon-more {
+              color: #999999;
+              font-size: 24px;
+            }
+          }
+        }
+        &_main {
+          &_content {
+            width: 100%;
+            height: 220px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 0px 0px 0px 0px;
+            filter: blur(3px);
+            img {
+              width: 100%;
+              height: 220px;
+            }
+          }
+          &_footer {
+            padding: 20px;
+            &_title {
+              height: 22px;
+              font-family: PingFang SC, PingFang SC;
+              font-weight: 600;
+              font-size: 16px;
+              color: #333333;
+              line-height: 19px;
+              text-align: left;
+              font-style: normal;
+              text-transform: none;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            &_attribute {
+              margin-top: 14px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              &_left {
+                height: 17px;
+                font-family: PingFang SC, PingFang SC;
+                font-weight: 400;
+                font-size: 12px;
+                color: #666666;
+                line-height: 14px;
+                text-align: left;
+                font-style: normal;
+                text-transform: none;
+              }
+              &_right {
+                height: 17px;
+                font-family: PingFang SC, PingFang SC;
+                font-weight: 400;
+                font-size: 12px;
+                color: #999999;
+                line-height: 14px;
+                text-align: left;
+                font-style: normal;
+                text-transform: none;
+              }
+            }
+          }
+        }
+        &_foot {
+          padding: 20px;
+          padding-top: 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          &_item {
+            &_num {
+              height: 17px;
+              font-family: PingFang SC, PingFang SC;
+              font-weight: 400;
+              font-size: 12px;
+              color: #666666;
+              line-height: 14px;
+              text-align: left;
+              font-style: normal;
+              text-transform: none;
+              margin-bottom: 4px;
+              text-align: center;
+            }
+            &_num:last-child {
+              margin-bottom: 0;
+            }
+          }
+          .el-divider--vertical {
+            height: 32px;
+          }
+          .el-divider {
+            background: rgba(112, 124, 151, 0.15);
+          }
+        }
+      }
+    }
+  }
+  &_footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 64px;
   }
 }
 </style>
