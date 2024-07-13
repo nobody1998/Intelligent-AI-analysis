@@ -148,7 +148,7 @@
       </div>
     </div>
     <div class="homePage_main">
-      <div class="homePage_main_item" v-for="(item, index) in 10" :key="index">
+      <div class="homePage_main_item" v-for="(item, index) in 10" :key="index" @click="toDetail()">
         <div class="listItem_top">
           <div class="listItem_top_left">
             <div class="listItem_top_left_img">
@@ -454,6 +454,9 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
+    toDetail() {
+      this.$router.push("/detail");
+    }
   },
 };
 </script>
@@ -544,7 +547,9 @@ export default {
   width: 100%;
   height: 100%;
   background: #f4f4f5;
+  margin-top: 8px;
   &_search {
+    padding-top: 32px;
     &_input {
       display: flex;
       align-items: center;
