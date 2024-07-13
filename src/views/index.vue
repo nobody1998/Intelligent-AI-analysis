@@ -46,7 +46,7 @@
               <i class="el-icon-close"></i>
             </div>
             <el-button>清除</el-button>
-            <el-button type="primary">保存</el-button>
+            <!-- <el-button type="primary">保存</el-button> -->
           </div>
         </div>
         <div class="homePage_screen_main_item">
@@ -54,6 +54,9 @@
           <div class="screenItem_content">
             <div
               class="screenItem_content2_option"
+              :class="{
+                'screenItem_content2_option-active': item.value === chooseTab,
+              }"
               v-for="(item, index) in selectedList"
               :key="index"
             >
@@ -66,6 +69,9 @@
           <div class="screenItem_content">
             <div
               class="screenItem_content3_option"
+              :class="{
+                'screenItem_content3_option-active': item.value === chooseTab,
+              }"
               v-for="(item, index) in channelList"
               :key="index"
             >
@@ -119,6 +125,9 @@
           <div class="screenItem_content">
             <div
               class="screenItem_content6_option"
+              :class="{
+                'screenItem_content6_option-active': item.value === chooseTab,
+              }"
               v-for="(item, index) in timeList"
               :key="index"
             >
@@ -509,7 +518,7 @@ export default {
   &_screen {
     margin: 39px 24px 40px;
     background: white;
-    box-shadow: 0px 10 20px 0px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.08);
     border-radius: 10px 10px 10px 10px;
     &_top {
       display: flex;
@@ -597,17 +606,20 @@ export default {
               cursor: pointer;
               display: flex;
               align-items: center;
+              color: #999999;
               margin-right: 24px;
               span {
                 height: 20px;
                 font-family: PingFang SC, PingFang SC;
                 font-weight: 400;
                 font-size: 14px;
-                color: #999999;
                 line-height: 16px;
                 text-align: left;
                 font-style: normal;
                 text-transform: none;
+              }
+              &-active {
+                color: #6956e5;
               }
             }
             &_option:last-child {
@@ -620,12 +632,12 @@ export default {
               display: flex;
               align-items: center;
               margin-right: 22px;
+              color: #999999;
               span {
                 height: 20px;
                 font-family: PingFang SC, PingFang SC;
                 font-weight: 400;
                 font-size: 14px;
-                color: #999999;
                 line-height: 16px;
                 text-align: left;
                 font-style: normal;
@@ -635,6 +647,9 @@ export default {
               img {
                 width: 14px;
                 height: 14px;
+              }
+              &-active {
+                color: #6956e5;
               }
             }
             &_option:last-child {
@@ -647,12 +662,12 @@ export default {
               display: flex;
               align-items: center;
               margin-right: 24px;
+              color: #999999;
               span {
                 height: 20px;
                 font-family: PingFang SC, PingFang SC;
                 font-weight: 400;
                 font-size: 14px;
-                color: #999999;
                 line-height: 16px;
                 text-align: left;
                 font-style: normal;
@@ -661,6 +676,9 @@ export default {
               &_date {
                 width: 230px;
                 height: 28px;
+              }
+              &-active {
+                color: #6956e5;
               }
             }
             &_option:last-child {
