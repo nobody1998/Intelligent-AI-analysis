@@ -18,67 +18,79 @@
             <el-form ref="form" :model="form" :rules="formRules">
               <el-tabs
                 v-if="type === 1"
-                v-model="activeName"
+                v-model="type1Active"
                 @tab-click="handleClick"
               >
                 <el-tab-pane label="账号登录" name="1">
-                  <el-form-item label="" prop="name">
-                    <el-input
-                      v-model="form.name"
-                      placeholder="请输入手机号码/电子邮箱"
-                    ></el-input>
-                  </el-form-item>
-                  <el-form-item label="" prop="password">
-                    <el-input
-                      v-model="form.password"
-                      placeholder="请输入密码"
-                    ></el-input>
-                  </el-form-item>
-                  <div class="loginForm_body_password">
-                    <!-- <el-form-item label=""> -->
-                    <el-checkbox v-model="form.remember"
-                      ><span class="loginForm_body_password_text"
-                        >记住密码</span
-                      ></el-checkbox
-                    >
-                    <!-- </el-form-item> -->
-                    <el-button
-                      class="nopadding"
-                      type="text"
-                      @click="changeType(4)"
-                    >
-                      <div class="loginForm_body_password_text">忘记密码？</div>
-                    </el-button>
+                  <div v-if="type1Active === '1'">
+                    <el-form-item label="" prop="account">
+                      <el-input
+                        v-model="form.account"
+                        placeholder="请输入手机号码/电子邮箱"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item label="" prop="password">
+                      <el-input
+                        v-model="form.password"
+                        placeholder="请输入密码"
+                      ></el-input>
+                    </el-form-item>
+                    <div class="loginForm_body_password">
+                      <!-- <el-form-item label=""> -->
+                      <el-checkbox v-model="form.isRemember"
+                        ><span class="loginForm_body_password_text"
+                          >记住密码</span
+                        ></el-checkbox
+                      >
+                      <!-- </el-form-item> -->
+                      <el-button
+                        class="nopadding"
+                        type="text"
+                        @click="changeType(4)"
+                      >
+                        <div class="loginForm_body_password_text">
+                          忘记密码？
+                        </div>
+                      </el-button>
+                    </div>
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="验证码登录" name="2">
-                  <el-form-item
-                    label=""
-                    prop="name"
-                    class="loginForm_body_tab2"
-                  >
-                    <el-input placeholder="请输入手机号码" v-model="form.name">
-                      <template slot="prepend">+86</template>
-                    </el-input>
-                  </el-form-item>
-                  <div class="loginForm_body_code">
-                    <el-form-item label="" prop="password">
-                      <el-input
-                        class="loginForm_body_code_input"
-                        v-model="form.password"
-                        placeholder="请输入验证码"
-                      ></el-input>
-                    </el-form-item>
-                    <el-button class="loginForm_body_code_btn" type="primary"
-                      >发送验证码</el-button
+                  <div v-if="type1Active === '2'">
+                    <el-form-item
+                      label=""
+                      prop="account"
+                      class="loginForm_body_tab2"
                     >
+                      <el-input
+                        placeholder="请输入手机号码"
+                        v-model="form.account"
+                      >
+                        <template slot="prepend">+86</template>
+                      </el-input>
+                    </el-form-item>
+                    <div class="loginForm_body_code">
+                      <el-form-item label="" prop="code">
+                        <el-input
+                          class="loginForm_body_code_input"
+                          v-model="form.code"
+                          placeholder="请输入验证码"
+                        ></el-input>
+                      </el-form-item>
+                      <el-button
+                        class="loginForm_body_code_btn"
+                        type="primary"
+                        @click="sendCodeFn"
+                        >发送验证码</el-button
+                      >
+                    </div>
                   </div>
                 </el-tab-pane>
               </el-tabs>
               <div v-if="type === 2">
-                <el-form-item label="" prop="name">
+                <el-form-item label="" prop="account">
                   <el-input
-                    v-model="form.name"
+                    v-model="form.account"
                     placeholder="请输入手机号码/电子邮箱"
                   ></el-input>
                 </el-form-item>
@@ -86,17 +98,21 @@
                   <el-input
                     v-model="form.password"
                     placeholder="请输入密码"
+                    show-password
                   ></el-input>
                 </el-form-item>
                 <div class="loginForm_body_code">
-                  <el-form-item label="" prop="password">
+                  <el-form-item label="" prop="code">
                     <el-input
                       class="loginForm_body_code_input"
-                      v-model="form.password"
+                      v-model="form.code"
                       placeholder="请输入验证码"
                     ></el-input>
                   </el-form-item>
-                  <el-button class="loginForm_body_code_btn" type="primary"
+                  <el-button
+                    class="loginForm_body_code_btn"
+                    type="primary"
+                    @click="sendCodeFn"
                     >发送验证码</el-button
                   >
                 </div>
@@ -108,15 +124,15 @@
                     placeholder="请输入用户昵称"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="" prop="name">
+                <el-form-item label="" prop="company_name">
                   <el-input
-                    v-model="form.name"
+                    v-model="form.company_name"
                     placeholder="请输入所在公司名称"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="" prop="name">
+                <el-form-item label="" prop="user_needs">
                   <el-input
-                    v-model="form.name"
+                    v-model="form.user_needs"
                     type="textarea"
                     :rows="4"
                     resize="none"
@@ -126,85 +142,101 @@
               </div>
               <el-tabs
                 v-if="type === 4"
-                v-model="activeName"
+                v-model="type4Active"
                 @tab-click="handleClick"
               >
                 <el-tab-pane label="手机验证" name="1">
-                  <el-form-item label="" prop="name">
-                    <el-input
-                      v-model="form.name"
-                      placeholder="请输入手机号码"
-                    ></el-input>
-                  </el-form-item>
-                  <el-form-item label="" prop="password">
-                    <el-input
-                      v-model="form.password"
-                      placeholder="请输入新密码"
-                    ></el-input>
-                  </el-form-item>
-                  <el-form-item label="" prop="password">
-                    <el-input
-                      v-model="form.password"
-                      placeholder="请再次输入新密码"
-                    ></el-input>
-                  </el-form-item>
-                  <div class="loginForm_body_code">
-                    <el-form-item label="" prop="password">
+                  <div v-if="type4Active === '1'">
+                    <el-form-item label="" prop="account">
                       <el-input
-                        class="loginForm_body_code_input"
-                        v-model="form.password"
-                        placeholder="请输入验证码"
+                        v-model="form.account"
+                        placeholder="请输入手机号码"
                       ></el-input>
                     </el-form-item>
-                    <el-button class="loginForm_body_code_btn" type="primary"
-                      >发送验证码</el-button
-                    >
+                    <el-form-item label="" prop="password">
+                      <el-input
+                        v-model="form.password"
+                        placeholder="请输入新密码"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item label="" prop="password2">
+                      <el-input
+                        v-model="form.password2"
+                        placeholder="请再次输入新密码"
+                      ></el-input>
+                    </el-form-item>
+                    <div class="loginForm_body_code">
+                      <el-form-item label="" prop="code">
+                        <el-input
+                          class="loginForm_body_code_input"
+                          v-model="form.code"
+                          placeholder="请输入验证码"
+                        ></el-input>
+                      </el-form-item>
+                      <el-button
+                        class="loginForm_body_code_btn"
+                        type="primary"
+                        @click="sendCodeFn"
+                        >发送验证码</el-button
+                      >
+                    </div>
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="邮箱验证" name="2">
-                  <el-form-item label="" prop="name">
-                    <el-input
-                      v-model="form.name"
-                      placeholder="请输入电子邮箱"
-                    ></el-input>
-                  </el-form-item>
-                  <el-form-item label="" prop="password">
-                    <el-input
-                      v-model="form.password"
-                      placeholder="请输入新密码"
-                    ></el-input>
-                  </el-form-item>
-                  <el-form-item label="" prop="password">
-                    <el-input
-                      v-model="form.password"
-                      placeholder="请再次输入新密码"
-                    ></el-input>
-                  </el-form-item>
-                  <div class="loginForm_body_code">
-                    <el-form-item label="" prop="password">
+                  <div v-if="type4Active === '2'">
+                    <el-form-item label="" prop="account">
                       <el-input
-                        class="loginForm_body_code_input"
-                        v-model="form.password"
-                        placeholder="请输入验证码"
+                        v-model="form.account"
+                        placeholder="请输入电子邮箱"
                       ></el-input>
                     </el-form-item>
-                    <el-button class="loginForm_body_code_btn" type="primary"
-                      >发送验证码</el-button
-                    >
+                    <el-form-item label="" prop="password">
+                      <el-input
+                        v-model="form.password"
+                        placeholder="请输入新密码"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item label="" prop="password2">
+                      <el-input
+                        v-model="form.password2"
+                        placeholder="请再次输入新密码"
+                      ></el-input>
+                    </el-form-item>
+                    <div class="loginForm_body_code">
+                      <el-form-item label="" prop="code">
+                        <el-input
+                          class="loginForm_body_code_input"
+                          v-model="form.code"
+                          placeholder="请输入验证码"
+                        ></el-input>
+                      </el-form-item>
+                      <el-button
+                        class="loginForm_body_code_btn"
+                        type="primary"
+                        @click="sendCodeFn"
+                        >发送验证码</el-button
+                      >
+                    </div>
                   </div>
                 </el-tab-pane>
               </el-tabs>
-              <el-button class="loginForm_body_logOn" type="primary">{{
-                type === 1
-                  ? "登录"
-                  : type === 2
-                  ? "注册"
-                  : type === 3
-                  ? "立即使用"
-                  : type === 4
-                  ? "重置密码"
-                  : ""
-              }}</el-button>
+              <el-button
+                class="loginForm_body_logOn"
+                type="primary"
+                :loading="submitBtnLoading"
+                @click="submitForm"
+                >{{
+                  type === 1
+                    ? "登录"
+                    : type === 2
+                    ? "注册"
+                    : type === 3
+                    ? "立即使用"
+                    : type === 4
+                    ? "重置密码"
+                    : ""
+                }}</el-button
+              >
               <div class="loginForm_body_noAccount">
                 <span>{{
                   type === 1
@@ -223,16 +255,18 @@
                   }}</span>
                 </el-button>
               </div>
-              <div
+              <el-form-item
                 class="loginForm_body_agreement"
+                label=""
+                prop="isRead"
                 v-if="[1, 2].indexOf(type) !== -1"
               >
-                <el-checkbox v-model="form.remember"
+                <el-checkbox v-model="form.isRead"
                   ><span class="loginForm_body_agreement"
                     >已阅读并同意《智数AI用户协议》和《隐私政策》</span
                   ></el-checkbox
                 >
-              </div>
+              </el-form-item>
             </el-form>
           </div>
         </div>
@@ -242,32 +276,73 @@
 </template>
 
 <script>
+import {
+  register,
+  sendCode,
+  updateInfor,
+  login,
+  resetPassword,
+} from "../api/user";
+
 export default {
   name: "Login",
   data() {
+    var checkIsRead = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请阅读并同意《智数AI用户协议》和《隐私政策》"));
+      } else {
+        callback();
+      }
+    };
+    var checkPassword2 = (rule, value, callback) => {
+      if (value !== this.form.password) {
+        callback(new Error("两次输入密码不一致"));
+      } else {
+        callback();
+      }
+    };
+
     return {
+      updateInforObj: {
+        // phone: "13286497393",
+      },
+      submitBtnLoading: false,
       // 显示类型 1 登录 2 注册1 3 注册2 4 重置密码
       type: 1,
-      activeName: "1",
+      type1Active: "1",
+      type4Active: "1",
       form: {
-        name: "",
+        account: "",
         password: "",
+        password2: "",
+        code: "",
+        isRead: false,
+        isRemember: false,
       },
       formRules: {
-        name: [
+        account: [
           {
             required: true,
             message: "请输入手机号码/电子邮箱",
-            trigger: "blur",
+            trigger: "change",
           },
         ],
         password: [
           {
             required: true,
             message: "请输入密码",
-            trigger: "blur",
+            trigger: "change",
           },
         ],
+        password2: [{ validator: checkPassword2, trigger: "change" }],
+        code: [
+          {
+            required: true,
+            message: "请输入验证码",
+            trigger: "change",
+          },
+        ],
+        isRead: [{ validator: checkIsRead, trigger: "change" }],
       },
     };
   },
@@ -293,7 +368,129 @@ export default {
       return text;
     },
   },
+  created() {
+    this.$nextTick(() => {
+      this.form.isRemember = localStorage.getItem("isRemember") ? true : false;
+      if (this.form.isRemember) {
+        this.form.account = localStorage.getItem("accountInfor")
+          ? JSON.parse(localStorage.getItem("accountInfor")).account
+          : "";
+        this.form.password = localStorage.getItem("accountInfor")
+          ? JSON.parse(localStorage.getItem("accountInfor")).password
+          : "";
+        this.form.isRead = localStorage.getItem("accountInfor") ? true : false;
+      }
+    });
+  },
   methods: {
+    sendCodeFn() {
+      const data = {
+        account: this.form.account,
+      };
+      sendCode(data).then((res) => {
+        //
+      });
+    },
+    submitForm() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.submitBtnLoading = !this.submitBtnLoading;
+          if (this.type === 1) {
+            let data = {};
+            if (this.type1Active === "1") {
+              data.account = this.form.account;
+              data.password = this.form.password;
+              data.code = this.form.code;
+              data.login_type = Number(this.type1Active);
+            } else if (this.type1Active === "2") {
+              data.account = this.form.account;
+              data.code = this.form.code;
+              data.login_type = Number(this.type1Active);
+            }
+            login(data)
+              .then((res) => {
+                localStorage.setItem("user", JSON.stringify(res.data));
+                localStorage.setItem(
+                  "accountInfor",
+                  JSON.stringify({
+                    account: this.form.account,
+                    password: this.form.password,
+                  })
+                );
+                if (this.form.isRemember) {
+                  localStorage.setItem("isRemember", 1);
+                } else {
+                  localStorage.removeItem("isRemember");
+                }
+                this.$message({
+                  message: "登录成功！",
+                  type: "success",
+                });
+                this.submitBtnLoading = !this.submitBtnLoading;
+                this.$router.push("/");
+              })
+              .catch(() => {
+                this.submitBtnLoading = !this.submitBtnLoading;
+              });
+          } else if (this.type === 2) {
+            const data = {
+              account: this.form.account,
+              password: this.form.password,
+              code: this.form.code,
+            };
+            register(data)
+              .then((res) => {
+                this.$message({
+                  message: "注册成功！",
+                  type: "success",
+                });
+                this.submitBtnLoading = !this.submitBtnLoading;
+                this.updateInforObj = res.data;
+                this.type++;
+              })
+              .catch(() => {
+                this.submitBtnLoading = !this.submitBtnLoading;
+              });
+          } else if (this.type === 3) {
+            // 邮箱
+            // const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            // const phoneNumberPattern = /^1[3-9]\d{9}$/;
+            // const isPhone = phoneNumberPattern.test(this.form.account);
+            this.updateInforObj.company_name = this.form.company_name;
+            this.updateInforObj.name = this.form.name;
+            this.updateInforObj.user_needs = this.form.user_needs;
+            updateInfor(this.updateInforObj)
+              .then((res) => {
+                this.submitBtnLoading = !this.submitBtnLoading;
+                this.type = 1;
+              })
+              .catch(() => {
+                this.submitBtnLoading = !this.submitBtnLoading;
+              });
+          } else if (this.type === 4) {
+            const data = {
+              account: this.form.account,
+              password: this.form.password,
+              code: this.form.code,
+            };
+            resetPassword(data)
+              .then((res) => {
+                this.$message({
+                  message: "重置密码成功！",
+                  type: "success",
+                });
+                this.submitBtnLoading = !this.submitBtnLoading;
+                this.type = 1;
+              })
+              .catch(() => {
+                this.submitBtnLoading = !this.submitBtnLoading;
+              });
+          }
+        } else {
+          return false;
+        }
+      });
+    },
     changeType(type) {
       if (typeof type === "number") {
         this.type = type;
@@ -416,6 +613,9 @@ export default {
 }
 ::v-deep .el-form-item {
   margin-bottom: 20px;
+}
+.loginForm_body_agreement ::v-deep .el-form-item__content {
+  line-height: 0;
 }
 
 .login {
