@@ -14,7 +14,7 @@ export function request(config) {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         // 确保在 headers 中设置 Authorization
-        config.headers.Authorization = user.token_type + user.access_token;
+        config.headers.Authorization = user.token_type + ' ' + user.access_token;
       }
       return config;
     },
