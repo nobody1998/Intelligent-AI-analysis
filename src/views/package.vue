@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { getInfoList } from "../api/payment";
+
 export default {
   name: "Package",
   data() {
@@ -72,10 +74,36 @@ export default {
       ],
     };
   },
+  created() {
+    this.$nextTick(() => {
+      this.init();
+    });
+  },
   methods: {
+//     [
+//   {
+//     "id": 1,
+//     "title": "月度套餐",
+//     "price": "1.00",
+//     "info": "[点击广告和商品600次,搜索、排序和商品,收藏广告素材]",
+//     "sku_type": 1,
+//     "param": null,
+//     "sku_id": 1334
+//   }
+// ]
+    getInfoListFn() {
+      getInfoList()
+        .then((res) => {
+          console.log(res, 777);
+        })
+        .catch(() => {});
+    },
     toPayment() {
       this.$router.push("/payment");
-    }
+    },
+    init() {
+      this.getInfoListFn();
+    },
   },
 };
 </script>

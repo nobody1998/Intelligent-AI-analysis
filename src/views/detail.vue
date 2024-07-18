@@ -39,13 +39,13 @@
             </div>
           </div>
           <div class="detailAttribute_foot">
-            <el-button>收藏</el-button>
+            <!-- <el-button>收藏</el-button> -->
             <el-button type="primary">下载素材</el-button>
           </div>
         </div>
       </div>
     </div>
-    <div class="pageDetail_foot">
+    <!-- <div class="pageDetail_foot">
       <div class="pageDetail_foot_title">更多相似内容推荐</div>
       <div class="pageDetail_foot_content">
         <div
@@ -115,7 +115,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

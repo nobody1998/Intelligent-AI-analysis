@@ -2,13 +2,16 @@
 import { request } from "./servies";
 const jyRquest = {
   //  post 封装请求
-  post(config) {
+  async post(config) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return request({ ...config, method: "POST" });
   },
-  get(config) {
+  async get(config) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return request({ ...config, method: "GET" });
   },
-  patch(config) {
+  async patch(config) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return request({ ...config, method: "PATCH" });
   },
 };

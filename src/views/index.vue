@@ -3,9 +3,16 @@
     <div class="homePage_search">
       <div class="homePage_search_input">
         <div style="margin-top: 15px">
-          <el-input placeholder="请输入搜索内容" v-model="input3">
+          <el-input
+            placeholder="请输入搜索内容"
+            v-model="query.keyword"
+            clearable
+            @keyup.enter.native="search"
+          >
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
-            <el-button slot="append" icon="el-icon-search">搜索</el-button>
+            <el-button slot="append" icon="el-icon-search" @click="search"
+              >搜索</el-button
+            >
           </el-input>
         </div>
       </div>
@@ -148,7 +155,12 @@
       </div>
     </div>
     <div class="homePage_main">
-      <div class="homePage_main_item" v-for="(item, index) in 10" :key="index" @click="toDetail()">
+      <div
+        class="homePage_main_item"
+        v-for="(item, index) in 10"
+        :key="index"
+        @click="toDetail()"
+      >
         <div class="listItem_top">
           <div class="listItem_top_left">
             <div class="listItem_top_left_img">
@@ -224,13 +236,20 @@
 </template>
 
 <script>
+import { getQueryData, getFilterItems } from "../api/material";
+
 export default {
   name: "HomePage",
   data() {
     return {
+      query: {
+        page: 1,
+        page_size: 20,
+        keyword: "",
+      },
+      filterList: [],
       currentPage4: 4,
       chooseTab: 2,
-      input3: "",
       value1: "",
       keyWordsList: [
         {
@@ -447,7 +466,26 @@ export default {
       ],
     };
   },
+  created() {
+    this.$nextTick(() => {
+      // this.init();
+    });
+  },
   methods: {
+    getFilterItemsFn() {
+      getFilterItems()
+        .then((res) => {
+          console.log(res, 777);
+        })
+        .catch(() => {});
+    },
+    search() {
+      getQueryData(this.query)
+        .then((res) => {
+          console.log(res, 888);
+        })
+        .catch(() => {});
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
@@ -456,7 +494,10 @@ export default {
     },
     toDetail() {
       this.$router.push("/detail");
-    }
+    },
+    init() {
+      this.getFilterItemsFn();
+    },
   },
 };
 </script>
