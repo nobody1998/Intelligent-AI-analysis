@@ -21,7 +21,7 @@
     </div>
     <div class="header_right">
       <div class="header_right_btn">
-        <el-button @click="toPackage">套餐</el-button>
+        <el-button @click="toSetMeal">套餐</el-button>
         <img v-if="isLogin" src="../assets/img/login_bg.png" alt="头像" />
         <el-button v-else type="primary" @click="toLogin">登录</el-button>
       </div>
@@ -74,8 +74,8 @@ export default {
     toLogin() {
       this.$router.push("/login");
     },
-    toPackage() {
-      this.$router.push("/package");
+    toSetMeal() {
+      this.$router.push("/setMeal");
     }
   },
 };

@@ -23,9 +23,9 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/package",
-    name: "Package",
-    component: () => import("../views/package.vue"),
+    path: "/setMeal",
+    name: "SetMeal",
+    component: () => import("../views/setMeal.vue"),
     meta: { requiresAuth: true },
   },
   {

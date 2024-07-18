@@ -1,48 +1,51 @@
 <template>
-  <div class="package">
-    <div class="package_top">
-      <div class="package_top_title">根据您的运营需要，选择适合的套餐</div>
-      <div class="package_top_subTitle">快速充值，把握出海广告红利</div>
+  <div class="setMeal">
+    <div class="setMeal_top">
+      <div class="setMeal_top_title">根据您的运营需要，选择适合的套餐</div>
+      <div class="setMeal_top_subTitle">快速充值，把握出海广告红利</div>
     </div>
-    <div class="package_main">
-      <div class="package_main_top">
+    <div class="setMeal_main">
+      <div class="setMeal_main_top">
         <div
-          class="package_main_top_item"
+          class="setMeal_main_top_item"
           :class="{
-            'package_main_top_item-active': item.value === choosePackage,
+            'setMeal_main_top_item-active': index === chooseSetMeal,
           }"
-          v-for="(item, index) in packageList"
+          @click="chooseSetMeal = index"
+          v-for="(item, index) in setMealList"
           :key="index"
         >
-          <span>{{ item.label }}</span>
+          <span>{{ item[0].sku_type | skuTypeTranslate }}</span>
         </div>
       </div>
-      <div class="package_main_content">
+      <div class="setMeal_main_content">
         <div
-          class="package_main_content_item"
-          v-for="(item, index) in 5"
-          :key="index"
+          class="setMeal_main_content_item"
+          v-for="(subItem, subIndex) in setMealList[chooseSetMeal]"
+          :key="subIndex"
         >
-          <div class="packageDetail_title">基础版</div>
-          <div class="packageDetail_num">
-            <span>$59</span>
-            <span>/月</span>
+          <div class="setMealDetail_title">{{ subItem.title }}</div>
+          <div class="setMealDetail_num">
+            <span>${{ subItem.price }}</span>
+            <span>/{{ unit }}</span>
           </div>
           <el-divider></el-divider>
-          <div class="packageDetail_equity">
+          <div class="setMealDetail_equity">
             <div
-              class="packageDetail_equity_item"
-              v-for="(subItem, subIndex) in 5"
-              :key="subIndex"
+              class="setMealDetail_equity_item"
+              v-for="(infoItem, infoIndex) in subItem.info"
+              :key="infoIndex"
             >
-              <div class="packageDetail_equity_item_text">
-                点击广告和商品600次
+              <div class="setMealDetail_equity_item_text">
+                {{ infoItem }}
               </div>
               <i class="el-icon-success"></i>
             </div>
           </div>
-          <div class="packageDetail_btn">
-            <el-button type="primary" @click="toPayment">升级基础版</el-button>
+          <div class="setMealDetail_btn">
+            <el-button type="primary" @click="toPayment"
+              >升级{{ subItem.title }}</el-button
+            >
           </div>
         </div>
       </div>
@@ -53,12 +56,15 @@
 <script>
 import { getInfoList } from "../api/payment";
 
+let that;
 export default {
-  name: "Package",
+  name: "SetMeal",
   data() {
     return {
-      choosePackage: 1,
-      packageList: [
+      unit: "月",
+      chooseSetMeal: 0,
+      setMealList: [],
+      setMealNameList: [
         {
           value: 1,
           label: "月度套餐",
@@ -74,27 +80,56 @@ export default {
       ],
     };
   },
+  filters: {
+    skuTypeTranslate(val) {
+      console.log(val, 889889);
+      const arr = JSON.parse(
+        JSON.stringify(
+          that.setMealNameList.filter((item) => item.value === val)
+        )
+      );
+      console.log(arr, "arr");
+      if (arr.length) {
+        that.unit = arr[0].label.slice(0, 1);
+        console.log(that.unit, "that.unit");
+      }
+      return arr.length ? arr[0].label : "";
+    },
+  },
+  beforeCreate() {
+    that = this;
+  },
   created() {
     this.$nextTick(() => {
       this.init();
     });
   },
   methods: {
-//     [
-//   {
-//     "id": 1,
-//     "title": "月度套餐",
-//     "price": "1.00",
-//     "info": "[点击广告和商品600次,搜索、排序和商品,收藏广告素材]",
-//     "sku_type": 1,
-//     "param": null,
-//     "sku_id": 1334
-//   }
-// ]
     getInfoListFn() {
       getInfoList()
         .then((res) => {
-          console.log(res, 777);
+          // this.setMealList
+          // 创建一个空对象来存储归类后的结果
+          // 对象的键是id，值是与该id对应的项目数组
+          const groupedItems = {};
+          // 遍历items数组
+          res.data.forEach((item) => {
+            // 检查groupedItems中是否已经存在当前id的键
+            if (!groupedItems[item.sku_type]) {
+              // 如果不存在，则初始化该id对应的数组
+              groupedItems[item.sku_type] = [];
+            }
+            // 将当前项目添加到对应id的数组中
+            item.info = item.info.slice(1, -1).split(",");
+            groupedItems[item.sku_type].push(item);
+          });
+          // 将groupedItems对象转换为二维数组
+          // 使用Object.values()来获取groupedItems中所有值的数组
+          const data = Object.values(groupedItems).sort(
+            (a, b) => a[0].sku_type - b[0].sku_type
+          );
+          this.setMealList = data;
+          console.log(this.setMealList, "setMealList");
         })
         .catch(() => {});
     },
@@ -109,7 +144,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.package {
+.setMeal {
   width: 100%;
   height: 100%;
   background: #ffffff;
@@ -182,7 +217,7 @@ export default {
         box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.1);
         border-radius: 10px 10px 10px 10px;
         border: 2px solid #e1e4ed;
-        .packageDetail {
+        .setMealDetail {
           &_title {
             font-family: PingFang SC, PingFang SC;
             font-weight: 600;
