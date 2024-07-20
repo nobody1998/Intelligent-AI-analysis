@@ -468,29 +468,29 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      this.init();
+      // this.init();
     });
   },
   methods: {
     getFilterItemsFn() {
       getFilterItems()
         .then((res) => {
-          console.log(res, 777);
+          //
         })
         .catch(() => {});
     },
     search() {
       getQueryData(this.query)
         .then((res) => {
-          console.log(res, 888);
+          //
         })
         .catch(() => {});
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      //
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      //
     },
     toDetail() {
       this.$router.push("/detail");

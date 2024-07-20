@@ -80,8 +80,15 @@
                       <el-button
                         class="loginForm_body_code_btn"
                         type="primary"
+                        :disabled="sendCodeStatus === 1"
                         @click="sendCodeFn"
-                        >发送验证码</el-button
+                        >{{
+                          sendCodeStatus === 1
+                            ? `${countdown}秒`
+                            : sendCodeStatus === 2
+                            ? "重新发送"
+                            : "发送验证码"
+                        }}</el-button
                       >
                     </div>
                   </div>
@@ -112,8 +119,15 @@
                   <el-button
                     class="loginForm_body_code_btn"
                     type="primary"
+                    :disabled="sendCodeStatus === 1"
                     @click="sendCodeFn"
-                    >发送验证码</el-button
+                    >{{
+                      sendCodeStatus === 1
+                        ? `${countdown}秒`
+                        : sendCodeStatus === 2
+                        ? "重新发送"
+                        : "发送验证码"
+                    }}</el-button
                   >
                 </div>
               </div>
@@ -303,6 +317,9 @@ export default {
     };
 
     return {
+      sendCodeStatus: 0,
+      countdown: 60, // 倒计时初始值
+      timer: null, // 存储定时器的引用
       updateInforObj: {
         // phone: "13286497393",
       },
@@ -382,13 +399,38 @@ export default {
       }
     });
   },
+  beforeDestroy() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+  },
   methods: {
+    // 发送验证码
+    async sendVerificationCode() {
+      if (this.sendCodeStatus !== 1) {
+        this.sendCodeFn();
+      }
+    },
+    // 开始倒计时
+    startCountdown() {
+      if (this.countdown > 0) {
+        this.timer = setTimeout(() => {
+          this.countdown--;
+          this.startCountdown(); // 递归调用，直到countdown为0
+        }, 1000);
+      } else {
+        this.sendCodeStatus = 2; // 倒计时结束，恢复发送状态
+        this.countdown = 60; // 重置倒计时
+        // 可以选择清除定时器，但在这个递归结构中，定时器会在最后一轮自动停止
+      }
+    },
     sendCodeFn() {
       const data = {
         account: this.form.account,
       };
       sendCode(data).then((res) => {
-        //
+        this.sendCodeStatus = 1;
+        this.startCountdown();
       });
     },
     submitForm() {
@@ -410,6 +452,7 @@ export default {
             login(data)
               .then((res) => {
                 localStorage.setItem("user", JSON.stringify(res.data));
+                localStorage.setItem("token", res.data.access_token);
                 localStorage.setItem(
                   "accountInfor",
                   JSON.stringify({
@@ -427,7 +470,11 @@ export default {
                   type: "success",
                 });
                 this.submitBtnLoading = !this.submitBtnLoading;
-                this.$router.push("/");
+                if (this.$route.query.redirect) {
+                  this.$router.push(this.$route.query.redirect);
+                } else {
+                  this.$router.push("/");
+                }
               })
               .catch(() => {
                 this.submitBtnLoading = !this.submitBtnLoading;
@@ -517,7 +564,7 @@ export default {
       }
     },
     handleClick(tab, event) {
-      console.log(tab, event);
+      //
     },
   },
 };

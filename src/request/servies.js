@@ -11,11 +11,9 @@ export function request(config) {
   service.interceptors.request.use(
     (config) => {
       //这里可以做token 设置
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user && user !== null) {
+      if (localStorage.getItem("token") && localStorage.getItem("token") !== null) {
         // 确保在 headers 中设置 Authorization
-        config.headers.Authorization =
-          user.token_type + " " + user.access_token;
+        config.headers.Authorization = "bearer " + localStorage.getItem("token");
       }
       return config;
     },

@@ -36,10 +36,10 @@
               v-for="(infoItem, infoIndex) in subItem.info"
               :key="infoIndex"
             >
+              <i class="el-icon-success"></i>
               <div class="setMealDetail_equity_item_text">
                 {{ infoItem }}
               </div>
-              <i class="el-icon-success"></i>
             </div>
           </div>
           <div class="setMealDetail_btn">
@@ -223,7 +223,7 @@ export default {
       padding-bottom: 98px;
       &_item {
         padding: 33px 25px 23px;
-        width: 260px;
+        width: 354px;
         box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.1);
         border-radius: 10px 10px 10px 10px;
         border: 2px solid #e1e4ed;
@@ -233,7 +233,7 @@ export default {
             font-weight: 600;
             font-size: 20px;
             color: #333333;
-            line-height: 40px;
+            // line-height: 40px;
             text-align: left;
             font-style: normal;
             text-transform: none;
@@ -275,7 +275,6 @@ export default {
           &_equity {
             &_item {
               display: flex;
-              justify-content: space-between;
               align-items: center;
               margin-bottom: 24px;
               &_text {

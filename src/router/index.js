@@ -47,13 +47,11 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  let token = "";
-  console.log(localStorage.getItem("user"), 'localStorage.getItem("user")');
-  if (localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")) !== null) {
-    token = JSON.parse(localStorage.getItem("user")).access_token;
-  }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!token) {
+    if (
+      !localStorage.getItem("token") &&
+      localStorage.getItem("token") === null
+    ) {
       next({
         path: "/login",
         query: { redirect: to.fullPath },

@@ -1,5 +1,5 @@
 <template>
-  <div class="personalCenter">
+  <div class="personalCenter" v-loading="personalCenterLoading">
     <div class="personalCenter_tabs">
       <div
         class="personalCenter_tabs_item"
@@ -72,7 +72,7 @@
               请填写邮箱，点击“发送验证码”，你将会收到一封带有六位数字验证码邮件
             </div>
             <div class="openEmail_main">
-              <el-form ref="form" :model="form2" label-width="92px">
+              <el-form ref="form2" :model="form2" label-width="92px">
                 <el-form-item
                   class="openEmail_main_input1"
                   label="电子邮箱："
@@ -125,7 +125,7 @@
             width="640px"
           >
             <div class="changePassword_main">
-              <el-form ref="form" :model="form2" label-width="76px">
+              <el-form ref="form2" :model="form2" label-width="76px">
                 <el-form-item
                   class="changePassword_main_input1"
                   label="原密码："
@@ -217,30 +217,54 @@
       <el-form ref="form" :inline="true" :model="form">
         <el-form-item label="选择日期：">
           <el-date-picker
-            v-model="value1"
+            v-model="form.date"
             type="daterange"
             range-separator="~"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+            @change="dateChange"
           >
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">搜索</el-button>
+          <el-button class="orderListBtn" type="primary" @click="getOrderList"
+            >搜索</el-button
+          >
         </el-form-item>
       </el-form>
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="date" label="日期" width="180">
+      <el-table :data="orderList" style="width: 100%">
+        <el-table-column prop="order_no" label="订单号"> </el-table-column>
+        <el-table-column prop="sku_name" label="套餐详情"> </el-table-column>
+        <el-table-column prop="amount" label="总支付">
+          <template slot-scope="scope">
+            <span>{{ scope.row.amount }}/{{ scope.row.currency }}</span>
+          </template>
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="180">
+        <el-table-column prop="create_datetime" label="创建时间">
         </el-table-column>
-        <el-table-column prop="address" label="地址"> </el-table-column>
-        <el-table-column prop="date" label="日期" width="180">
+        <el-table-column prop="update_datetime" label="更新时间">
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="180">
+        <el-table-column prop="days" label="有效期(天)"> </el-table-column>
+        <el-table-column prop="download_times" label="下载次数(次)">
         </el-table-column>
-        <el-table-column prop="address" label="地址"> </el-table-column>
-        <el-table-column prop="date" label="日期" width="180">
+        <el-table-column prop="status" label="支付状态">
+          <template slot-scope="scope">
+            <span
+              class="statusIcon"
+              :style="{
+                backgroundColor:
+                  scope.row.status === 1
+                    ? '#FFC327'
+                    : scope.row.status === 2
+                    ? '#1CDA96'
+                    : scope.row.status === 3
+                    ? '#FF6B53'
+                    : 'black',
+              }"
+            ></span>
+            <span>{{ scope.row.status | statusTranslate }}</span>
+          </template>
         </el-table-column>
       </el-table>
       <div class="personalCenter_main_footer">
@@ -260,57 +284,113 @@
 </template>
 
 <script>
+import { getOrderList } from "../api/user";
+
 export default {
   name: "PersonalCenter",
   data() {
     return {
+      personalCenterLoading: false,
+      currentPage4: 1,
       form2: {
         email: "",
         password: "",
       },
+      form: {
+        date: "",
+        start_time: "",
+        end_datetime: "",
+      },
       dialogVisible1: false,
       dialogVisible2: false,
-      value1: "",
       chooseTab: 1,
       input1: "金果果",
       input2: "深圳智数科技信息有限公司",
       input3: "如何通过ai投放数据分析，进行广告投放",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-      ],
+      orderList: [],
     };
   },
+  filters: {
+    statusTranslate(status) {
+      // 状态：1未付款、2已付款 3已取消
+      let statusName = "";
+      switch (status) {
+        case 1:
+          statusName = "未付款";
+          break;
+        case 2:
+          statusName = "已付款";
+          break;
+        case 3:
+          statusName = "已取消";
+          break;
+        default:
+          break;
+      }
+      return statusName;
+    },
+  },
+  watch: {
+    chooseTab(newVal, oldVal) {
+      if (newVal === 3) {
+        this.getOrderList();
+      }
+    },
+    $route() {
+      this.$nextTick(() => {
+        this.init();
+      });
+    },
+  },
+  created() {
+    this.$nextTick(() => {
+      this.init();
+    });
+  },
   methods: {
+    dateChange(val) {
+      if (val) {
+        this.form.start_time = val[0];
+        this.form.end_datetime = val[1];
+      } else {
+        this.form.start_time = "";
+        this.form.end_datetime = "";
+      }
+    },
+    getOrderList() {
+      this.personalCenterLoading = true;
+      const data = JSON.parse(JSON.stringify(this.form));
+      delete data.date;
+      getOrderList(data)
+        .then((res) => {
+          this.personalCenterLoading = false;
+          this.orderList = res.data;
+        })
+        .catch(() => {
+          this.personalCenterLoading = false;
+        });
+    },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      //
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      //
     },
     openEmail() {
       this.dialogVisible1 = true;
     },
     changePassword() {
       this.dialogVisible2 = true;
+    },
+    init() {
+      this.chooseTab = this.$route.query.tab
+        ? Number(this.$route.query.tab)
+        : 1;
+      if (this.$route.query.action) {
+        if (Number(this.$route.query.action) === 1) {
+          this.dialogVisible2 = true;
+        }
+      }
     },
   },
 };
@@ -452,6 +532,16 @@ export default {
     background: white;
     box-shadow: 0px 15px 30px 0px rgba(10, 0, 73, 0.15);
     border-radius: 10px 10px 10px 10px;
+    .orderListBtn {
+      width: 116px;
+    }
+    .statusIcon {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
     &_top {
       height: 28px;
       font-family: PingFang SC, PingFang SC;

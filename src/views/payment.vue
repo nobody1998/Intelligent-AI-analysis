@@ -27,7 +27,9 @@
           </div>
           <el-divider></el-divider>
           <div class="payment_content_main_content_total">
-            <span>总支付：{{ form.amount }}</span>
+            <span
+              >{{ isPaid ? "已支付：" : "总支付：" }} {{ form.amount }}</span
+            >
           </div>
           <el-divider></el-divider>
           <div class="payment_content_main_content_agreement">
@@ -35,6 +37,7 @@
               ref="submitForm"
               :model="submitForm"
               :rules="submitFormRules"
+              :style="{visibility: isPaid ? 'hidden' : 'none'}"
             >
               <el-form-item label="" prop="isRead">
                 <el-checkbox v-model="submitForm.isRead"
@@ -43,11 +46,14 @@
                 >
               </el-form-item>
             </el-form>
+            <el-button v-if="isPaid" type="primary" @click="viewOrder"
+              >查看订单</el-button
+            >
           </div>
         </div>
       </div>
     </div>
-    <div class="payment_footer">
+    <div class="payment_footer" v-if="!isPaid">
       <div class="payment_footer_top">
         <span>微信扫码支付</span>
       </div>
@@ -69,6 +75,7 @@
                     v-if="form.qr_code"
                     class="qr-code"
                     :logoSrc="imageUrl"
+                    :logoScale="0.25"
                     :text="form.qr_code"
                     :size="216"
                   />
@@ -105,6 +112,7 @@ export default {
       }
     };
     return {
+      isPaid: false,
       paymentLoading: false,
       timerId: null, // 用于存储定时器的ID，以便之后可以清除它
       // 初始倒计时时间，单位秒
@@ -136,6 +144,14 @@ export default {
     this.stopPolling();
   },
   methods: {
+    viewOrder() {
+      this.$router.push({
+        path: "/personalCenter",
+        query: {
+          tab: 3,
+        },
+      });
+    },
     getUserInfoFn() {
       getUserInfo()
         .then((res) => {
@@ -366,6 +382,10 @@ export default {
           }
           span:nth-child(2) {
             color: #6956e5;
+          }
+          .el-button {
+            width: 136px;
+            height: 40px;
           }
         }
       }
