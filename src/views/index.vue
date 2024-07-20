@@ -468,7 +468,7 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      // this.init();
+      this.init();
     });
   },
   methods: {

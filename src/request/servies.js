@@ -12,9 +12,10 @@ export function request(config) {
     (config) => {
       //这里可以做token 设置
       const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
+      if (user && user !== null) {
         // 确保在 headers 中设置 Authorization
-        config.headers.Authorization = user.token_type + ' ' + user.access_token;
+        config.headers.Authorization =
+          user.token_type + " " + user.access_token;
       }
       return config;
     },
@@ -23,24 +24,26 @@ export function request(config) {
 
   // 响应拦截器
   service.interceptors.response.use(
-    (res) => {
-      if (res.status === 200) {
-        // Message({
-        //   message: "请求成功",
-        //   center: true,
-        // });
-      } else if (res.status === 401) {
-        Message({
-          message: "未授权，请重新登录",
-          center: true,
-        });
+    (response) => {
+      // 对响应数据做点什么
+      // 检查状态码，这里只处理2xx的情况
+      if (response.status >= 200 && response.status < 300) {
+        return response.data; // 只返回响应体中的数据
+      } else {
+        // 状态码不是2xx时，抛出一个错误
+        const error = new Error(`HTTP Error ${response.status}`);
+        // 你可以将响应对象附加到错误上，以便后续处理
+        error.response = response;
+        throw error;
       }
-      console.log(res);
-      return res.data;
     },
-    (err) => {
-      return err;
+    (error) => {
+      // 对响应错误做点什么
+      console.error("Response Error:", error); // for debug
+      // 根据需要返回错误对象或抛出新错误
+      return Promise.reject(error);
     }
   );
+
   return service(config);
 }

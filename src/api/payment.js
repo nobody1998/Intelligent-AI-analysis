@@ -15,6 +15,14 @@ export function createOrder(data) {
   });
 }
 
+// 获取用户信息接口
+export function getUserInfo(data) {
+  return jyRequest.post({
+    url: "/ai_data/api/user/user_info/",
+    data: data,
+  });
+}
+
 // 支付回调通知
 export function getNotify(data) {
   return jyRequest.post({

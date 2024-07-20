@@ -446,6 +446,7 @@ export default {
                 });
                 this.submitBtnLoading = !this.submitBtnLoading;
                 this.updateInforObj = res.data;
+                localStorage.setItem("token", this.updateInforObj.token);
                 this.type++;
               })
               .catch(() => {
@@ -456,6 +457,12 @@ export default {
             // const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             // const phoneNumberPattern = /^1[3-9]\d{9}$/;
             // const isPhone = phoneNumberPattern.test(this.form.account);
+            delete this.updateInforObj.phone;
+            if (!this.updateInforObj.token) {
+              this.updateInforObj.token = JSON.parse(
+                localStorage.getItem("token")
+              );
+            }
             this.updateInforObj.company_name = this.form.company_name;
             this.updateInforObj.name = this.form.name;
             this.updateInforObj.user_needs = this.form.user_needs;

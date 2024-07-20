@@ -1,5 +1,5 @@
 <template>
-  <div class="setMeal">
+  <div class="setMeal" v-loading="setMealLoading">
     <div class="setMeal_top">
       <div class="setMeal_top_title">根据您的运营需要，选择适合的套餐</div>
       <div class="setMeal_top_subTitle">快速充值，把握出海广告红利</div>
@@ -27,7 +27,7 @@
           <div class="setMealDetail_title">{{ subItem.title }}</div>
           <div class="setMealDetail_num">
             <span>${{ subItem.price }}</span>
-            <span>/{{ unit }}</span>
+            <span>/{{ subItem.unit }}</span>
           </div>
           <el-divider></el-divider>
           <div class="setMealDetail_equity">
@@ -43,7 +43,7 @@
             </div>
           </div>
           <div class="setMealDetail_btn">
-            <el-button type="primary" @click="toPayment"
+            <el-button type="primary" @click="toPayment(subItem.id)"
               >升级{{ subItem.title }}</el-button
             >
           </div>
@@ -54,14 +54,14 @@
 </template>
 
 <script>
-import { getInfoList } from "../api/payment";
+import { getInfoList, createOrder } from "../api/payment";
 
 let that;
 export default {
   name: "SetMeal",
   data() {
     return {
-      unit: "月",
+      setMealLoading: false,
       chooseSetMeal: 0,
       setMealList: [],
       setMealNameList: [
@@ -82,17 +82,11 @@ export default {
   },
   filters: {
     skuTypeTranslate(val) {
-      console.log(val, 889889);
       const arr = JSON.parse(
         JSON.stringify(
           that.setMealNameList.filter((item) => item.value === val)
         )
       );
-      console.log(arr, "arr");
-      if (arr.length) {
-        that.unit = arr[0].label.slice(0, 1);
-        console.log(that.unit, "that.unit");
-      }
       return arr.length ? arr[0].label : "";
     },
   },
@@ -108,33 +102,49 @@ export default {
     getInfoListFn() {
       getInfoList()
         .then((res) => {
-          // this.setMealList
-          // 创建一个空对象来存储归类后的结果
-          // 对象的键是id，值是与该id对应的项目数组
           const groupedItems = {};
-          // 遍历items数组
           res.data.forEach((item) => {
-            // 检查groupedItems中是否已经存在当前id的键
             if (!groupedItems[item.sku_type]) {
-              // 如果不存在，则初始化该id对应的数组
               groupedItems[item.sku_type] = [];
             }
-            // 将当前项目添加到对应id的数组中
             item.info = item.info.slice(1, -1).split(",");
+            item.unit =
+              item.sku_type === 1
+                ? "月"
+                : item.sku_type === 2
+                ? "季"
+                : item.sku_type === 3
+                ? "年"
+                : "";
             groupedItems[item.sku_type].push(item);
           });
-          // 将groupedItems对象转换为二维数组
-          // 使用Object.values()来获取groupedItems中所有值的数组
           const data = Object.values(groupedItems).sort(
             (a, b) => a[0].sku_type - b[0].sku_type
           );
           this.setMealList = data;
-          console.log(this.setMealList, "setMealList");
         })
         .catch(() => {});
     },
-    toPayment() {
-      this.$router.push("/payment");
+    toPayment(payment_id) {
+      this.setMealLoading = true;
+      const data = {
+        action: 1,
+        payment_id,
+      };
+      createOrder(data)
+        .then((res) => {
+          this.setMealLoading = false;
+          this.$router.push({
+            path: "/payment",
+            query: {
+              parameter: JSON.stringify(data),
+              info: JSON.stringify(res.data),
+            },
+          });
+        })
+        .catch(() => {
+          this.setMealLoading = false;
+        });
     },
     init() {
       this.getInfoListFn();
