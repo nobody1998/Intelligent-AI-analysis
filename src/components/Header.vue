@@ -101,22 +101,22 @@ export default {
           label: "首页",
           path: "/",
         },
-        {
-          value: 2,
-          label: "游戏素材",
-        },
-        {
-          value: 3,
-          label: "应用素材",
-        },
-        {
-          value: 4,
-          label: "短剧素材",
-        },
-        {
-          value: 5,
-          label: "投放智能分析",
-        },
+        // {
+        //   value: 2,
+        //   label: "游戏素材",
+        // },
+        // {
+        //   value: 3,
+        //   label: "应用素材",
+        // },
+        // {
+        //   value: 4,
+        //   label: "短剧素材",
+        // },
+        // {
+        //   value: 5,
+        //   label: "投放智能分析",
+        // },
       ],
     };
   },

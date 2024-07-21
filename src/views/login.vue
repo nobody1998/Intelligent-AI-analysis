@@ -32,6 +32,7 @@
                     <el-form-item label="" prop="password">
                       <el-input
                         v-model="form.password"
+                        show-password
                         placeholder="请输入密码"
                       ></el-input>
                     </el-form-item>
@@ -170,12 +171,14 @@
                     <el-form-item label="" prop="password">
                       <el-input
                         v-model="form.password"
+                        show-password
                         placeholder="请输入新密码"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="password2">
                       <el-input
                         v-model="form.password2"
+                        show-password
                         placeholder="请再次输入新密码"
                       ></el-input>
                     </el-form-item>
@@ -207,12 +210,14 @@
                     <el-form-item label="" prop="password">
                       <el-input
                         v-model="form.password"
+                        show-password
                         placeholder="请输入新密码"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="password2">
                       <el-input
                         v-model="form.password2"
+                        show-password
                         placeholder="请再次输入新密码"
                       ></el-input>
                     </el-form-item>
@@ -335,6 +340,9 @@ export default {
         code: "",
         isRead: false,
         isRemember: false,
+        name: "",
+        company_name: "",
+        user_needs: "",
       },
       formRules: {
         account: [
@@ -363,6 +371,34 @@ export default {
       },
     };
   },
+  watch: {
+    type(newVal) {
+      if (newVal === 1) {
+        if (this.type1Active === "1") {
+          this.getInfo();
+        } else if (this.type1Active === "2") {
+          this.form.code = "";
+        }
+      } else {
+        this.$refs.form.resetFields();
+        if (newVal === 2) {
+          this.form.account = "";
+          this.form.password = "";
+          this.form.code = "";
+        } else if (newVal === 3) {
+          this.form.name = "";
+          this.form.company_name = "";
+          this.form.user_needs = "";
+        } else if (newVal === 4) {
+          this.form.account = "";
+          this.form.password = "";
+          this.form.password2 = "";
+          this.form.code = "";
+        }
+        this.$refs.form.clearValidate();
+      }
+    },
+  },
   computed: {
     title() {
       let text = "";
@@ -387,6 +423,16 @@ export default {
   },
   created() {
     this.$nextTick(() => {
+      this.getInfo();
+    });
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+  },
+  methods: {
+    getInfo() {
       this.form.isRemember = localStorage.getItem("isRemember") ? true : false;
       if (this.form.isRemember) {
         this.form.account = localStorage.getItem("accountInfor")
@@ -396,19 +442,6 @@ export default {
           ? JSON.parse(localStorage.getItem("accountInfor")).password
           : "";
         this.form.isRead = localStorage.getItem("accountInfor") ? true : false;
-      }
-    });
-  },
-  beforeDestroy() {
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
-  },
-  methods: {
-    // 发送验证码
-    async sendVerificationCode() {
-      if (this.sendCodeStatus !== 1) {
-        this.sendCodeFn();
       }
     },
     // 开始倒计时
@@ -425,6 +458,12 @@ export default {
       }
     },
     sendCodeFn() {
+      if (!this.form.account) {
+        return this.$message({
+          message: "请输入手机号码/电子邮箱",
+          type: "warning",
+        });
+      }
       const data = {
         account: this.form.account,
       };
@@ -546,15 +585,17 @@ export default {
       });
     },
     changeType(type) {
-      if (typeof type === "number") {
-        this.type = type;
-      } else {
-        if (this.type === 1) {
-          this.type = 2;
-        } else if ([2, 4].indexOf(this.type) !== -1) {
-          this.type = 1;
+      this.$nextTick(() => {
+        if (typeof type === "number") {
+          this.type = type;
+        } else {
+          if (this.type === 1) {
+            this.type = 2;
+          } else if ([2, 4].indexOf(this.type) !== -1) {
+            this.type = 1;
+          }
         }
-      }
+      });
     },
     switchLanguage() {
       if (this.$i18n.locale === "zh") {

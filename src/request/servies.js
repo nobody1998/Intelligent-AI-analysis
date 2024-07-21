@@ -11,9 +11,13 @@ export function request(config) {
   service.interceptors.request.use(
     (config) => {
       //这里可以做token 设置
-      if (localStorage.getItem("token") && localStorage.getItem("token") !== null) {
+      if (
+        localStorage.getItem("token") &&
+        localStorage.getItem("token") !== null
+      ) {
         // 确保在 headers 中设置 Authorization
-        config.headers.Authorization = "bearer " + localStorage.getItem("token");
+        config.headers.Authorization =
+          "bearer " + localStorage.getItem("token");
       }
       return config;
     },
@@ -25,19 +29,31 @@ export function request(config) {
     (response) => {
       // 对响应数据做点什么
       // 检查状态码，这里只处理2xx的情况
-      if (response.status >= 200 && response.status < 300) {
+      if (
+        response.status >= 200 &&
+        response.status < 300 &&
+        response.data.code === 200
+      ) {
         return response.data; // 只返回响应体中的数据
       } else {
         // 状态码不是2xx时，抛出一个错误
         const error = new Error(`HTTP Error ${response.status}`);
         // 你可以将响应对象附加到错误上，以便后续处理
         error.response = response;
+        Message({
+          message: response.data.message,
+          type: "error",
+        });
         throw error;
       }
     },
     (error) => {
       // 对响应错误做点什么
       console.error("Response Error:", error); // for debug
+      Message({
+        message: error,
+        type: "error",
+      });
       // 根据需要返回错误对象或抛出新错误
       return Promise.reject(error);
     }

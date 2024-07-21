@@ -39,47 +39,120 @@
         <div class="personalCenter_main_content_item">
           <div class="personalItem_title">手机号码：</div>
           <div class="personalItem_content">
-            <span>139****6864</span>
+            <span v-if="form.phone">{{ form.phone }}</span>
+            <div
+              v-if="!form.phone"
+              class="personalItem_content_btn"
+              :class="{ 'personalItem_content_btn-active': phoneDialog }"
+              @click="openPhone"
+            >
+              <i class="el-icon-edit-outline"></i>
+              <span>绑定手机</span>
+            </div>
           </div>
-          <div class="personalItem_right">
+          <div class="personalItem_right" v-if="form.phone">
             <i class="el-icon-success"></i>
             <span>已验证</span>
           </div>
+          <el-dialog
+            title="手机绑定"
+            :show-close="false"
+            :visible="phoneDialog"
+            width="640px"
+          >
+            <div class="openEmail_title" style="padding: 0 68px">
+              请填写手机号码，点击“发送验证码”，你将会收到一封带有六位数字验证码短信
+            </div>
+            <div class="openEmail_main">
+              <el-form ref="phoneForm" :model="phoneForm" label-width="104px">
+                <el-form-item
+                  class="openEmail_main_input1"
+                  label="手机号码："
+                  prop="phone"
+                  :rules="[{ required: true, message: '请输入手机号码' }]"
+                >
+                  <el-input
+                    v-model="phoneForm.phone"
+                    placeholder="请输入手机号码"
+                  ></el-input>
+                </el-form-item>
+                <div class="openEmail_main_code">
+                  <el-form-item
+                    class="openEmail_main_input2"
+                    label="验证码："
+                    prop="code"
+                    :rules="[{ required: true, message: '请输入验证码' }]"
+                  >
+                    <el-input
+                      class="openEmail_main_code_input"
+                      v-model="phoneForm.code"
+                      placeholder="请输入验证码"
+                    ></el-input>
+                  </el-form-item>
+                  <el-button
+                    class="openEmail_main_code_btn"
+                    type="primary"
+                    :disabled="sendCodeStatus === 1"
+                    @click="sendCodeFn(1)"
+                    >{{
+                      sendCodeStatus === 1
+                        ? `${countdown}秒`
+                        : sendCodeStatus === 2
+                        ? "重新发送"
+                        : "发送验证码"
+                    }}</el-button
+                  >
+                </div>
+              </el-form>
+            </div>
+            <span slot="footer" class="dialog-footer">
+              <el-button
+                type="primary"
+                :loading="phoneFormLoading"
+                @click="emailFormSubmit(1)"
+                >确 定</el-button
+              >
+              <el-button @click="phoneDialog = false">取 消</el-button>
+            </span>
+          </el-dialog>
         </div>
         <div class="personalCenter_main_content_item">
           <div class="personalItem_title">电子邮箱：</div>
           <div class="personalItem_content">
-            <span>139****6864</span>
+            <span v-if="form.email">{{ form.email }}</span>
             <div
-              class="personalItem_content_btn personalItem_content_btn-active"
+              v-if="!form.email"
+              class="personalItem_content_btn"
+              :class="{ 'personalItem_content_btn-active': emailDialog }"
               @click="openEmail"
             >
               <i class="el-icon-edit-outline"></i>
               <span>绑定邮箱</span>
             </div>
-            <div class="personalItem_right">
-              <i class="el-icon-success"></i>
-              <span>已验证</span>
-            </div>
+          </div>
+          <div class="personalItem_right" v-if="form.email">
+            <i class="el-icon-success"></i>
+            <span>已验证</span>
           </div>
           <el-dialog
             title="邮箱绑定"
             :show-close="false"
-            :visible="dialogVisible1"
+            :visible="emailDialog"
             width="640px"
           >
             <div class="openEmail_title">
               请填写邮箱，点击“发送验证码”，你将会收到一封带有六位数字验证码邮件
             </div>
             <div class="openEmail_main">
-              <el-form ref="form2" :model="form2" label-width="92px">
+              <el-form ref="emailForm" :model="emailForm" label-width="104px">
                 <el-form-item
                   class="openEmail_main_input1"
                   label="电子邮箱："
                   prop="email"
+                  :rules="[{ required: true, message: '请输入电子邮箱' }]"
                 >
                   <el-input
-                    v-model="form2.email"
+                    v-model="emailForm.email"
                     placeholder="请输入电子邮箱"
                   ></el-input>
                 </el-form-item>
@@ -87,33 +160,51 @@
                   <el-form-item
                     class="openEmail_main_input2"
                     label="验证码："
-                    prop="password"
+                    prop="code"
+                    :rules="[{ required: true, message: '请输入验证码' }]"
                   >
                     <el-input
                       class="openEmail_main_code_input"
-                      v-model="form2.password"
+                      v-model="emailForm.code"
                       placeholder="请输入验证码"
                     ></el-input>
                   </el-form-item>
-                  <el-button class="openEmail_main_code_btn" type="primary"
-                    >发送验证码</el-button
+                  <el-button
+                    class="openEmail_main_code_btn"
+                    type="primary"
+                    :disabled="sendCodeStatus === 1"
+                    @click="sendCodeFn(2)"
+                    >{{
+                      sendCodeStatus === 1
+                        ? `${countdown}秒`
+                        : sendCodeStatus === 2
+                        ? "重新发送"
+                        : "发送验证码"
+                    }}</el-button
                   >
                 </div>
               </el-form>
             </div>
             <span slot="footer" class="dialog-footer">
-              <el-button type="primary" @click="dialogVisible1 = false"
+              <el-button
+                type="primary"
+                :loading="emailFormLoading"
+                @click="emailFormSubmit(2)"
                 >确 定</el-button
               >
-              <el-button @click="dialogVisible1 = false">取 消</el-button>
+              <el-button @click="emailDialog = false">取 消</el-button>
             </span>
           </el-dialog>
         </div>
         <div class="personalCenter_main_content_item">
           <div class="personalItem_title">账号密码：</div>
           <div class="personalItem_content">
-            <span>************</span>
-            <div class="personalItem_content_btn" @click="changePassword">
+            <span>********</span>
+            <div
+              class="personalItem_content_btn"
+              :class="{ 'personalItem_content_btn-active': passwordDialog }"
+              @click="changePassword"
+            >
               <i class="el-icon-edit-outline"></i>
               <span>修改密码</span>
             </div>
@@ -121,48 +212,61 @@
           <el-dialog
             title="修改密码"
             :show-close="false"
-            :visible="dialogVisible2"
+            :visible="passwordDialog"
             width="640px"
           >
             <div class="changePassword_main">
-              <el-form ref="form2" :model="form2" label-width="76px">
+              <el-form
+                ref="passwordForm"
+                :model="passwordForm"
+                label-width="88px"
+              >
                 <el-form-item
                   class="changePassword_main_input1"
                   label="原密码："
-                  prop="email"
+                  prop="password"
+                  :rules="[{ required: true, message: '请输入原密码' }]"
                 >
                   <el-input
-                    v-model="form2.email"
+                    v-model="passwordForm.password"
+                    show-password
                     placeholder="请输入原密码"
                   ></el-input>
                 </el-form-item>
                 <el-form-item
                   class="changePassword_main_input1"
                   label="新密码："
-                  prop="email"
+                  prop="newPassword"
+                  :rules="[{ required: true, message: '请输入新密码' }]"
                 >
                   <el-input
-                    v-model="form2.email"
+                    v-model="passwordForm.newPassword"
+                    show-password
                     placeholder="请输入新密码"
                   ></el-input>
                 </el-form-item>
                 <el-form-item
                   class="changePassword_main_input1"
                   label="新密码："
-                  prop="email"
+                  prop="newPassword2"
+                  :rules="[{ validator: checkPassword2 }]"
                 >
                   <el-input
-                    v-model="form2.email"
+                    v-model="passwordForm.newPassword2"
+                    show-password
                     placeholder="请再次输入新密码"
                   ></el-input>
                 </el-form-item>
               </el-form>
             </div>
             <span slot="footer" class="dialog-footer">
-              <el-button type="primary" @click="dialogVisible2 = false"
+              <el-button
+                type="primary"
+                :loading="passwordFormLoading"
+                @click="passwordFormSubmit"
                 >确 定</el-button
               >
-              <el-button @click="dialogVisible2 = false">取 消</el-button>
+              <el-button @click="passwordDialog = false">取 消</el-button>
             </span>
           </el-dialog>
         </div>
@@ -176,9 +280,7 @@
           <div class="personalItem_title">VIP到期时间：</div>
           <div class="personalItem_content">
             <span>139****6864</span>
-            <img
-              src="https://bpic.51yuansu.com/pic3/cover/03/67/79/65be2e88aa2ba_800.jpg?x-oss-process=image/sharpen,100"
-            />
+            <img v-if="form.vip_status" src="../assets/img/vip.png" />
           </div>
         </div>
       </div>
@@ -190,27 +292,27 @@
         <div class="personalCenter_main_content_item">
           <div class="personalItem_title">用户昵称：</div>
           <div class="personalItem_content">
-            <el-input v-model="input1" disabled></el-input>
+            <el-input v-model="form.nick_name" disabled></el-input>
           </div>
         </div>
         <div class="personalCenter_main_content_item">
           <div class="personalItem_title">所在公司：</div>
           <div class="personalItem_content">
-            <el-input v-model="input2" disabled></el-input>
+            <el-input v-model="form.company_name" disabled></el-input>
           </div>
         </div>
-        <div class="personalCenter_main_content_item">
+        <!-- <div class="personalCenter_main_content_item">
           <div class="personalItem_title">使用信息：</div>
           <div class="personalItem_content">
             <el-input
-              v-model="input3"
+              v-model="form.user_needs"
               type="textarea"
               :rows="2"
               resize="none"
               disabled
             ></el-input>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="personalCenter_main" v-if="chooseTab === 3">
@@ -267,7 +369,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="personalCenter_main_footer">
+      <!-- <div class="personalCenter_main_footer">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -278,31 +380,48 @@
           :total="400"
         >
         </el-pagination>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-import { getOrderList } from "../api/user";
+import { getOrderList, sendCode, updateInfor } from "../api/user";
+import { getUserInfo } from "../api/payment";
 
 export default {
   name: "PersonalCenter",
   data() {
     return {
+      passwordFormLoading: false,
+      phoneFormLoading: false,
+      emailFormLoading: false,
+      sendCodeStatus: 0,
+      countdown: 60, // 倒计时初始值
+      timer: null, // 存储定时器的引用
       personalCenterLoading: false,
       currentPage4: 1,
-      form2: {
+      phoneForm: {
+        phone: "",
+        code: "",
+      },
+      emailForm: {
         email: "",
+        code: "",
+      },
+      passwordForm: {
         password: "",
+        newPassword: "",
+        newPassword2: "",
       },
       form: {
         date: "",
         start_time: "",
         end_datetime: "",
       },
-      dialogVisible1: false,
-      dialogVisible2: false,
+      phoneDialog: false,
+      emailDialog: false,
+      passwordDialog: false,
       chooseTab: 1,
       input1: "金果果",
       input2: "深圳智数科技信息有限公司",
@@ -347,7 +466,162 @@ export default {
       this.init();
     });
   },
+  beforeDestroy() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+  },
   methods: {
+    checkPassword2(rule, value, callback) {
+      if (value !== this.passwordForm.newPassword) {
+        callback(new Error("两次输入密码不一致"));
+      } else {
+        callback();
+      }
+    },
+    passwordFormSubmit() {
+      this.$refs.passwordForm.validate((valid) => {
+        if (valid) {
+          if (
+            this.passwordForm.password !==
+            JSON.parse(localStorage.getItem("accountInfor")).password
+          ) {
+            return this.$message({
+              type: "error",
+              message: "原密码错误！",
+            });
+          }
+          this.passwordFormLoading = !this.passwordFormLoading;
+          const data = {
+            password: this.passwordForm.newPassword,
+          };
+          updateInfor(data)
+            .then(() => {
+              this.passwordFormLoading = !this.passwordFormLoading;
+              this.passwordDialog = false;
+              this.$message({
+                type: "success",
+                message: "修改密码成功！请重新登录！",
+              });
+              this.$store.dispatch("user/logout");
+            })
+            .catch(() => {
+              this.passwordFormLoading = !this.passwordFormLoading;
+            });
+        } else {
+          return false;
+        }
+      });
+    },
+    emailFormSubmit(type) {
+      let refString = "";
+      let loadingType = "";
+      let dialogType = "";
+      if (type === 1) {
+        refString = "phoneForm";
+        loadingType = "phoneFormLoading";
+        dialogType = "phoneDialog";
+      } else if (type === 2) {
+        refString = "emailForm";
+        loadingType = "emailFormLoading";
+        dialogType = "emailDialog";
+      }
+      this.$refs[refString].validate((valid) => {
+        if (valid) {
+          this[loadingType] = !this[loadingType];
+          let data = {};
+          if (type === 1) {
+            data = {
+              phone: this.phoneForm.phone,
+              code: this.phoneForm.code,
+            };
+          } else if (type === 2) {
+            data = {
+              email: this.emailForm.email,
+              code: this.emailForm.code,
+            };
+          }
+          updateInfor(data)
+            .then(() => {
+              this[loadingType] = !this[loadingType];
+              this[dialogType] = false;
+              this.getUserInfoFn();
+              this.$message({
+                message:
+                  type === 1
+                    ? "手机绑定成功！"
+                    : type === 2
+                    ? "邮箱绑定成功！"
+                    : "",
+                type: "success",
+              });
+            })
+            .catch(() => {
+              this[loadingType] = !this[loadingType];
+            });
+        } else {
+          return false;
+        }
+      });
+    },
+    // 开始倒计时
+    startCountdown() {
+      if (this.countdown > 0) {
+        this.timer = setTimeout(() => {
+          this.countdown--;
+          this.startCountdown(); // 递归调用，直到countdown为0
+        }, 1000);
+      } else {
+        this.sendCodeStatus = 2; // 倒计时结束，恢复发送状态
+        this.countdown = 60; // 重置倒计时
+        // 可以选择清除定时器，但在这个递归结构中，定时器会在最后一轮自动停止
+      }
+    },
+    sendCodeFn(type) {
+      if (type === 1) {
+        if (!this.phoneForm.phone) {
+          return this.$message({
+            message: "请输入手机号码",
+            type: "warning",
+          });
+        }
+      } else if (type === 2) {
+        if (!this.emailForm.email) {
+          return this.$message({
+            message: "请输入电子邮箱",
+            type: "warning",
+          });
+        }
+      }
+      const data = {
+        account:
+          type === 1
+            ? this.phoneForm.phone
+            : type === 2
+            ? this.emailForm.email
+            : "",
+        code:
+          type === 1
+            ? this.phoneForm.code
+            : type === 2
+            ? this.emailForm.code
+            : "",
+      };
+      sendCode(data).then((res) => {
+        this.sendCodeStatus = 1;
+        this.startCountdown();
+      });
+    },
+    getUserInfoFn() {
+      getUserInfo()
+        .then((res) => {
+          this.personalCenterLoading = false;
+          this.form = res.data;
+        })
+        .catch(() => {
+          this.personalCenterLoading = false;
+        });
+    },
     dateChange(val) {
       if (val) {
         this.form.start_time = val[0];
@@ -376,11 +650,14 @@ export default {
     handleCurrentChange(val) {
       //
     },
+    openPhone() {
+      this.phoneDialog = true;
+    },
     openEmail() {
-      this.dialogVisible1 = true;
+      this.emailDialog = true;
     },
     changePassword() {
-      this.dialogVisible2 = true;
+      this.passwordDialog = true;
     },
     init() {
       this.chooseTab = this.$route.query.tab
@@ -388,9 +665,10 @@ export default {
         : 1;
       if (this.$route.query.action) {
         if (Number(this.$route.query.action) === 1) {
-          this.dialogVisible2 = true;
+          this.passwordDialog = true;
         }
       }
+      this.getUserInfoFn();
     },
   },
 };
@@ -583,12 +861,12 @@ export default {
             display: flex;
             align-items: center;
             span:nth-child(1) {
+              margin-right: 9px;
             }
             &_btn {
               cursor: pointer;
               height: 28px;
               padding: 6px 14px;
-              background: #f4f4f5;
               border-radius: 4px 4px 4px 4px;
               display: flex;
               align-items: center;
@@ -596,11 +874,11 @@ export default {
               font-weight: 400;
               font-size: 12px;
               color: #999999;
+              background: #f4f4f5;
               line-height: 14px;
               text-align: left;
               font-style: normal;
               text-transform: none;
-              margin-left: 9px;
               .el-icon-edit-outline {
                 font-size: 14px;
               }
@@ -659,7 +937,7 @@ export default {
             padding: 0 80px;
           }
           &_main {
-            padding: 0 124px;
+            padding: 0 118px;
             &_code {
               display: flex;
               align-items: center;
@@ -680,7 +958,7 @@ export default {
         .changePassword {
           &_main {
             margin-top: 50px;
-            padding: 0 132px;
+            padding: 0 126px;
             &_code {
               display: flex;
               align-items: center;
