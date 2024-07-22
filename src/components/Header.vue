@@ -2,7 +2,9 @@
   <div class="header">
     <div class="header_left">
       <div class="header_left_logo">
-        <img src="../assets/img/logo.png" />
+        <router-link to="/">
+          <img src="../assets/img/logo.png" />
+        </router-link>
       </div>
       <div class="header_left_language">
         <el-select v-model="value">
@@ -163,8 +165,9 @@ export default {
     toJump(item) {
       if (item.path) {
         const url = item.path;
-        // this.$router.push(url);
-        this.$router.push("/");
+        if (this.$route.path !== url) {
+          this.$router.push({ path: url });
+        }
       }
     },
     toLogin() {

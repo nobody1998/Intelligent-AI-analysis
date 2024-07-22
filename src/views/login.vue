@@ -19,7 +19,7 @@
               <el-tabs
                 v-if="type === 1"
                 v-model="type1Active"
-                @tab-click="handleClick"
+                @tab-click="handleClick1"
               >
                 <el-tab-pane label="账号登录" name="1">
                   <div v-if="type1Active === '1'">
@@ -34,6 +34,7 @@
                         v-model="form.password"
                         show-password
                         placeholder="请输入密码"
+                        @keyup.enter.native="submitForm"
                       ></el-input>
                     </el-form-item>
                     <div class="loginForm_body_password">
@@ -76,6 +77,7 @@
                           class="loginForm_body_code_input"
                           v-model="form.code"
                           placeholder="请输入验证码"
+                          @keyup.enter.native="submitForm"
                         ></el-input>
                       </el-form-item>
                       <el-button
@@ -115,6 +117,7 @@
                       class="loginForm_body_code_input"
                       v-model="form.code"
                       placeholder="请输入验证码"
+                      @keyup.enter.native="submitForm"
                     ></el-input>
                   </el-form-item>
                   <el-button
@@ -152,13 +155,14 @@
                     :rows="4"
                     resize="none"
                     placeholder="您希望从这里获取到什么帮助/信息？"
+                    @keyup.enter.native="submitForm"
                   ></el-input>
                 </el-form-item>
               </div>
               <el-tabs
                 v-if="type === 4"
                 v-model="type4Active"
-                @tab-click="handleClick"
+                @tab-click="handleClick4"
               >
                 <el-tab-pane label="手机验证" name="1">
                   <div v-if="type4Active === '1'">
@@ -188,6 +192,7 @@
                           class="loginForm_body_code_input"
                           v-model="form.code"
                           placeholder="请输入验证码"
+                          @keyup.enter.native="submitForm"
                         ></el-input>
                       </el-form-item>
                       <el-button
@@ -227,6 +232,7 @@
                           class="loginForm_body_code_input"
                           v-model="form.code"
                           placeholder="请输入验证码"
+                          @keyup.enter.native="submitForm"
                         ></el-input>
                       </el-form-item>
                       <el-button
@@ -349,55 +355,27 @@ export default {
           {
             required: true,
             message: "请输入手机号码/电子邮箱",
-            trigger: "change",
+            trigger: "blur",
           },
         ],
         password: [
           {
             required: true,
             message: "请输入密码",
-            trigger: "change",
+            trigger: "blur",
           },
         ],
-        password2: [{ validator: checkPassword2, trigger: "change" }],
+        password2: [{ validator: checkPassword2, trigger: "blur" }],
         code: [
           {
             required: true,
             message: "请输入验证码",
-            trigger: "change",
+            trigger: "blur",
           },
         ],
-        isRead: [{ validator: checkIsRead, trigger: "change" }],
+        isRead: [{ validator: checkIsRead, trigger: "blur" }],
       },
     };
-  },
-  watch: {
-    type(newVal) {
-      if (newVal === 1) {
-        if (this.type1Active === "1") {
-          this.getInfo();
-        } else if (this.type1Active === "2") {
-          this.form.code = "";
-        }
-      } else {
-        this.$refs.form.resetFields();
-        if (newVal === 2) {
-          this.form.account = "";
-          this.form.password = "";
-          this.form.code = "";
-        } else if (newVal === 3) {
-          this.form.name = "";
-          this.form.company_name = "";
-          this.form.user_needs = "";
-        } else if (newVal === 4) {
-          this.form.account = "";
-          this.form.password = "";
-          this.form.password2 = "";
-          this.form.code = "";
-        }
-        this.$refs.form.clearValidate();
-      }
-    },
   },
   computed: {
     title() {
@@ -509,7 +487,7 @@ export default {
                   type: "success",
                 });
                 this.submitBtnLoading = !this.submitBtnLoading;
-                if (this.$route.query.redirect) {
+                if (this.$route.query.redirect && this.$route.query.redirect !== '/personalCenter?tab=1&action=1') {
                   this.$router.push(this.$route.query.redirect);
                 } else {
                   this.$router.push("/");
@@ -588,14 +566,49 @@ export default {
       this.$nextTick(() => {
         if (typeof type === "number") {
           this.type = type;
+          this.resetForm(type);
         } else {
           if (this.type === 1) {
             this.type = 2;
+          this.resetForm(2);
           } else if ([2, 4].indexOf(this.type) !== -1) {
             this.type = 1;
+          this.resetForm(1);
           }
         }
       });
+    },
+    resetForm(type) {
+      this.$nextTick(() => {
+        switch (type) {
+          case 1:
+            this.type1Active === "1";
+            this.form.account = "";
+            this.form.password = "";
+            this.getInfo();
+            break;
+          case 2:
+            this.form.account = "";
+            this.form.password = "";
+            this.form.code = "";
+            this.form.isRead = false;
+            break;
+          case 3:
+            this.form.name = "";
+            this.form.company_name = "";
+            this.form.user_needs = "";
+            break;
+          case 4:
+            this.form.account = "";
+            this.form.password = "";
+            this.form.password2 = "";
+            this.form.code = "";
+            break;
+          default:
+            break;
+        }
+        this.$refs.form.clearValidate();
+      })
     },
     switchLanguage() {
       if (this.$i18n.locale === "zh") {
@@ -604,8 +617,27 @@ export default {
         this.$i18n.locale = "zh";
       }
     },
-    handleClick(tab, event) {
-      //
+    handleClick1() {
+      this.$nextTick(() => {
+        if (this.type1Active === "1") {
+          this.form.account = "";
+          this.form.password = "";
+          this.getInfo();
+        } else if (this.type1Active === "2") {
+          this.form.account = "";
+          this.form.code = "";
+        }
+        this.$refs.form.clearValidate();
+      });
+    },
+    handleClick4() {
+      this.$nextTick(() => {
+        this.form.account = "";
+        this.form.password = "";
+        this.form.password2 = "";
+        this.form.code = "";
+        this.$refs.form.clearValidate();
+      });
     },
   },
 };

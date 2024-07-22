@@ -249,7 +249,7 @@
                   class="changePassword_main_input1"
                   label="新密码："
                   prop="newPassword2"
-                  :rules="[{ validator: checkPassword2 }]"
+                  :rules="[{ validator: checkPassword2, required: true, }]"
                 >
                   <el-input
                     v-model="passwordForm.newPassword2"
@@ -273,14 +273,14 @@
         <div class="personalCenter_main_content_item">
           <div class="personalItem_title">注册时间：</div>
           <div class="personalItem_content">
-            <span>139****6864</span>
+            <!-- <span>139****6864</span> -->
           </div>
         </div>
         <div class="personalCenter_main_content_item">
           <div class="personalItem_title">VIP到期时间：</div>
           <div class="personalItem_content">
-            <span>139****6864</span>
-            <img v-if="form.vip_status" src="../assets/img/vip.png" />
+            <!-- <span>139****6864</span> -->
+            <!-- <img v-if="form.vip_status" src="../assets/img/vip.png" /> -->
           </div>
         </div>
       </div>
@@ -463,6 +463,7 @@ export default {
   },
   created() {
     this.$nextTick(() => {
+      console.log(this.$route, 79878);
       this.init();
     });
   },
@@ -652,12 +653,21 @@ export default {
     },
     openPhone() {
       this.phoneDialog = true;
+      this.$nextTick(() => {
+        this.$refs.phoneForm.resetFields();
+      })
     },
     openEmail() {
       this.emailDialog = true;
+      this.$nextTick(() => {
+        this.$refs.emailForm.resetFields();
+      })
     },
     changePassword() {
       this.passwordDialog = true;
+      this.$nextTick((() => {
+        this.$refs.passwordForm.resetFields();
+      }))
     },
     init() {
       this.chooseTab = this.$route.query.tab
