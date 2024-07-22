@@ -7,9 +7,9 @@
         </router-link>
       </div>
       <div class="header_left_language">
-        <el-select v-model="value">
+        <el-select v-model="languageValue" @change="languageChange">
           <el-option
-            v-for="item in options"
+            v-for="item in languageOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -37,7 +37,7 @@
           <div class="usage_icon">
             <img src="../assets/img/download.png" />
           </div>
-          <div class="usage_title">剩余下载次数：</div>
+          <div class="usage_title">{{ $t("sheng-yu-xia-zai-ci-shu") }}</div>
           <div class="usage_times">{{ times }}</div>
         </div>
         <el-dropdown @command="handleCommand">
@@ -63,44 +63,44 @@ export default {
   name: "Header",
   data() {
     return {
-      value: "CN",
+      languageValue: "zh",
       value1: null,
-      options: [
+      languageOptions: [
         {
-          value: "CN",
-          label: "中国版CN",
+          value: "zh",
+          label: this.$t("zhong-guo-ban-cn"),
         },
         {
-          value: "EN",
-          label: "国际版EN",
+          value: "en",
+          label: this.$t("guo-ji-ban-en"),
         },
       ],
       options1: [
         {
           value: 1,
-          label: "个人中心",
+          label: this.$t("ge-ren-zhong-xin"),
         },
         {
           value: 2,
-          label: "我的订单",
+          label: this.$t("wo-de-ding-dan"),
         },
         {
           value: 3,
-          label: "升级套餐",
+          label: this.$t("sheng-ji-tao-can"),
         },
         {
           value: 4,
-          label: "修改密码",
+          label: this.$t("xiu-gai-mi-ma"),
         },
         {
           value: 5,
-          label: "退出登录",
+          label: this.$t("tui-chu-deng-lu"),
         },
       ],
       list: [
         {
           value: 1,
-          label: "首页",
+          label: this.$t("shou-ye"),
           path: "/",
         },
         // {
@@ -133,6 +133,9 @@ export default {
     },
   },
   methods: {
+    languageChange() {
+      this.$i18n.locale = this.languageValue;
+    },
     handleCommand(type) {
       if (type === 1) {
         this.$router.push({

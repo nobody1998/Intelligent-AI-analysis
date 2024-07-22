@@ -1,8 +1,12 @@
 <template>
   <div class="setMeal" v-loading="setMealLoading">
     <div class="setMeal_top">
-      <div class="setMeal_top_title">根据您的运营需要，选择适合的套餐</div>
-      <div class="setMeal_top_subTitle">快速充值，把握出海广告红利</div>
+      <div class="setMeal_top_title">
+        {{ $t("gen-ju-nin-de-yun-ying-xu-yao-xuan-ze-shi-he-de-tao-can") }}
+      </div>
+      <div class="setMeal_top_subTitle">
+        {{ $t("kuai-su-chong-zhi-ba-wo-chu-hai-guang-gao-hong-li") }}
+      </div>
     </div>
     <div class="setMeal_main">
       <div class="setMeal_main_top">
@@ -44,7 +48,8 @@
           </div>
           <div class="setMealDetail_btn">
             <el-button type="primary" @click="toPayment(subItem.id)"
-              >升级{{ subItem.title }}</el-button
+              >{{ $t("sheng-ji")
+              }}{{ subItem.title }}</el-button
             >
           </div>
         </div>
@@ -67,15 +72,15 @@ export default {
       setMealNameList: [
         {
           value: 1,
-          label: "月度套餐",
+          label: this.$t("yue-du-tao-can-0"),
         },
         {
           value: 2,
-          label: "季度套餐",
+          label: this.$t("ji-du-tao-can"),
         },
         {
           value: 3,
-          label: "年度套餐",
+          label: this.$t("nian-du-tao-can"),
         },
       ],
     };
@@ -110,11 +115,11 @@ export default {
             item.info = item.info.slice(1, -1).split(",");
             item.unit =
               item.sku_type === 1
-                ? "月"
+                ? this.$t("yue")
                 : item.sku_type === 2
-                ? "季"
+                ? this.$t("ji")
                 : item.sku_type === 3
-                ? "年"
+                ? this.$t("nian")
                 : "";
             groupedItems[item.sku_type].push(item);
           });

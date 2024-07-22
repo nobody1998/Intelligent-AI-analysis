@@ -10,7 +10,7 @@
             <div class="loginForm_header_title">{{ title }}</div>
             <div class="loginForm_header_btn" @click="switchLanguage">
               <el-button class="nopadding" type="text">
-                <span>切换EN</span>
+                <span>{{ $t('qie-huan-en') }}</span>
               </el-button>
             </div>
           </div>
@@ -21,19 +21,19 @@
                 v-model="type1Active"
                 @tab-click="handleClick1"
               >
-                <el-tab-pane label="账号登录" name="1">
+                <el-tab-pane :label="$t('zhang-hao-deng-lu')" name="1">
                   <div v-if="type1Active === '1'">
                     <el-form-item label="" prop="account">
                       <el-input
                         v-model="form.account"
-                        placeholder="请输入手机号码/电子邮箱"
+                        :placeholder="$t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang')"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="password">
                       <el-input
                         v-model="form.password"
                         show-password
-                        placeholder="请输入密码"
+                        :placeholder="$t('qing-shu-ru-mi-ma')"
                         @keyup.enter.native="submitForm"
                       ></el-input>
                     </el-form-item>
@@ -41,7 +41,7 @@
                       <!-- <el-form-item label=""> -->
                       <el-checkbox v-model="form.isRemember"
                         ><span class="loginForm_body_password_text"
-                          >记住密码</span
+                          >{{ $t('ji-zhu-mi-ma') }}</span
                         ></el-checkbox
                       >
                       <!-- </el-form-item> -->
@@ -51,13 +51,13 @@
                         @click="changeType(4)"
                       >
                         <div class="loginForm_body_password_text">
-                          忘记密码？
+                          {{ $t('wang-ji-mi-ma') }}
                         </div>
                       </el-button>
                     </div>
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="验证码登录" name="2">
+                <el-tab-pane :label="$t('yan-zheng-ma-deng-lu')" name="2">
                   <div v-if="type1Active === '2'">
                     <el-form-item
                       label=""
@@ -65,7 +65,7 @@
                       class="loginForm_body_tab2"
                     >
                       <el-input
-                        placeholder="请输入手机号码"
+                        :placeholder="$t('qing-shu-ru-shou-ji-hao-ma')"
                         v-model="form.account"
                       >
                         <template slot="prepend">+86</template>
@@ -76,7 +76,7 @@
                         <el-input
                           class="loginForm_body_code_input"
                           v-model="form.code"
-                          placeholder="请输入验证码"
+                          :placeholder="$t('qing-shu-ru-yan-zheng-ma')"
                           @keyup.enter.native="submitForm"
                         ></el-input>
                       </el-form-item>
@@ -87,10 +87,10 @@
                         @click="sendCodeFn"
                         >{{
                           sendCodeStatus === 1
-                            ? `${countdown}秒`
+                            ? `${countdown}${$t('miao')}`
                             : sendCodeStatus === 2
-                            ? "重新发送"
-                            : "发送验证码"
+                            ? `${$t('chong-xin-fa-song')}`
+                            : `${$t('fa-song-yan-zheng-ma')}`
                         }}</el-button
                       >
                     </div>
@@ -101,13 +101,13 @@
                 <el-form-item label="" prop="account">
                   <el-input
                     v-model="form.account"
-                    placeholder="请输入手机号码/电子邮箱"
+                    :placeholder="$t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang-0')"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="password">
                   <el-input
                     v-model="form.password"
-                    placeholder="请输入密码"
+                    :placeholder="$t('qing-shu-ru-mi-ma-0')"
                     show-password
                   ></el-input>
                 </el-form-item>
@@ -116,7 +116,7 @@
                     <el-input
                       class="loginForm_body_code_input"
                       v-model="form.code"
-                      placeholder="请输入验证码"
+                      :placeholder="$t('qing-shu-ru-yan-zheng-ma-0')"
                       @keyup.enter.native="submitForm"
                     ></el-input>
                   </el-form-item>
@@ -127,10 +127,10 @@
                     @click="sendCodeFn"
                     >{{
                       sendCodeStatus === 1
-                        ? `${countdown}秒`
+                        ? `${countdown}${$t('miao')}`
                         : sendCodeStatus === 2
-                        ? "重新发送"
-                        : "发送验证码"
+                        ? `${$t('chong-xin-fa-song')}`
+                        : `${$t('fa-song-yan-zheng-ma')}`
                     }}</el-button
                   >
                 </div>
@@ -139,13 +139,13 @@
                 <el-form-item label="" prop="name">
                   <el-input
                     v-model="form.name"
-                    placeholder="请输入用户昵称"
+                    :placeholder="$t('qing-shu-ru-yong-hu-ni-cheng')"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="company_name">
                   <el-input
                     v-model="form.company_name"
-                    placeholder="请输入所在公司名称"
+                    :placeholder="$t('qing-shu-ru-suo-zai-gong-si-ming-cheng')"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="user_needs">
@@ -154,7 +154,7 @@
                     type="textarea"
                     :rows="4"
                     resize="none"
-                    placeholder="您希望从这里获取到什么帮助/信息？"
+                    :placeholder="$t('nin-xi-wang-cong-zhe-li-huo-qu-dao-shi-mo-bang-zhu-xin-xi')"
                     @keyup.enter.native="submitForm"
                   ></el-input>
                 </el-form-item>
@@ -164,26 +164,26 @@
                 v-model="type4Active"
                 @tab-click="handleClick4"
               >
-                <el-tab-pane label="手机验证" name="1">
+                <el-tab-pane :label="$t('shou-ji-yan-zheng')" name="1">
                   <div v-if="type4Active === '1'">
                     <el-form-item label="" prop="account">
                       <el-input
                         v-model="form.account"
-                        placeholder="请输入手机号码"
+                        :placeholder="$t('qing-shu-ru-shou-ji-hao-ma-0')"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="password">
                       <el-input
                         v-model="form.password"
                         show-password
-                        placeholder="请输入新密码"
+                        :placeholder="$t('qing-shu-ru-xin-mi-ma')"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="password2">
                       <el-input
                         v-model="form.password2"
                         show-password
-                        placeholder="请再次输入新密码"
+                        :placeholder="$t('qing-zai-ci-shu-ru-xin-mi-ma')"
                       ></el-input>
                     </el-form-item>
                     <div class="loginForm_body_code">
@@ -191,7 +191,7 @@
                         <el-input
                           class="loginForm_body_code_input"
                           v-model="form.code"
-                          placeholder="请输入验证码"
+                          :placeholder="$t('qing-shu-ru-yan-zheng-ma-1')"
                           @keyup.enter.native="submitForm"
                         ></el-input>
                       </el-form-item>
@@ -199,31 +199,31 @@
                         class="loginForm_body_code_btn"
                         type="primary"
                         @click="sendCodeFn"
-                        >发送验证码</el-button
+                        >{{ $t('fa-song-yan-zheng-ma') }}</el-button
                       >
                     </div>
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="邮箱验证" name="2">
+                <el-tab-pane :label="$t('you-xiang-yan-zheng')" name="2">
                   <div v-if="type4Active === '2'">
                     <el-form-item label="" prop="account">
                       <el-input
                         v-model="form.account"
-                        placeholder="请输入电子邮箱"
+                        :placeholder="$t('qing-shu-ru-dian-zi-you-xiang')"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="password">
                       <el-input
                         v-model="form.password"
                         show-password
-                        placeholder="请输入新密码"
+                        :placeholder="$t('qing-shu-ru-xin-mi-ma-0')"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="" prop="password2">
                       <el-input
                         v-model="form.password2"
                         show-password
-                        placeholder="请再次输入新密码"
+                        :placeholder="$t('qing-zai-ci-shu-ru-xin-mi-ma-0')"
                       ></el-input>
                     </el-form-item>
                     <div class="loginForm_body_code">
@@ -231,7 +231,7 @@
                         <el-input
                           class="loginForm_body_code_input"
                           v-model="form.code"
-                          placeholder="请输入验证码"
+                          :placeholder="$t('qing-shu-ru-yan-zheng-ma-2')"
                           @keyup.enter.native="submitForm"
                         ></el-input>
                       </el-form-item>
@@ -239,7 +239,7 @@
                         class="loginForm_body_code_btn"
                         type="primary"
                         @click="sendCodeFn"
-                        >发送验证码</el-button
+                        >{{ $t('fa-song-yan-zheng-ma-0') }}</el-button
                       >
                     </div>
                   </div>
@@ -252,30 +252,30 @@
                 @click="submitForm"
                 >{{
                   type === 1
-                    ? "登录"
+                    ? `${$t('deng-lu')}`
                     : type === 2
-                    ? "注册"
+                    ? `${$t('zhu-ce')}`
                     : type === 3
-                    ? "立即使用"
+                    ? `${$t('li-ji-shi-yong')}`
                     : type === 4
-                    ? "重置密码"
+                    ? `${$t('zhong-zhi-mi-ma')}`
                     : ""
                 }}</el-button
               >
               <div class="loginForm_body_noAccount">
                 <span>{{
                   type === 1
-                    ? "还没账号？"
+                    ? `${$t('hai-mei-zhang-hao')}`
                     : [2, 4].indexOf(type) !== -1
-                    ? "已有账号？"
+                    ? `${$t('yi-you-zhang-hao')}`
                     : ""
                 }}</span>
                 <el-button class="nopadding" type="text" @click="changeType">
                   <span style="color: #7a68f1">{{
                     type === 1
-                      ? "立即注册"
+                      ? `${$t('li-ji-zhu-ce')}`
                       : [2, 4].indexOf(type) !== -1
-                      ? "直接登录"
+                      ? `${$t('zhi-jie-deng-lu')}`
                       : ""
                   }}</span>
                 </el-button>
@@ -286,9 +286,9 @@
                 prop="isRead"
                 v-if="[1, 2].indexOf(type) !== -1"
               >
-                <el-checkbox v-model="form.isRead"
+                <el-checkbox v-model="form.isRead" style="display: flex;"
                   ><span class="loginForm_body_agreement"
-                    >已阅读并同意《智数AI用户协议》和《隐私政策》</span
+                    >{{ $t('yi-yue-du-bing-tong-yi-zhi-shu-ai-yong-hu-xie-yi-he-yin-si-zheng-ce') }}</span
                   ></el-checkbox
                 >
               </el-form-item>
@@ -314,21 +314,21 @@ export default {
   data() {
     var checkIsRead = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请阅读并同意《智数AI用户协议》和《隐私政策》"));
+        callback(new Error(this.$t('qing-yue-du-bing-tong-yi-zhi-shu-ai-yong-hu-xie-yi-he-yin-si-zheng-ce')));
       } else {
         callback();
       }
     };
     var checkPassword2 = (rule, value, callback) => {
       if (value !== this.form.password) {
-        callback(new Error("两次输入密码不一致"));
+        callback(new Error(this.$t('liang-ci-shu-ru-mi-ma-bu-yi-zhi')));
       } else {
         callback();
       }
     };
 
     return {
-      sendCodeStatus: 0,
+      sendCodeStatus: 1,
       countdown: 60, // 倒计时初始值
       timer: null, // 存储定时器的引用
       updateInforObj: {
@@ -354,14 +354,14 @@ export default {
         account: [
           {
             required: true,
-            message: "请输入手机号码/电子邮箱",
+            message: this.$t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang-1'),
             trigger: "blur",
           },
         ],
         password: [
           {
             required: true,
-            message: "请输入密码",
+            message: this.$t('qing-shu-ru-mi-ma-1'),
             trigger: "blur",
           },
         ],
@@ -369,7 +369,7 @@ export default {
         code: [
           {
             required: true,
-            message: "请输入验证码",
+            message: this.$t('qing-shu-ru-yan-zheng-ma-3'),
             trigger: "blur",
           },
         ],
@@ -382,16 +382,16 @@ export default {
       let text = "";
       switch (this.type) {
         case 1:
-          text = "欢迎来到智数Ai";
+          text = this.$t('huan-ying-lai-dao-zhi-shu-ai');
           break;
         case 2:
-          text = "欢迎注册智数AI";
+          text = this.$t('huan-ying-zhu-ce-zhi-shu-ai');
           break;
         case 3:
-          text = "完善身份信息";
+          text = this.$t('wan-shan-shen-fen-xin-xi');
           break;
         case 4:
-          text = "重置密码";
+          text = this.$t('zhong-zhi-mi-ma');
           break;
         default:
           break;
@@ -438,7 +438,7 @@ export default {
     sendCodeFn() {
       if (!this.form.account) {
         return this.$message({
-          message: "请输入手机号码/电子邮箱",
+          message: this.$t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang-2'),
           type: "warning",
         });
       }
@@ -483,7 +483,7 @@ export default {
                   localStorage.removeItem("isRemember");
                 }
                 this.$message({
-                  message: "登录成功！",
+                  message: this.$t('deng-lu-cheng-gong'),
                   type: "success",
                 });
                 this.submitBtnLoading = !this.submitBtnLoading;
@@ -505,7 +505,7 @@ export default {
             register(data)
               .then((res) => {
                 this.$message({
-                  message: "注册成功！",
+                  message: this.$t('zhu-ce-cheng-gong'),
                   type: "success",
                 });
                 this.submitBtnLoading = !this.submitBtnLoading;
@@ -547,7 +547,7 @@ export default {
             resetPassword(data)
               .then((res) => {
                 this.$message({
-                  message: "重置密码成功！",
+                  message: this.$t('zhong-zhi-mi-ma-cheng-gong'),
                   type: "success",
                 });
                 this.submitBtnLoading = !this.submitBtnLoading;
@@ -744,6 +744,25 @@ export default {
 .loginForm_body_agreement ::v-deep .el-form-item__content {
   line-height: 0;
 }
+::v-deep .el-tabs__nav-prev {
+  line-height: 20px;
+}
+::v-deep .el-tabs__nav-next {
+  line-height: 20px;
+}
+.loginForm_body_agreement ::v-deep .el-checkbox__label {  
+  white-space: normal !important; /* 允许文本换行 */  
+  word-break: break-all; /* 在必要时打断单词以换行 */  
+  display: block; /* 如果需要的话，使标签成为块级元素以占用整行 */  
+  /* 可能还需要设置一些宽度、内边距等属性来适应你的布局 */  
+}  
+  
+/* 如果你的 span 有一个特定的类，也可以直接对这个类应用样式 */  
+.loginForm_body_agreement {  
+  white-space: normal; /* 允许文本换行 */  
+  word-break: break-all; /* 在必要时打断单词以换行 */  
+  /* 其他样式 */  
+}
 
 .login {
   display: flex;
@@ -790,7 +809,8 @@ export default {
       background: #ffffff;
       box-shadow: 0px 0 60px 0px rgba(10, 0, 73, 0.2);
       border-radius: 0 24px 24px 0;
-      padding: 82px 79px;
+      // padding: 82px 79px;
+      padding: 82px 72px;
       display: flex;
       align-items: center;
       .loginForm {

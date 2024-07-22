@@ -9,7 +9,7 @@
         <div class="personalCenter_tabs_item_icon">
           <i class="el-icon-user-solid"></i>
         </div>
-        <div class="personalCenter_tabs_item_label">账号信息</div>
+        <div class="personalCenter_tabs_item_label">{{ $t('zhang-hao-xin-xi') }}</div>
       </div>
       <div
         class="personalCenter_tabs_item"
@@ -19,7 +19,7 @@
         <div class="personalCenter_tabs_item_icon">
           <i class="el-icon-s-ticket"></i>
         </div>
-        <div class="personalCenter_tabs_item_label">基本信息</div>
+        <div class="personalCenter_tabs_item_label">{{ $t('ji-ben-xin-xi') }}</div>
       </div>
       <div
         class="personalCenter_tabs_item"
@@ -29,15 +29,15 @@
         <div class="personalCenter_tabs_item_icon">
           <i class="el-icon-s-order"></i>
         </div>
-        <div class="personalCenter_tabs_item_label">我的订单</div>
+        <div class="personalCenter_tabs_item_label">{{ $t('wo-de-ding-dan') }}</div>
       </div>
     </div>
     <div class="personalCenter_main" v-if="chooseTab === 1">
-      <div class="personalCenter_main_top">个人信息</div>
+      <div class="personalCenter_main_top">{{ $t('ge-ren-xin-xi') }}</div>
       <el-divider></el-divider>
       <div class="personalCenter_main_content">
         <div class="personalCenter_main_content_item">
-          <div class="personalItem_title">手机号码：</div>
+          <div class="personalItem_title">{{ $t('shou-ji-hao-ma') }}</div>
           <div class="personalItem_content">
             <span v-if="form.phone">{{ form.phone }}</span>
             <div
@@ -47,46 +47,46 @@
               @click="openPhone"
             >
               <i class="el-icon-edit-outline"></i>
-              <span>绑定手机</span>
+              <span>{{ $t('bang-ding-shou-ji') }}</span>
             </div>
           </div>
           <div class="personalItem_right" v-if="form.phone">
             <i class="el-icon-success"></i>
-            <span>已验证</span>
+            <span>{{ $t('yi-yan-zheng') }}</span>
           </div>
           <el-dialog
-            title="手机绑定"
+            :title="$t('shou-ji-bang-ding')"
             :show-close="false"
             :visible="phoneDialog"
             width="640px"
           >
             <div class="openEmail_title" style="padding: 0 68px">
-              请填写手机号码，点击“发送验证码”，你将会收到一封带有六位数字验证码短信
+              {{ $t('qing-tian-xie-shou-ji-hao-ma-dian-ji-fa-song-yan-zheng-ma-ni-jiang-hui-shou-dao-yi-feng-dai-you-liu-wei-shu-zi-yan-zheng-ma-duan-xin') }}
             </div>
             <div class="openEmail_main">
               <el-form ref="phoneForm" :model="phoneForm" label-width="104px">
                 <el-form-item
                   class="openEmail_main_input1"
-                  label="手机号码："
+                  :label="$t('shou-ji-hao-ma-0')"
                   prop="phone"
-                  :rules="[{ required: true, message: '请输入手机号码' }]"
+                  :rules="[{ required: true, message: `${$t('qing-shu-ru-shou-ji-hao-ma')}` }]"
                 >
                   <el-input
                     v-model="phoneForm.phone"
-                    placeholder="请输入手机号码"
+                    :placeholder="$t('qing-shu-ru-shou-ji-hao-ma-0')"
                   ></el-input>
                 </el-form-item>
                 <div class="openEmail_main_code">
                   <el-form-item
                     class="openEmail_main_input2"
-                    label="验证码："
+                    :label="$t('yan-zheng-ma')"
                     prop="code"
-                    :rules="[{ required: true, message: '请输入验证码' }]"
+                    :rules="[{ required: true, message: `${$t('qing-shu-ru-yan-zheng-ma-3')}` }]"
                   >
                     <el-input
                       class="openEmail_main_code_input"
                       v-model="phoneForm.code"
-                      placeholder="请输入验证码"
+                      :placeholder="$t('qing-shu-ru-yan-zheng-ma-3')"
                     ></el-input>
                   </el-form-item>
                   <el-button
@@ -96,10 +96,10 @@
                     @click="sendCodeFn(1)"
                     >{{
                       sendCodeStatus === 1
-                        ? `${countdown}秒`
+                        ? `${countdown}${$t('miao')}`
                         : sendCodeStatus === 2
-                        ? "重新发送"
-                        : "发送验证码"
+                        ? `${$t('chong-xin-fa-song')}`
+                        : `${$t('fa-song-yan-zheng-ma')}`
                     }}</el-button
                   >
                 </div>
@@ -110,14 +110,14 @@
                 type="primary"
                 :loading="phoneFormLoading"
                 @click="emailFormSubmit(1)"
-                >确 定</el-button
+                >{{ $t('que-ding') }}</el-button
               >
-              <el-button @click="phoneDialog = false">取 消</el-button>
+              <el-button @click="phoneDialog = false">{{ $t('qu-xiao') }}</el-button>
             </span>
           </el-dialog>
         </div>
         <div class="personalCenter_main_content_item">
-          <div class="personalItem_title">电子邮箱：</div>
+          <div class="personalItem_title">{{ $t('dian-zi-you-xiang') }}</div>
           <div class="personalItem_content">
             <span v-if="form.email">{{ form.email }}</span>
             <div
@@ -127,46 +127,46 @@
               @click="openEmail"
             >
               <i class="el-icon-edit-outline"></i>
-              <span>绑定邮箱</span>
+              <span>{{ $t('bang-ding-you-xiang') }}</span>
             </div>
           </div>
           <div class="personalItem_right" v-if="form.email">
             <i class="el-icon-success"></i>
-            <span>已验证</span>
+            <span>{{ $t('yi-yan-zheng-0') }}</span>
           </div>
           <el-dialog
-            title="邮箱绑定"
+            :title="$t('you-xiang-bang-ding')"
             :show-close="false"
             :visible="emailDialog"
             width="640px"
           >
             <div class="openEmail_title">
-              请填写邮箱，点击“发送验证码”，你将会收到一封带有六位数字验证码邮件
+              {{ $t('qing-tian-xie-you-xiang-dian-ji-fa-song-yan-zheng-ma-ni-jiang-hui-shou-dao-yi-feng-dai-you-liu-wei-shu-zi-yan-zheng-ma-you-jian') }}
             </div>
             <div class="openEmail_main">
               <el-form ref="emailForm" :model="emailForm" label-width="104px">
                 <el-form-item
                   class="openEmail_main_input1"
-                  label="电子邮箱："
+                  :label="$t('dian-zi-you-xiang-0')"
                   prop="email"
-                  :rules="[{ required: true, message: '请输入电子邮箱' }]"
+                  :rules="[{ required: true, message: `${$t('qing-shu-ru-dian-zi-you-xiang')}` }]"
                 >
                   <el-input
                     v-model="emailForm.email"
-                    placeholder="请输入电子邮箱"
+                    :placeholder="$t('qing-shu-ru-dian-zi-you-xiang')"
                   ></el-input>
                 </el-form-item>
                 <div class="openEmail_main_code">
                   <el-form-item
                     class="openEmail_main_input2"
-                    label="验证码："
+                    :label="$t('yan-zheng-ma-0')"
                     prop="code"
-                    :rules="[{ required: true, message: '请输入验证码' }]"
+                    :rules="[{ required: true, message: `${$t('qing-shu-ru-yan-zheng-ma-2')}}` }]"
                   >
                     <el-input
                       class="openEmail_main_code_input"
                       v-model="emailForm.code"
-                      placeholder="请输入验证码"
+                      :placeholder="$t('qing-shu-ru-yan-zheng-ma-3')"
                     ></el-input>
                   </el-form-item>
                   <el-button
@@ -176,10 +176,10 @@
                     @click="sendCodeFn(2)"
                     >{{
                       sendCodeStatus === 1
-                        ? `${countdown}秒`
+                        ? `${countdown}${$t('miao')}`
                         : sendCodeStatus === 2
-                        ? "重新发送"
-                        : "发送验证码"
+                        ? `${$t('chong-xin-fa-song')}`
+                        : `${$t('fa-song-yan-zheng-ma')}`
                     }}</el-button
                   >
                 </div>
@@ -190,14 +190,14 @@
                 type="primary"
                 :loading="emailFormLoading"
                 @click="emailFormSubmit(2)"
-                >确 定</el-button
+                >{{ $t('que-ding-0') }}</el-button
               >
-              <el-button @click="emailDialog = false">取 消</el-button>
+              <el-button @click="emailDialog = false">{{ $t('qu-xiao-0') }}</el-button>
             </span>
           </el-dialog>
         </div>
         <div class="personalCenter_main_content_item">
-          <div class="personalItem_title">账号密码：</div>
+          <div class="personalItem_title">{{ $t('zhang-hao-mi-ma') }}</div>
           <div class="personalItem_content">
             <span>********</span>
             <div
@@ -206,11 +206,11 @@
               @click="changePassword"
             >
               <i class="el-icon-edit-outline"></i>
-              <span>修改密码</span>
+              <span>{{ $t('xiu-gai-mi-ma') }}</span>
             </div>
           </div>
           <el-dialog
-            title="修改密码"
+            :title="$t('xiu-gai-mi-ma')"
             :show-close="false"
             :visible="passwordDialog"
             width="640px"
@@ -219,42 +219,42 @@
               <el-form
                 ref="passwordForm"
                 :model="passwordForm"
-                label-width="88px"
+                label-width="auto"
               >
                 <el-form-item
                   class="changePassword_main_input1"
-                  label="原密码："
+                  :label="$t('yuan-mi-ma')"
                   prop="password"
-                  :rules="[{ required: true, message: '请输入原密码' }]"
+                  :rules="[{ required: true, message: `${$t('qing-shu-ru-yuan-mi-ma')}` }]"
                 >
                   <el-input
                     v-model="passwordForm.password"
                     show-password
-                    placeholder="请输入原密码"
+                    :placeholder="$t('qing-shu-ru-yuan-mi-ma')"
                   ></el-input>
                 </el-form-item>
                 <el-form-item
                   class="changePassword_main_input1"
-                  label="新密码："
+                  :label="$t('xin-mi-ma')"
                   prop="newPassword"
-                  :rules="[{ required: true, message: '请输入新密码' }]"
+                  :rules="[{ required: true, message: `${$t('qing-shu-ru-xin-mi-ma-0')}` }]"
                 >
                   <el-input
                     v-model="passwordForm.newPassword"
                     show-password
-                    placeholder="请输入新密码"
+                    :placeholder="$t('qing-shu-ru-xin-mi-ma-0')"
                   ></el-input>
                 </el-form-item>
                 <el-form-item
                   class="changePassword_main_input1"
-                  label="新密码："
+                  :label="$t('xin-mi-ma-0')"
                   prop="newPassword2"
                   :rules="[{ validator: checkPassword2, required: true, }]"
                 >
                   <el-input
                     v-model="passwordForm.newPassword2"
                     show-password
-                    placeholder="请再次输入新密码"
+                    :placeholder="$t('qing-zai-ci-shu-ru-xin-mi-ma-0')"
                   ></el-input>
                 </el-form-item>
               </el-form>
@@ -264,20 +264,20 @@
                 type="primary"
                 :loading="passwordFormLoading"
                 @click="passwordFormSubmit"
-                >确 定</el-button
+                >{{ $t('que-ding-1') }}</el-button
               >
-              <el-button @click="passwordDialog = false">取 消</el-button>
+              <el-button @click="passwordDialog = false">{{ $t('qu-xiao-1') }}</el-button>
             </span>
           </el-dialog>
         </div>
         <div class="personalCenter_main_content_item">
-          <div class="personalItem_title">注册时间：</div>
+          <div class="personalItem_title">{{ $t('zhu-ce-shi-jian') }}</div>
           <div class="personalItem_content">
             <!-- <span>139****6864</span> -->
           </div>
         </div>
         <div class="personalCenter_main_content_item">
-          <div class="personalItem_title">VIP到期时间：</div>
+          <div class="personalItem_title">{{ $t('vip-dao-qi-shi-jian') }}</div>
           <div class="personalItem_content">
             <!-- <span>139****6864</span> -->
             <!-- <img v-if="form.vip_status" src="../assets/img/vip.png" /> -->
@@ -286,17 +286,17 @@
       </div>
     </div>
     <div class="personalCenter_main" v-if="chooseTab === 2">
-      <div class="personalCenter_main_top">基本信息</div>
+      <div class="personalCenter_main_top">{{ $t('ji-ben-xin-xi-0') }}</div>
       <el-divider></el-divider>
       <div class="personalCenter_main_content">
         <div class="personalCenter_main_content_item">
-          <div class="personalItem_title">用户昵称：</div>
+          <div class="personalItem_title">{{ $t('yong-hu-ni-cheng') }}</div>
           <div class="personalItem_content">
             <el-input v-model="form.nick_name" disabled></el-input>
           </div>
         </div>
         <div class="personalCenter_main_content_item">
-          <div class="personalItem_title">所在公司：</div>
+          <div class="personalItem_title">{{ $t('suo-zai-gong-si') }}</div>
           <div class="personalItem_content">
             <el-input v-model="form.company_name" disabled></el-input>
           </div>
@@ -317,13 +317,13 @@
     </div>
     <div class="personalCenter_main" v-if="chooseTab === 3">
       <el-form ref="form" :inline="true" :model="form">
-        <el-form-item label="选择日期：">
+        <el-form-item :label="$t('xuan-ze-ri-qi')">
           <el-date-picker
             v-model="form.date"
             type="daterange"
             range-separator="~"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            :start-placeholder="$t('kai-shi-ri-qi')"
+            :end-placeholder="$t('jie-shu-ri-qi')"
             value-format="yyyy-MM-dd"
             @change="dateChange"
           >
@@ -331,31 +331,42 @@
         </el-form-item>
         <el-form-item>
           <el-button class="orderListBtn" type="primary" @click="getOrderList"
-            >搜索</el-button
+            >{{ $t('sou-suo') }}</el-button
           >
         </el-form-item>
       </el-form>
       <el-table :data="orderList" style="width: 100%">
-        <el-table-column prop="order_no" label="订单号"> </el-table-column>
-        <el-table-column prop="sku_name" label="套餐详情"> </el-table-column>
-        <el-table-column prop="amount" label="总支付">
+        <el-table-column prop="order_no">
+          <template slot="header" slot-scope="scope">{{ $t('ding-dan-hao') }}</template>
+        </el-table-column>
+        <el-table-column prop="sku_name">
+          <template slot="header" slot-scope="scope">{{ $t('tao-can-xiang-qing') }}</template>
+        </el-table-column>
+        <el-table-column prop="amount">
+          <template slot="header" slot-scope="scope">{{ $t('zong-zhi-fu') }}</template>
           <template slot-scope="scope">
             <span>{{ scope.row.amount }}/{{ scope.row.currency }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="create_datetime" label="创建时间">
+        <el-table-column prop="create_datetime">
+          <template slot="header" slot-scope="scope">{{ $t('chuang-jian-shi-jian') }}</template>
         </el-table-column>
-        <el-table-column prop="update_datetime" label="更新时间">
+        <el-table-column prop="update_datetime">
+          <template slot="header" slot-scope="scope">{{ $t('geng-xin-shi-jian') }}</template>
         </el-table-column>
-        <el-table-column prop="days" label="有效期(天)"> </el-table-column>
-        <el-table-column prop="download_times" label="下载次数(次)">
+        <el-table-column prop="days">
+          <template slot="header" slot-scope="scope">{{ $t('you-xiao-qi-tian') }}</template>
         </el-table-column>
-        <el-table-column prop="status" label="支付状态">
+        <el-table-column prop="download_times">
+          <template slot="header" slot-scope="scope">{{ $t('xia-zai-ci-shu-ci') }}</template>
+        </el-table-column>
+        <el-table-column prop="status">
+          <template slot="header" slot-scope="scope">{{ $t('zong-zhi-fu') }}</template>
           <template slot-scope="scope">
             <span
               class="statusIcon"
               :style="{
-                backgroundColor:
+                'backgroundColor':
                   scope.row.status === 1
                     ? '#FFC327'
                     : scope.row.status === 2
@@ -365,7 +376,8 @@
                     : 'black',
               }"
             ></span>
-            <span>{{ scope.row.status | statusTranslate }}</span>
+            <!-- | statusTranslate -->
+            <span>{{ scope.row.status }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -423,9 +435,9 @@ export default {
       emailDialog: false,
       passwordDialog: false,
       chooseTab: 1,
-      input1: "金果果",
-      input2: "深圳智数科技信息有限公司",
-      input3: "如何通过ai投放数据分析，进行广告投放",
+      input1: this.$t('jin-guo-guo'),
+      input2: this.$t('shen-zhen-zhi-shu-ke-ji-xin-xi-you-xian-gong-si'),
+      input3: this.$t('ru-he-tong-guo-ai-tou-fang-shu-ju-fen-xi-jin-hang-guang-gao-tou-fang'),
       orderList: [],
     };
   },
@@ -435,13 +447,13 @@ export default {
       let statusName = "";
       switch (status) {
         case 1:
-          statusName = "未付款";
+          statusName = this.$t('wei-fu-kuan');
           break;
         case 2:
-          statusName = "已付款";
+          statusName = this.$t('yi-fu-kuan');
           break;
         case 3:
-          statusName = "已取消";
+          statusName = this.$t('yi-qu-xiao');
           break;
         default:
           break;
@@ -475,7 +487,7 @@ export default {
   methods: {
     checkPassword2(rule, value, callback) {
       if (value !== this.passwordForm.newPassword) {
-        callback(new Error("两次输入密码不一致"));
+        callback(new Error(this.$t('liang-ci-shu-ru-mi-ma-bu-yi-zhi')));
       } else {
         callback();
       }
@@ -489,7 +501,7 @@ export default {
           ) {
             return this.$message({
               type: "error",
-              message: "原密码错误！",
+              message: this.$t('yuan-mi-ma-cuo-wu'),
             });
           }
           this.passwordFormLoading = !this.passwordFormLoading;
@@ -502,7 +514,7 @@ export default {
               this.passwordDialog = false;
               this.$message({
                 type: "success",
-                message: "修改密码成功！请重新登录！",
+                message: this.$t('xiu-gai-mi-ma-cheng-gong-qing-zhong-xin-deng-lu'),
               });
               this.$store.dispatch("user/logout");
             })
@@ -550,9 +562,9 @@ export default {
               this.$message({
                 message:
                   type === 1
-                    ? "手机绑定成功！"
+                    ? this.$t('shou-ji-bang-ding-cheng-gong')
                     : type === 2
-                    ? "邮箱绑定成功！"
+                    ? this.$t('you-xiang-bang-ding-cheng-gong')
                     : "",
                 type: "success",
               });
@@ -582,14 +594,14 @@ export default {
       if (type === 1) {
         if (!this.phoneForm.phone) {
           return this.$message({
-            message: "请输入手机号码",
+            message: this.$t('qing-shu-ru-shou-ji-hao-ma-0'),
             type: "warning",
           });
         }
       } else if (type === 2) {
         if (!this.emailForm.email) {
           return this.$message({
-            message: "请输入电子邮箱",
+            message: this.$t('qing-shu-ru-dian-zi-you-xiang'),
             type: "warning",
           });
         }
@@ -634,8 +646,10 @@ export default {
     },
     getOrderList() {
       this.personalCenterLoading = true;
-      const data = JSON.parse(JSON.stringify(this.form));
-      delete data.date;
+      const data = {
+        start_time: this.form.start_time,
+        end_datetime: this.form.end_datetime,
+      }
       getOrderList(data)
         .then((res) => {
           this.personalCenterLoading = false;
