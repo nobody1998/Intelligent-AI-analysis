@@ -33,13 +33,13 @@
       <div class="header_right_btn">
         <!-- <el-button @click="toSetMeal">套餐</el-button> -->
         <!-- <el-button v-else type="primary" @click="toLogin">登录</el-button> -->
-        <div class="header_right_btn_usage">
+        <!-- <div class="header_right_btn_usage">
           <div class="usage_icon">
             <img src="../assets/img/download.png" />
           </div>
           <div class="usage_title">{{ $t("sheng-yu-xia-zai-ci-shu") }}</div>
           <div class="usage_times">{{ times }}</div>
-        </div>
+        </div> -->
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
             <img src="../assets/img/defaultAvatar.png" />
@@ -63,6 +63,7 @@ export default {
   name: "Header",
   data() {
     return {
+      headerKey: 1,
       languageValue: "zh",
       value1: null,
       languageOptions: [
@@ -80,14 +81,14 @@ export default {
           value: 1,
           label: this.$t("ge-ren-zhong-xin"),
         },
-        {
-          value: 2,
-          label: this.$t("wo-de-ding-dan"),
-        },
-        {
-          value: 3,
-          label: this.$t("sheng-ji-tao-can"),
-        },
+        // {
+        //   value: 2,
+        //   label: this.$t("wo-de-ding-dan"),
+        // },
+        // {
+        //   value: 3,
+        //   label: this.$t("sheng-ji-tao-can"),
+        // },
         {
           value: 4,
           label: this.$t("xiu-gai-mi-ma"),

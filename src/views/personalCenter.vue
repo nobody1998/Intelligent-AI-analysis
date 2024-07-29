@@ -21,7 +21,7 @@
         </div>
         <div class="personalCenter_tabs_item_label">{{ $t('ji-ben-xin-xi') }}</div>
       </div>
-      <div
+      <!-- <div
         class="personalCenter_tabs_item"
         :class="{ 'personalCenter_tabs_item-active': chooseTab == 3 }"
         @click="chooseTab = 3"
@@ -30,7 +30,7 @@
           <i class="el-icon-s-order"></i>
         </div>
         <div class="personalCenter_tabs_item_label">{{ $t('wo-de-ding-dan') }}</div>
-      </div>
+      </div> -->
     </div>
     <div class="personalCenter_main" v-if="chooseTab === 1">
       <div class="personalCenter_main_top">{{ $t('ge-ren-xin-xi') }}</div>
@@ -276,13 +276,13 @@
             <!-- <span>139****6864</span> -->
           </div>
         </div>
-        <div class="personalCenter_main_content_item">
+        <!-- <div class="personalCenter_main_content_item">
           <div class="personalItem_title">{{ $t('vip-dao-qi-shi-jian') }}</div>
-          <div class="personalItem_content">
+          <div class="personalItem_content"> -->
             <!-- <span>139****6864</span> -->
             <!-- <img v-if="form.vip_status" src="../assets/img/vip.png" /> -->
-          </div>
-        </div>
+          <!-- </div>
+        </div> -->
       </div>
     </div>
     <div class="personalCenter_main" v-if="chooseTab === 2">

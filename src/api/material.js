@@ -2,16 +2,16 @@ import jyRequest from "../request/index";
 
 // 获取过滤列表
 export function getFilterItems(data) {
-  return jyRequest.post({
+  return jyRequest.get({
     url: "/ai_data/api/query/get_filter_items/",
-    data: data,
+    params: data,
   });
 }
 
-// 获取筛选项数据
-export function getQueryData(data) {
+// 获取数据
+export function getList(data) {
   return jyRequest.post({
-    url: "/ai_data/api/query/get_data/",
+    url: "/ai_data/api/query/get_list/",
     data: data,
   });
 }

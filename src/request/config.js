@@ -5,11 +5,11 @@
 let BASE_URL = "";
 let TIME_OUT = 60000;
 if (process.env.NODE_ENV === "development") {
-  BASE_URL = "http://ai_data.aiprom.cn";
+  BASE_URL = "https://aidata.aiprom.cn";
 } else if (process.env.NODE_ENV === "production") {
-  BASE_URL = "http://ai_data.aiprom.cn";
+  BASE_URL = "https://aidata.aiprom.cn";
 } else {
-  BASE_URL = "http://ai_data.aiprom.cn";
+  BASE_URL = "https://aidata.aiprom.cn";
 }
 //在将这两个东西导出
 export { BASE_URL, TIME_OUT };

@@ -36,6 +36,7 @@
           }"
           v-for="(item, index) in tabList"
           :key="index"
+          @click="tabChange(item)"
         >
           {{ item.label }}
         </div>
@@ -236,13 +237,22 @@
 </template>
 
 <script>
-import { getQueryData, getFilterItems } from "../api/material";
+import { getList, getFilterItems } from "../api/material";
 
 export default {
   name: "HomePage",
   data() {
     return {
+      filterOptions: {
+        shortVideoItems: {
+          language: [],
+          objective: [],
+          region: [],
+          source: [],
+        },
+      },
       query: {
+        action: 1,
         page: 1,
         page_size: 20,
         keyword: "",
@@ -280,19 +290,15 @@ export default {
         },
         {
           value: 2,
-          label: "智能广告",
+          label: "游戏素材",
         },
         {
           value: 3,
-          label: "智能广告",
+          label: "应用素材",
         },
         {
           value: 4,
-          label: "智能广告",
-        },
-        {
-          value: 5,
-          label: "智能广告",
+          label: "短剧",
         },
       ],
       typeList: [
@@ -472,15 +478,23 @@ export default {
     });
   },
   methods: {
+    tabChange(item) {
+      this.chooseTab = item.value;
+    },
     getFilterItemsFn() {
-      getFilterItems()
+      let data = {
+        lang: "zh",
+      };
+      getFilterItems(data)
         .then((res) => {
-          //
+          if (res.data) {
+            this.filterOptions = res.data;
+          }
         })
         .catch(() => {});
     },
     search() {
-      getQueryData(this.query)
+      getList(this.query)
         .then((res) => {
           //
         })
@@ -835,6 +849,7 @@ export default {
       box-shadow: 0px 20px 60px 0px rgba(46, 33, 61, 0.08);
       border-radius: 10px 10px 10px 10px;
       overflow: hidden;
+      cursor: pointer;
       .listItem {
         &_top {
           display: flex;
