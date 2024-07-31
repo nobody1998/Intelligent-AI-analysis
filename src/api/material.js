@@ -18,8 +18,8 @@ export function getList(data) {
 
 // 获取详情
 export function getDetail(data) {
-  return jyRequest.post({
+  return jyRequest.get({
     url: "/ai_data/api/query/detail/",
-    data: data,
+    params: data,
   });
 }

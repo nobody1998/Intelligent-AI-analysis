@@ -120,12 +120,33 @@
 </template>
 
 <script>
+import { getDetail } from "../api/material";
+
 export default {
   name: "PageDetail",
   data() {
     return {};
   },
-  methods: {},
+  created() {
+    this.$nextTick(() => {
+      this.init();
+    });
+  },
+  methods: {
+    init() {
+      if (this.$route.query.id) {
+        this.getDetailFn(this.$route.query.id);
+      }
+    },
+    getDetailFn(id) {
+      let data = {
+        object_id: id,
+      };
+      getDetail(data).then((res) => {
+        //
+      });
+    },
+  },
 };
 </script>
 

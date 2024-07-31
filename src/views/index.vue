@@ -16,7 +16,7 @@
           </el-input>
         </div>
       </div>
-      <div class="homePage_search_keyWords">
+      <!-- <div class="homePage_search_keyWords">
         <div class="homePage_search_keyWords_title">热门搜索：</div>
         <div
           class="homePage_search_keyWords_item"
@@ -25,7 +25,7 @@
         >
           {{ item.label }}
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="homePage_screen">
       <div class="homePage_screen_top">
@@ -57,7 +57,7 @@
             <!-- <el-button type="primary">保存</el-button> -->
           </div>
         </div>
-        <div class="homePage_screen_main_item">
+        <!-- <div class="homePage_screen_main_item">
           <div class="screenItem_title">分类：</div>
           <div class="screenItem_content">
             <div
@@ -71,7 +71,7 @@
               <span>{{ item.label }}</span>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="homePage_screen_main_item">
           <div class="screenItem_title">渠道：</div>
           <div class="screenItem_content">
@@ -80,11 +80,11 @@
               :class="{
                 'screenItem_content3_option-active': item.value === chooseTab,
               }"
-              v-for="(item, index) in channelList"
+              v-for="(item, index) in filterList.source"
               :key="index"
             >
-              <img :src="item.img" alt="渠道" />
-              <span>{{ item.label }}</span>
+              <img :src="item.icon" />
+              <span>{{ item.name }}</span>
             </div>
           </div>
         </div>
@@ -93,22 +93,22 @@
           <div class="screenItem_content">
             <div
               class="screenItem_content4_option"
-              v-for="(item, index) in baseList"
+              v-for="(item, index) in filterList.baseList"
               :key="index"
             >
               <el-select v-model="item.value" :placeholder="item.label">
                 <el-option
-                  v-for="item in item.list"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="(subItem, subIndex) in item.list"
+                  :key="subIndex"
+                  :label="item"
+                  :value="item"
                 >
                 </el-option>
               </el-select>
             </div>
           </div>
         </div>
-        <div class="homePage_screen_main_item">
+        <!-- <div class="homePage_screen_main_item">
           <div class="screenItem_title">高级：</div>
           <div class="screenItem_content">
             <div
@@ -127,8 +127,8 @@
               </el-select>
             </div>
           </div>
-        </div>
-        <div class="homePage_screen_main_item">
+        </div> -->
+        <!-- <div class="homePage_screen_main_item">
           <div class="screenItem_title">时间：</div>
           <div class="screenItem_content">
             <div
@@ -152,15 +152,15 @@
               </el-date-picker>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="homePage_main">
       <div
         class="homePage_main_item"
-        v-for="(item, index) in 10"
+        v-for="(item, index) in list"
         :key="index"
-        @click="toDetail()"
+        @click="toDetail(item)"
       >
         <div class="listItem_top">
           <div class="listItem_top_left">
@@ -170,11 +170,11 @@
               />
             </div>
             <div class="listItem_top_left_main">
-              <div class="itemTopText_top">Chris evans</div>
+              <div class="itemTopText_top">{{ item.ad_caption }}</div>
               <div class="itemTopText_main">
                 <img
-                  v-for="(item, index) in 2"
-                  :key="index"
+                  v-for="(subItem, subIndex) in item.region"
+                  :key="subIndex"
                   src="https://bpic.51yuansu.com/pic3/cover/03/67/79/65be2e88aa2ba_800.jpg?x-oss-process=image/sharpen,100"
                 />
               </div>
@@ -190,38 +190,40 @@
           </div>
           <div class="listItem_main_footer">
             <div class="listItem_main_footer_title">
-              游戏vlog白船在水面上白船在水面上漂立法上的控件撒反对
+              {{ item.ad_caption }}
             </div>
             <div class="listItem_main_footer_attribute">
-              <div class="listItem_main_footer_attribute_left">游戏素材</div>
+              <div class="listItem_main_footer_attribute_left">
+                {{ item.objective }}
+              </div>
               <div class="listItem_main_footer_attribute_right">2024-07-04</div>
             </div>
           </div>
         </div>
         <div class="listItem_foot">
           <div class="listItem_foot_item">
-            <div class="listItem_foot_item_num">1.6k</div>
+            <div class="listItem_foot_item_num">{{ item.likes }}</div>
             <div class="listItem_foot_item_num">点赞</div>
           </div>
           <el-divider direction="vertical"></el-divider>
           <div class="listItem_foot_item">
-            <div class="listItem_foot_item_num">1.6k</div>
-            <div class="listItem_foot_item_num">点赞</div>
+            <div class="listItem_foot_item_num">{{ item.comments }}</div>
+            <div class="listItem_foot_item_num">评论</div>
           </div>
           <el-divider direction="vertical"></el-divider>
           <div class="listItem_foot_item">
-            <div class="listItem_foot_item_num">1.6k</div>
-            <div class="listItem_foot_item_num">点赞</div>
+            <div class="listItem_foot_item_num">{{ item.shares }}</div>
+            <div class="listItem_foot_item_num">分享</div>
           </div>
           <el-divider direction="vertical"></el-divider>
           <div class="listItem_foot_item">
-            <div class="listItem_foot_item_num">1.6k</div>
-            <div class="listItem_foot_item_num">点赞</div>
+            <div class="listItem_foot_item_num">{{ item.likes }}</div>
+            <div class="listItem_foot_item_num">展示估值</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="homePage_footer">
+    <!-- <div class="homePage_footer">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -232,7 +234,7 @@
         :total="400"
       >
       </el-pagination>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -243,12 +245,15 @@ export default {
   name: "HomePage",
   data() {
     return {
+      baseField: ["objective", "region", "language"],
+      list: [],
+      total: 0,
       filterOptions: {
         shortVideoItems: {
-          language: [],
-          objective: [],
-          region: [],
-          source: [],
+          // language: [],
+          // objective: [],
+          // region: [],
+          // source: [],
         },
       },
       query: {
@@ -257,7 +262,7 @@ export default {
         page_size: 20,
         keyword: "",
       },
-      filterList: [],
+      filterList: {},
       currentPage4: 4,
       chooseTab: 2,
       value1: "",
@@ -297,7 +302,7 @@ export default {
           label: "应用素材",
         },
         {
-          value: 4,
+          value: "shortVideoItems",
           label: "短剧",
         },
       ],
@@ -472,9 +477,18 @@ export default {
       ],
     };
   },
+  watch: {
+    chooseTab: {
+      handler() {
+        this.filterList = this.filterOptions?.[this.chooseTab];
+        console.log(this.filterList, "this.filterList");
+      },
+      // immediate: true,
+    },
+  },
   created() {
     this.$nextTick(() => {
-      // this.init();
+      this.init();
     });
   },
   methods: {
@@ -487,8 +501,32 @@ export default {
       };
       getFilterItems(data)
         .then((res) => {
+          console.log(res, 777);
+          debugger;
           if (res.data) {
-            this.filterOptions = res.data;
+            if (res.data.short_video_items) {
+              let shortVideoItemsObj = {};
+              console.log(res.data.short_video_items, "short_video_items");
+              let baseList = [];
+              for (let key in res.data.short_video_items) {
+                if (this.baseField.includes(key)) {
+                  let obj = {};
+                  obj.label = res.data.short_video_items;
+                  obj.list = res.data.short_video_items[key];
+                  baseList.push(obj);
+                } else {
+                  shortVideoItemsObj[key] = res.data.short_video_items[key];
+                }
+                // if (res.data.short_video_items.hasOwnProperty(key)) {
+                //   console.log(key, res.data.short_video_items[key], 79789);
+                // }
+              }
+              shortVideoItemsObj.baseList = baseList;
+              this.filterOptions.shortVideoItems = shortVideoItemsObj;
+              console.log(this.filterOptions, 9999);
+            }
+            // this.filterOptions = res.data;
+            this.chooseTab = "shortVideoItems";
           }
         })
         .catch(() => {});
@@ -496,7 +534,8 @@ export default {
     search() {
       getList(this.query)
         .then((res) => {
-          //
+          this.list = res.data.material_list;
+          this.total = res.data.total_pages;
         })
         .catch(() => {});
     },
@@ -506,8 +545,13 @@ export default {
     handleCurrentChange(val) {
       //
     },
-    toDetail() {
-      this.$router.push("/detail");
+    toDetail(item) {
+      this.$router.push({
+        path: "/detail",
+        query: {
+          id: item.id,
+        },
+      });
     },
     init() {
       this.getFilterItemsFn();
