@@ -2,21 +2,28 @@
   <div class="pageDetail">
     <div class="pageDetail_main">
       <div class="pageDetail_main_left">
-        <img src="../assets/img/login_bg.png" />
+        <!-- <img src="../assets/img/login_bg.png" /> -->
+        <video controls width="420" height="560">
+          <source src="https://ai-data.tos-cn-guangzhou.volces.com/tiktok/01addb3c-36b1-4bbb-9308-e4c26b6c7458.mp4" type="video/mp4" />
+        </video>
+        <!-- <video controls width="820" height="560">
+          <source :src="form.video_download_url" type="video/mp4" />
+        </video> -->
       </div>
       <div class="pageDetail_main_right">
         <div class="pageDetail_main_right_title">
-          旅游vlog白船在水面上白船在水面上漂泊
+          {{ form.ad_caption }}
         </div>
         <div class="pageDetail_main_right_subTitle">
-          白船在水面上白船在水面上白船在水面上白船在水面上白船在水面上
+          {{ form.ad_caption }}
         </div>
         <el-divider></el-divider>
         <div class="detailAttribute">
           <div class="detailAttribute_item">
             <div class="detailAttribute_item_title">投放平台：</div>
             <div class="detailAttribute_item_content">
-              <div
+              {{ form.source }}
+              <!-- <div
                 class="detailAttribute_item_content_item"
                 v-for="(item, index) in 4"
                 :key="index"
@@ -25,22 +32,36 @@
                   src="https://bpic.51yuansu.com/pic3/cover/03/67/79/65be2e88aa2ba_800.jpg?x-oss-process=image/sharpen,100"
                 />
                 <span>facebook</span>
-              </div>
+              </div> -->
             </div>
           </div>
-          <div
+          <!-- <div
             class="detailAttribute_item"
-            v-for="(item, index) in 5"
-            :key="index"
           >
             <div class="detailAttribute_item_title">开始投放时间：</div>
             <div class="detailAttribute_item_content">
               <span>2024.07.01 ~ 2024.07.10</span>
             </div>
+          </div> -->
+          <!-- <div
+            class="detailAttribute_item"
+          >
+            <div class="detailAttribute_item_title">国家/地区</div>
+            <div class="detailAttribute_item_content">
+              <span>{{ form.region }}</span>
+            </div>
+          </div> -->
+          <div
+            class="detailAttribute_item"
+          >
+            <div class="detailAttribute_item_title">类别</div>
+            <div class="detailAttribute_item_content">
+              <span>{{ form.product_class }}</span>
+            </div>
           </div>
           <div class="detailAttribute_foot">
             <!-- <el-button>收藏</el-button> -->
-            <el-button type="primary">下载素材</el-button>
+            <el-button type="primary" @click="downloadFn">下载素材</el-button>
           </div>
         </div>
       </div>
@@ -125,7 +146,11 @@ import { getDetail } from "../api/material";
 export default {
   name: "PageDetail",
   data() {
-    return {};
+    return {
+      form: {
+
+      }
+    };
   },
   created() {
     this.$nextTick(() => {
@@ -138,12 +163,17 @@ export default {
         this.getDetailFn(this.$route.query.id);
       }
     },
+    downloadFn() {
+      window.open(this.form.video_download_url);
+    },
     getDetailFn(id) {
       let data = {
         object_id: id,
       };
       getDetail(data).then((res) => {
-        //
+        this.$nextTick(() => {
+          this.form = res.data;
+        })
       });
     },
   },
@@ -196,6 +226,10 @@ export default {
         text-align: left;
         font-style: normal;
         text-transform: none;
+        max-width: 850px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       &_subTitle {
         height: 25px;
@@ -208,6 +242,10 @@ export default {
         font-style: normal;
         text-transform: none;
         margin-top: 14px;
+        max-width: 850px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .el-divider--vertical {
         // height: 32px;

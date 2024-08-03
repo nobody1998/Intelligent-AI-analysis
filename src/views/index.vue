@@ -41,8 +41,11 @@
           {{ item.label }}
         </div>
       </div>
-      <div class="homePage_screen_main">
-        <div class="homePage_screen_main_item">
+      <div
+        class="homePage_screen_main"
+        v-if="JSON.stringify(filterList) !== '{}'"
+      >
+        <div class="homePage_screen_main_item" v-show="selectedList.length">
           <div class="screenItem_title">已选：</div>
           <div class="screenItem_content">
             <div
@@ -51,9 +54,9 @@
               :key="index"
             >
               <span>{{ item.label }}</span>
-              <i class="el-icon-close"></i>
+              <i class="el-icon-close" @click="delSelect(item, index)"></i>
             </div>
-            <el-button>清除</el-button>
+            <el-button @click="clearChoose">清除</el-button>
             <!-- <el-button type="primary">保存</el-button> -->
           </div>
         </div>
@@ -75,15 +78,32 @@
         <div class="homePage_screen_main_item">
           <div class="screenItem_title">渠道：</div>
           <div class="screenItem_content">
+            <!-- <el-checkbox-group
+              :max="filterList.source.isMultiple ? undefined : 1"
+              v-model="filterList.source.value"
+            >
+              <el-checkbox
+                v-for="(item, index) in filterList.source.list"
+                :key="index"
+                :label="item.name"
+              >
+                <div class="screenItem_content3_option">
+                  <img v-show="item.icon" :src="item.icon" />
+                  <span>{{ item.name }}</span>
+                </div>
+              </el-checkbox>
+            </el-checkbox-group> -->
             <div
               class="screenItem_content3_option"
-              :class="{
-                'screenItem_content3_option-active': item.value === chooseTab,
-              }"
-              v-for="(item, index) in filterList.source"
+              v-for="(item, index) in filterList.source.list"
               :key="index"
+              :class="{
+                'screenItem_content3_option-active':
+                  filterList.source.value.includes(item.name),
+              }"
+              @click="textChoose('source', item, 'name')"
             >
-              <img :src="item.icon" />
+              <img v-show="item.icon" :src="item.icon" />
               <span>{{ item.name }}</span>
             </div>
           </div>
@@ -96,12 +116,19 @@
               v-for="(item, index) in filterList.baseList"
               :key="index"
             >
-              <el-select v-model="item.value" :placeholder="item.label">
+              <el-select
+                v-model="item.value"
+                :placeholder="item.label"
+                :multiple="item.isMultiple"
+                collapse-tags
+                clearable
+                @change="selectChoose($event, item)"
+              >
                 <el-option
                   v-for="(subItem, subIndex) in item.list"
                   :key="subIndex"
-                  :label="item"
-                  :value="item"
+                  :label="subItem"
+                  :value="subItem"
                 >
                 </el-option>
               </el-select>
@@ -171,13 +198,13 @@
             </div>
             <div class="listItem_top_left_main">
               <div class="itemTopText_top">{{ item.ad_caption }}</div>
-              <div class="itemTopText_main">
+              <!-- <div class="itemTopText_main">
                 <img
                   v-for="(subItem, subIndex) in item.region"
                   :key="subIndex"
                   src="https://bpic.51yuansu.com/pic3/cover/03/67/79/65be2e88aa2ba_800.jpg?x-oss-process=image/sharpen,100"
                 />
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="listItem_top_right">
@@ -186,7 +213,10 @@
         </div>
         <div class="listItem_main">
           <div class="listItem_main_content">
-            <img src="../assets/img/login_bg.png" />
+            <!-- <img src="../assets/img/login_bg.png" /> -->
+            <video controls width="312" height="220">
+              <source :src="item.video_download_url" type="video/mp4" />
+            </video>
           </div>
           <div class="listItem_main_footer">
             <div class="listItem_main_footer_title">
@@ -245,26 +275,30 @@ export default {
   name: "HomePage",
   data() {
     return {
+      baseFieldIsMultiple: ["region", "language"],
+      fieldChinese: {
+        objective: "目标",
+        region: "国家/地区",
+        language: "语言",
+        source: "渠道",
+      },
       baseField: ["objective", "region", "language"],
       list: [],
       total: 0,
       filterOptions: {
-        shortVideoItems: {
-          // language: [],
-          // objective: [],
-          // region: [],
-          // source: [],
-        },
+        shortVideoItems: {},
       },
       query: {
         action: 1,
         page: 1,
-        page_size: 20,
+        // size: 20,
         keyword: "",
+        source: [],
+        country: [],
       },
       filterList: {},
       currentPage4: 4,
-      chooseTab: 2,
+      chooseTab: null,
       value1: "",
       keyWordsList: [
         {
@@ -302,7 +336,7 @@ export default {
           label: "应用素材",
         },
         {
-          value: "shortVideoItems",
+          value: 4,
           label: "短剧",
         },
       ],
@@ -328,28 +362,7 @@ export default {
           label: "智能广告",
         },
       ],
-      selectedList: [
-        {
-          value: 1,
-          label: "智能广告",
-        },
-        {
-          value: 2,
-          label: "智能广告",
-        },
-        {
-          value: 3,
-          label: "智能广告",
-        },
-        {
-          value: 4,
-          label: "智能广告",
-        },
-        {
-          value: 5,
-          label: "智能广告",
-        },
-      ],
+      selectedList: [],
       channelList: [
         {
           value: 1,
@@ -480,8 +493,13 @@ export default {
   watch: {
     chooseTab: {
       handler() {
-        this.filterList = this.filterOptions?.[this.chooseTab];
-        console.log(this.filterList, "this.filterList");
+        if (this.chooseTab === 1 || this.chooseTab === 4) {
+          this.filterList = this.filterOptions.shortVideoItems
+            ? this.filterOptions.shortVideoItems
+            : {};
+        } else {
+          this.filterList = {};
+        }
       },
       // immediate: true,
     },
@@ -492,41 +510,170 @@ export default {
     });
   },
   methods: {
+    delSelect(item, index) {
+      this.selectedList.splice(index, 1);
+      if (item.id !== "baseList") {
+        if (this.filterList[item.id].isMultiple) {
+          this.filterList[item.id].value.splice(
+            this.filterList[item.id].value.indexOf(item.label),
+            1
+          );
+        } else {
+          this.filterList[item.id].value = undefined;
+        }
+      } else {
+        this.filterList.baseList.forEach((baseItem) => {
+          if (baseItem.key === item.subId) {
+            if (baseItem.isMultiple) {
+              baseItem.value.splice(baseItem.value.indexOf(item.label), 1);
+            } else {
+              baseItem.value = undefined;
+            }
+          }
+        });
+      }
+    },
+    clearChoose() {
+      this.$nextTick(() => {
+        this.selectedList = [];
+        for (let key in this.filterList) {
+          if (key !== "baseList") {
+            this.filterList[key].value = this.filterList[key].isMultiple
+              ? []
+              : undefined;
+          } else {
+            this.filterList[key].forEach((item) => {
+              item.value = undefined;
+            });
+          }
+        }
+      });
+    },
+    selectChoose(val, item) {
+      let newVal = JSON.parse(JSON.stringify(val));
+      // 目前只做含在baseList里面的
+      if (item.isMultiple) {
+        const filterList = this.selectedList.filter(
+          (selectedItem) => selectedItem.subId === item.key
+        );
+        filterList.map((filterItem) => {
+          const index = newVal.indexOf(filterItem.label);
+          if (index === -1) {
+            this.selectedList.splice(
+              this.selectedList.findIndex(
+                (selectedItem) => selectedItem.label === filterItem.label
+              ),
+              1
+            );
+          } else {
+            newVal.splice(index, 1);
+          }
+        });
+        if (newVal.length === 0) {
+          return;
+        }
+        newVal.map((newValItem) => {
+          this.selectedList.push({
+            id: "baseList",
+            subId: item.key,
+            label: newValItem,
+          });
+        });
+      } else {
+        const index = this.selectedList.findIndex(
+          (selectedItem) => selectedItem.subId === item.key
+        );
+        if (index > -1) {
+          this.selectedList.splice(index, 1);
+        }
+        if (!newVal) {
+          return;
+        }
+        this.selectedList.push({
+          id: "baseList",
+          subId: item.key,
+          label: newVal,
+        });
+      }
+    },
+    textChoose(type, item, valueField = "value") {
+      if (this.chooseTab === 1 || this.chooseTab === 4) {
+        if (this.baseField.includes(type)) {
+        } else {
+          if (this.filterList[type].isMultiple) {
+            if (this.filterList[type].value.indexOf(item[valueField]) > -1) {
+              this.filterList[type].value.splice(
+                this.filterList[type].value.indexOf(item[valueField]),
+                1
+              );
+              this.selectedListDeal(2, type, item[valueField]);
+            } else {
+              this.filterList[type].value.push(item[valueField]);
+              this.selectedListDeal(1, type, item[valueField]);
+            }
+          } else {
+            this.selectedListDeal(2, type, this.filterList[type].value);
+            this.filterList[type].value = item[valueField];
+            this.selectedListDeal(1, type, item[valueField]);
+          }
+        }
+      } else {
+        //
+      }
+    },
+    selectedListDeal(operationType, type, value) {
+      // operationType: 1 添加 2 删除
+      if (operationType === 1) {
+        this.selectedList.push({
+          id: this.baseField.includes(type) ? "baseList" : type,
+          subId: this.baseField.includes(type) ? type : "",
+          label: value,
+        });
+      } else if (operationType === 2) {
+        this.selectedList.splice(
+          this.selectedList.findIndex((item) => item.label === value),
+          1
+        );
+      }
+    },
     tabChange(item) {
       this.chooseTab = item.value;
     },
     getFilterItemsFn() {
       let data = {
-        lang: "zh",
+        lang: this.$i18n.locale,
       };
       getFilterItems(data)
         .then((res) => {
-          console.log(res, 777);
-          debugger;
           if (res.data) {
             if (res.data.short_video_items) {
               let shortVideoItemsObj = {};
-              console.log(res.data.short_video_items, "short_video_items");
               let baseList = [];
               for (let key in res.data.short_video_items) {
+                let obj = {};
+                obj.key = key;
+                obj.label = this.fieldChinese[key];
+                obj.list = res.data.short_video_items[key];
                 if (this.baseField.includes(key)) {
-                  let obj = {};
-                  obj.label = res.data.short_video_items;
-                  obj.list = res.data.short_video_items[key];
+                  obj.value = undefined;
+                  if (this.baseFieldIsMultiple.includes(key)) {
+                    obj.isMultiple = true;
+                  } else {
+                    obj.isMultiple = false;
+                  }
                   baseList.push(obj);
                 } else {
-                  shortVideoItemsObj[key] = res.data.short_video_items[key];
+                  obj.value = [];
+                  obj.isMultiple = true;
+                  shortVideoItemsObj[key] = obj;
                 }
-                // if (res.data.short_video_items.hasOwnProperty(key)) {
-                //   console.log(key, res.data.short_video_items[key], 79789);
-                // }
               }
               shortVideoItemsObj.baseList = baseList;
-              this.filterOptions.shortVideoItems = shortVideoItemsObj;
-              console.log(this.filterOptions, 9999);
+              this.filterOptions.shortVideoItems = JSON.parse(
+                JSON.stringify(shortVideoItemsObj)
+              );
             }
-            // this.filterOptions = res.data;
-            this.chooseTab = "shortVideoItems";
+            this.chooseTab = 1;
           }
         })
         .catch(() => {});
@@ -555,12 +702,26 @@ export default {
     },
     init() {
       this.getFilterItemsFn();
+      this.search();
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+video::-internal-media-controls-download-button {  
+  display:none;  
+}  
+
+video::-webkit-media-controls-enclosure {  
+  overflow:hidden;  
+  width: 0px;  
+  height: 0px;  
+}  
+
+video::-webkit-media-controls {  
+  display:none !important;  
+}
 .homePage_search_input ::v-deep .el-input-group {
   width: 640px;
   height: 44px;
@@ -600,6 +761,7 @@ export default {
   text-transform: none;
 }
 .screenItem_content ::v-deep .el-button {
+  width: 80px;
   height: 28px;
   border-radius: 4px 4px 4px 4px;
   line-height: 0;
@@ -615,7 +777,7 @@ export default {
   margin-right: 20px;
 }
 .screenItem_content4_option ::v-deep .el-input__inner {
-  width: 136px;
+  width: 163px;
   height: 28px;
   border-radius: 4px 4px 4px 4px;
   border: 1px solid #d9d9d9;
@@ -640,6 +802,15 @@ export default {
 }
 .screenItem_content6_option ::v-deep .el-date-editor .el-range__close-icon {
   line-height: 1;
+}
+.screenItem_content ::v-deep .el-checkbox__input {
+  display: none;
+}
+.screenItem_content ::v-deep .el-checkbox {
+  margin-right: 20px;
+}
+.screenItem_content ::v-deep .el-checkbox__label {
+  padding-left: 0;
 }
 
 .homePage {
@@ -926,6 +1097,10 @@ export default {
                   text-align: left;
                   font-style: normal;
                   text-transform: none;
+                  width: 200px;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
                 }
                 &_main {
                   display: flex;
@@ -952,9 +1127,9 @@ export default {
           &_content {
             width: 100%;
             height: 220px;
-            background: rgba(0, 0, 0, 0.5);
+            // background: rgba(0, 0, 0, 0.5);
             border-radius: 0px 0px 0px 0px;
-            filter: blur(3px);
+            // filter: blur(3px);
             img {
               width: 100%;
               height: 220px;

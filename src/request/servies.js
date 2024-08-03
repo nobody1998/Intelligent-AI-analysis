@@ -1,6 +1,8 @@
 import axios from "axios";
 // 导入loading Loading 服务
 import { Message } from "element-ui";
+import router from "../router";
+import store from "../store";
 import { BASE_URL, TIME_OUT } from "./config"; //不同环境的请求配置
 export function request(config) {
   const service = axios.create({
@@ -48,14 +50,16 @@ export function request(config) {
       }
     },
     (error) => {
-      // 对响应错误做点什么
-      console.error("Response Error:", error); // for debug
-      Message({
-        message: error,
-        type: "error",
-      });
-      // 根据需要返回错误对象或抛出新错误
-      return Promise.reject(error);
+      const { response } = error;
+      if (response && response.status === 401) {
+        store.dispatch("user/logout");
+        router.push({ path: "/login" }); // 保留历史记录
+        // 拒绝Promise，阻止后续操作
+        return Promise.reject(new Error("未授权，请登录"));
+      } else {
+        // 处理其他错误情况
+        return Promise.reject(error);
+      }
     }
   );
 
