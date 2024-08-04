@@ -537,10 +537,10 @@ export default {
     });
   },
   methods: {
-    sourceImg(val) {
-      console.log(val, 88989);
-      return require("@/assets/img/youtube.png");
-    },
+    // sourceImg(val) {
+    //   console.log(val, 88989);
+    //   return require("@/assets/img/youtube.png");
+    // },
     delSelect(item, index) {
       this.selectedList.splice(index, 1);
       if (item.id !== "baseList") {
