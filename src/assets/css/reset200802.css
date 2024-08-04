@@ -59,3 +59,15 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+.el-message--success {
+	background-color: #eceafa !important;
+	border-color: #d6cfff !important;
+}
+.el-icon-success {
+	color: #6956e5!important;
+}
+
+.el-message--success .el-message__content {
+	color: #6956e5!important;
+}

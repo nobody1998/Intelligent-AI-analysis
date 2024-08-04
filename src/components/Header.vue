@@ -104,22 +104,22 @@ export default {
           label: this.$t("shou-ye"),
           path: "/",
         },
-        // {
-        //   value: 2,
-        //   label: "游戏素材",
-        // },
-        // {
-        //   value: 3,
-        //   label: "应用素材",
-        // },
-        // {
-        //   value: 4,
-        //   label: "短剧素材",
-        // },
-        // {
-        //   value: 5,
-        //   label: "投放智能分析",
-        // },
+        {
+          value: 2,
+          label: "广告创意",
+        },
+        {
+          value: 3,
+          label: "AI工具",
+        },
+        {
+          value: 4,
+          label: "市场洞察",
+        },
+        {
+          value: 5,
+          label: "投放分析",
+        },
       ],
     };
   },
@@ -218,7 +218,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 72px;
+  height: 64px;
   padding: 12px 24px;
   background: #ffffff;
   box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.08);
@@ -243,6 +243,9 @@ export default {
       margin-right: 40px;
       color: #333333;
       font-weight: 400;
+      padding-bottom: 22px;
+      margin-top: 21px;
+      border-bottom: 2px solid white;
       span {
         height: 22px;
         font-family: PingFang SC, PingFang SC;
@@ -254,13 +257,16 @@ export default {
       }
       span:hover {
         cursor: pointer;
-        font-weight: 600;
-        color: #6956e5;
+        // font-weight: 400;
+        // color: #6956e5;
       }
       &-active {
         cursor: pointer;
         font-weight: 600;
         color: #6956e5;
+        padding-bottom: 22px;
+        margin-top: 21px;
+        border-bottom: 2px solid #6956e5;
       }
     }
     &_tab:last-child {

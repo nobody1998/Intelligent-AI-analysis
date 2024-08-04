@@ -1,22 +1,7 @@
 <template>
   <div class="homePage">
-    <div class="homePage_search">
-      <div class="homePage_search_input">
-        <div style="margin-top: 15px">
-          <el-input
-            placeholder="请输入搜索内容"
-            v-model="query.keyword"
-            clearable
-            @keyup.enter.native="search"
-          >
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-            <el-button slot="append" icon="el-icon-search" @click="search"
-              >搜索</el-button
-            >
-          </el-input>
-        </div>
-      </div>
-      <!-- <div class="homePage_search_keyWords">
+    <!-- <div class="homePage_search"> -->
+    <!-- <div class="homePage_search_keyWords">
         <div class="homePage_search_keyWords_title">热门搜索：</div>
         <div
           class="homePage_search_keyWords_item"
@@ -26,10 +11,26 @@
           {{ item.label }}
         </div>
       </div> -->
-    </div>
+    <!-- </div> -->
     <div class="homePage_screen">
       <div class="homePage_screen_top">
-        <div
+        <div class="homePage_screen_top_text">素材搜索</div>
+        <div class="homePage_screen_top_content">
+          <div class="homePage_search_input">
+            <div>
+              <el-input
+                placeholder="请输入素材搜索内容"
+                v-model="query.keyword"
+                clearable
+                @keyup.enter.native="search"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                <el-button slot="append" @click="search">搜索</el-button>
+              </el-input>
+            </div>
+          </div>
+        </div>
+        <!-- <div
           class="homePage_screen_top_item"
           :class="{
             'homePage_screen_top_item-active': item.value === chooseTab,
@@ -39,7 +40,7 @@
           @click="tabChange(item)"
         >
           {{ item.label }}
-        </div>
+        </div> -->
       </div>
       <div
         class="homePage_screen_main"
@@ -183,88 +184,110 @@
       </div>
     </div>
     <div class="homePage_main">
+      <div class="homePage_main_filterate">
+        <div class="homePage_main_filterate_title">排序方式：</div>
+        <div
+          class="homePage_main_filterate_item homePage_main_filterate_item-active"
+        >
+          <span>综合排序</span>
+        </div>
+        <div class="homePage_main_filterate_item"><span>热门下载</span></div>
+        <div class="homePage_main_filterate_item">
+          <span>最新上传</span>
+          <span class="homePage_main_filterate_item_new">NEW</span>
+        </div>
+      </div>
       <div
-        class="homePage_main_item"
-        v-for="(item, index) in list"
-        :key="index"
-        @click="toDetail(item)"
+        class="homePage_main_list"
+        v-if="list.length"
+        v-loading="listLoading"
       >
-        <div class="listItem_top">
-          <div class="listItem_top_left">
-            <div class="listItem_top_left_img">
-              <img
-                src="https://bpic.51yuansu.com/pic3/cover/03/67/79/65be2e88aa2ba_800.jpg?x-oss-process=image/sharpen,100"
-              />
-            </div>
-            <div class="listItem_top_left_main">
-              <div class="itemTopText_top">{{ item.ad_caption }}</div>
-              <!-- <div class="itemTopText_main">
+        <div
+          class="homePage_main_list_item"
+          v-for="(item, index) in list"
+          :key="index"
+          @click="toDetail(item)"
+        >
+          <div class="listItem_top">
+            <div class="listItem_top_left">
+              <div class="listItem_top_left_img">
                 <img
-                  v-for="(subItem, subIndex) in item.region"
-                  :key="subIndex"
                   src="https://bpic.51yuansu.com/pic3/cover/03/67/79/65be2e88aa2ba_800.jpg?x-oss-process=image/sharpen,100"
                 />
+              </div>
+              <div class="listItem_top_left_main">
+                <div class="itemTopText_top">{{ item.ad_caption }}</div>
+                <!-- <div class="itemTopText_main">
+                <img
+                  v-for="(subItem, subIndex) in item.source.split(',')"
+                  :key="subIndex"
+                  :src="subItem || sourceImg"
+                />
+              </div> -->
+              </div>
+            </div>
+            <div class="listItem_top_right">
+              <i class="el-icon-more"></i>
+            </div>
+          </div>
+          <div class="listItem_main">
+            <div class="listItem_main_content">
+              <!-- <img src="../assets/img/login_bg.png" /> -->
+              <video controls width="312" height="220">
+                <source :src="item.video_download_url" type="video/mp4" />
+              </video>
+            </div>
+            <div class="listItem_main_footer">
+              <div class="listItem_main_footer_title">
+                {{ item.ad_caption }}
+              </div>
+              <!-- <div class="listItem_main_footer_attribute">
+                <div class="listItem_main_footer_attribute_left">
+                  {{ item.objective }}
+                </div>
+                <div class="listItem_main_footer_attribute_right">
+                  2024-07-04
+                </div>
               </div> -->
             </div>
           </div>
-          <div class="listItem_top_right">
-            <i class="el-icon-more"></i>
-          </div>
-        </div>
-        <div class="listItem_main">
-          <div class="listItem_main_content">
-            <!-- <img src="../assets/img/login_bg.png" /> -->
-            <video controls width="312" height="220">
-              <source :src="item.video_download_url" type="video/mp4" />
-            </video>
-          </div>
-          <div class="listItem_main_footer">
-            <div class="listItem_main_footer_title">
-              {{ item.ad_caption }}
+          <div class="listItem_foot">
+            <div class="listItem_foot_item">
+              <div class="listItem_foot_item_num">{{ item.likes }}</div>
+              <div class="listItem_foot_item_num">点赞数</div>
             </div>
-            <div class="listItem_main_footer_attribute">
-              <div class="listItem_main_footer_attribute_left">
-                {{ item.objective }}
-              </div>
-              <div class="listItem_main_footer_attribute_right">2024-07-04</div>
+            <el-divider direction="vertical"></el-divider>
+            <div class="listItem_foot_item">
+              <div class="listItem_foot_item_num">{{ item.comments }}</div>
+              <div class="listItem_foot_item_num">评论数</div>
             </div>
-          </div>
-        </div>
-        <div class="listItem_foot">
-          <div class="listItem_foot_item">
-            <div class="listItem_foot_item_num">{{ item.likes }}</div>
-            <div class="listItem_foot_item_num">点赞</div>
-          </div>
-          <el-divider direction="vertical"></el-divider>
-          <div class="listItem_foot_item">
-            <div class="listItem_foot_item_num">{{ item.comments }}</div>
-            <div class="listItem_foot_item_num">评论</div>
-          </div>
-          <el-divider direction="vertical"></el-divider>
-          <div class="listItem_foot_item">
-            <div class="listItem_foot_item_num">{{ item.shares }}</div>
-            <div class="listItem_foot_item_num">分享</div>
-          </div>
-          <el-divider direction="vertical"></el-divider>
-          <div class="listItem_foot_item">
-            <div class="listItem_foot_item_num">{{ item.likes }}</div>
-            <div class="listItem_foot_item_num">展示估值</div>
+            <el-divider direction="vertical"></el-divider>
+            <div class="listItem_foot_item">
+              <div class="listItem_foot_item_num">{{ item.shares }}</div>
+              <div class="listItem_foot_item_num">转发数</div>
+            </div>
+            <!-- <el-divider direction="vertical"></el-divider>
+            <div class="listItem_foot_item">
+              <div class="listItem_foot_item_num">{{ item.likes }}</div>
+              <div class="listItem_foot_item_num">展示估值</div>
+            </div> -->
           </div>
         </div>
       </div>
+      <el-empty v-else></el-empty>
     </div>
-    <!-- <div class="homePage_footer">
+    <div class="homePage_footer" v-if="list.length && total > 20">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="query.page"
+        :page-sizes="[20, 50, 100, 500]"
+        :page-size="query.size"
         layout="prev, pager, next, sizes, total, jumper"
-        :total="400"
+        :total="total"
       >
       </el-pagination>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -275,6 +298,7 @@ export default {
   name: "HomePage",
   data() {
     return {
+      listLoading: false,
       baseFieldIsMultiple: ["region", "language"],
       fieldChinese: {
         objective: "目标",
@@ -291,7 +315,7 @@ export default {
       query: {
         action: 1,
         page: 1,
-        // size: 20,
+        size: 20,
         keyword: "",
         source: [],
         country: [],
@@ -503,6 +527,9 @@ export default {
       },
       // immediate: true,
     },
+    selectedList(val) {
+      this.search();
+    },
   },
   created() {
     this.$nextTick(() => {
@@ -510,6 +537,10 @@ export default {
     });
   },
   methods: {
+    sourceImg(val) {
+      console.log(val, 88989);
+      return require("@/assets/img/youtube.png");
+    },
     delSelect(item, index) {
       this.selectedList.splice(index, 1);
       if (item.id !== "baseList") {
@@ -679,18 +710,43 @@ export default {
         .catch(() => {});
     },
     search() {
-      getList(this.query)
+      this.listLoading = true;
+      console.log(this.selectedList, "selectedList");
+      let data = JSON.parse(JSON.stringify(this.query));
+      let obj = {};
+      obj.source = this.selectedList
+        .filter((item) => item.id === "source")
+        .map((item) => item.label);
+      this.selectedList.map((item) => {
+        if (item.id === "baseList") {
+          if (obj[item.subId] && !obj[item.subId].includes(item.label)) {
+            obj[item.subId].push(item.label);
+          } else {
+            obj[item.subId] = [item.label];
+          }
+        }
+      });
+      // data = Object.assign(data, obj);
+      data.source = obj.source;
+      getList(data)
         .then((res) => {
+          window.scrollTo(0, 0);
+          this.listLoading = false;
           this.list = res.data.material_list;
-          this.total = res.data.total_pages;
+          this.total = res.data.total_count;
         })
-        .catch(() => {});
+        .catch(() => {
+          this.listLoading = false;
+        });
     },
     handleSizeChange(val) {
-      //
+      this.query.size = val;
+      this.query.page = 1;
+      this.search();
     },
     handleCurrentChange(val) {
-      //
+      this.query.page = val;
+      this.search();
     },
     toDetail(item) {
       this.$router.push({
@@ -709,22 +765,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-video::-internal-media-controls-download-button {  
-  display:none;  
-}  
+video::-internal-media-controls-download-button {
+  display: none;
+}
 
-video::-webkit-media-controls-enclosure {  
-  overflow:hidden;  
-  width: 0px;  
-  height: 0px;  
-}  
+video::-webkit-media-controls-enclosure {
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+}
 
-video::-webkit-media-controls {  
-  display:none !important;  
+video::-webkit-media-controls {
+  display: none !important;
 }
 .homePage_search_input ::v-deep .el-input-group {
-  width: 640px;
-  height: 44px;
+  width: 480px;
+  height: 40px;
 }
 .homePage_search_input ::v-deep .el-input-group__append {
   background: #6956e5;
@@ -739,7 +795,7 @@ video::-webkit-media-controls {
   text-transform: none;
 }
 .homePage_search_input ::v-deep .el-input__inner {
-  height: 44px;
+  height: 40px;
   padding-left: 55px;
   font-family: PingFang SC, PingFang SC;
   font-weight: 400;
@@ -818,6 +874,7 @@ video::-webkit-media-controls {
   height: 100%;
   background: #f4f4f5;
   margin-top: 8px;
+  padding-top: 24px;
   &_search {
     padding-top: 32px;
     &_input {
@@ -825,7 +882,7 @@ video::-webkit-media-controls {
       align-items: center;
       justify-content: center;
       .el-icon-search {
-        font-size: 20px;
+        font-size: 16px;
         color: #6956e5;
         padding-left: 13px;
       }
@@ -873,15 +930,17 @@ video::-webkit-media-controls {
     }
   }
   &_screen {
-    margin: 39px 24px 40px;
+    margin: 24px;
+    margin-bottom: 20px;
+    margin-top: 0;
     background: white;
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.08);
     border-radius: 10px 10px 10px 10px;
     &_top {
       display: flex;
       align-items: center;
-      padding: 18px 28px;
-      border-bottom: 2px solid rgba(112, 124, 151, 0.1);
+      padding: 24px 28px;
+      border-bottom: 1px solid rgba(112, 124, 151, 0.1);
       &_item {
         padding: 6px 16px 8px;
         background: #f5f5f6;
@@ -904,20 +963,36 @@ video::-webkit-media-controls {
       &_item:last-child {
         margin-right: 0;
       }
+      &_text {
+        height: 28px;
+        font-family: PingFang SC, PingFang SC;
+        font-weight: bold;
+        font-size: 20px;
+        color: #333333;
+        line-height: 23px;
+        text-align: left;
+        font-style: normal;
+        text-transform: none;
+      }
+      &_content {
+        margin-left: 20px;
+      }
     }
     &_main {
-      padding: 24px 28px;
+      // padding: 24px 28px;
       &_item {
         display: flex;
         align-items: center;
-        margin-bottom: 24px;
+        // margin-bottom: 24px;
+        padding: 18px 28px;
+        border-bottom: 1px solid rgba(112, 124, 151, 0.1);
         .screenItem {
           &_title {
             height: 20px;
             font-family: PingFang SC, PingFang SC;
             font-weight: 400;
             font-size: 14px;
-            color: #565656;
+            color: #999999;
             line-height: 16px;
             text-align: left;
             font-style: normal;
@@ -1050,113 +1125,199 @@ video::-webkit-media-controls {
     }
   }
   &_main {
-    margin: 40px 24px;
-    margin-bottom: 16px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    &_item {
-      flex-shrink: 0;
-      // width: 330px;
-      width: 312px;
-      margin-bottom: 24px;
-      background: #ffffff;
-      box-shadow: 0px 20px 60px 0px rgba(46, 33, 61, 0.08);
-      border-radius: 10px 10px 10px 10px;
-      overflow: hidden;
-      cursor: pointer;
-      .listItem {
-        &_top {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 20px;
-          padding-top: 23px;
-          &_left {
+    &_filterate {
+      display: flex;
+      align-items: center;
+      margin: 0 24px;
+      &_title {
+        font-family: PingFang SC, PingFang SC;
+        font-weight: 500;
+        font-size: 14px;
+        color: #565656;
+        line-height: 16px;
+        text-align: left;
+        font-style: normal;
+        text-transform: none;
+        margin-right: 13px;
+      }
+      &_item {
+        font-family: PingFang SC, PingFang SC;
+        font-weight: 500;
+        font-size: 14px;
+        color: #565656;
+        line-height: 16px;
+        text-align: left;
+        font-style: normal;
+        text-transform: none;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        &_new {
+          width: 24px;
+          height: 12px;
+          background: #ea4335;
+          border-radius: 0px 0px 0px 0px;
+          color: white;
+          font-family: FZZhunYuan-M02, FZZhunYuan-M02;
+          font-weight: 400;
+          font-size: 10px;
+          color: #ffffff;
+          line-height: 12px;
+          text-align: left;
+          font-style: normal;
+          text-transform: none;
+          margin-left: 6px;
+        }
+        &-active {
+          font-weight: bold;
+          color: #6956e5;
+        }
+      }
+      &_item:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+    &_list {
+      margin: 40px 24px;
+      margin-bottom: 16px;
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      &_item {
+        flex-shrink: 0;
+        // width: 330px;
+        width: 312px;
+        margin-bottom: 24px;
+        background: #ffffff;
+        box-shadow: 0px 20px 60px 0px rgba(46, 33, 61, 0.08);
+        border-radius: 10px 10px 10px 10px;
+        overflow: hidden;
+        cursor: pointer;
+        .listItem {
+          &_top {
             display: flex;
-            &_img {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-              overflow: hidden;
-              img {
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            padding-top: 23px;
+            &_left {
+              display: flex;
+              &_img {
                 width: 40px;
                 height: 40px;
+                border-radius: 50%;
+                overflow: hidden;
+                img {
+                  width: 40px;
+                  height: 40px;
+                }
+              }
+              &_main {
+                margin-left: 12px;
+                .itemTopText {
+                  &_top {
+                    height: 18px;
+                    font-family: PingFang SC, PingFang SC;
+                    font-weight: 600;
+                    font-size: 12px;
+                    color: #333333;
+                    line-height: 14px;
+                    text-align: left;
+                    font-style: normal;
+                    text-transform: none;
+                    width: 200px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
+                  &_main {
+                    display: flex;
+                    align-items: center;
+                    img {
+                      width: 18px;
+                      height: 18px;
+                    }
+                    img:not(:last-child) {
+                      margin-right: 4px;
+                    }
+                  }
+                }
               }
             }
-            &_main {
-              margin-left: 12px;
-              .itemTopText {
-                &_top {
-                  height: 18px;
+            &_right {
+              .el-icon-more {
+                color: #999999;
+                font-size: 24px;
+              }
+            }
+          }
+          &_main {
+            &_content {
+              width: 100%;
+              height: 220px;
+              // background: rgba(0, 0, 0, 0.5);
+              border-radius: 0px 0px 0px 0px;
+              // filter: blur(3px);
+              img {
+                width: 100%;
+                height: 220px;
+              }
+            }
+            &_footer {
+              padding: 20px;
+              &_title {
+                height: 22px;
+                font-family: PingFang SC, PingFang SC;
+                font-weight: 600;
+                font-size: 16px;
+                color: #333333;
+                line-height: 19px;
+                text-align: left;
+                font-style: normal;
+                text-transform: none;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+              &_attribute {
+                margin-top: 14px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                &_left {
+                  height: 17px;
                   font-family: PingFang SC, PingFang SC;
-                  font-weight: 500;
+                  font-weight: 400;
                   font-size: 12px;
-                  color: #333333;
+                  color: #666666;
                   line-height: 14px;
                   text-align: left;
                   font-style: normal;
                   text-transform: none;
-                  width: 200px;
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
                 }
-                &_main {
-                  display: flex;
-                  align-items: center;
-                  img {
-                    width: 18px;
-                    height: 18px;
-                  }
-                  img:not(:last-child) {
-                    margin-right: 4px;
-                  }
+                &_right {
+                  height: 17px;
+                  font-family: PingFang SC, PingFang SC;
+                  font-weight: 400;
+                  font-size: 12px;
+                  color: #999999;
+                  line-height: 14px;
+                  text-align: left;
+                  font-style: normal;
+                  text-transform: none;
                 }
               }
             }
           }
-          &_right {
-            .el-icon-more {
-              color: #999999;
-              font-size: 24px;
-            }
-          }
-        }
-        &_main {
-          &_content {
-            width: 100%;
-            height: 220px;
-            // background: rgba(0, 0, 0, 0.5);
-            border-radius: 0px 0px 0px 0px;
-            // filter: blur(3px);
-            img {
-              width: 100%;
-              height: 220px;
-            }
-          }
-          &_footer {
-            padding: 20px;
-            &_title {
-              height: 22px;
-              font-family: PingFang SC, PingFang SC;
-              font-weight: 600;
-              font-size: 16px;
-              color: #333333;
-              line-height: 19px;
-              text-align: left;
-              font-style: normal;
-              text-transform: none;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-            }
-            &_attribute {
-              margin-top: 14px;
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              &_left {
+          &_foot {
+            padding: 20px 36px;
+            padding-top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            &_item {
+              &_num {
                 height: 17px;
                 font-family: PingFang SC, PingFang SC;
                 font-weight: 400;
@@ -1166,50 +1327,19 @@ video::-webkit-media-controls {
                 text-align: left;
                 font-style: normal;
                 text-transform: none;
+                margin-bottom: 4px;
+                text-align: center;
               }
-              &_right {
-                height: 17px;
-                font-family: PingFang SC, PingFang SC;
-                font-weight: 400;
-                font-size: 12px;
-                color: #999999;
-                line-height: 14px;
-                text-align: left;
-                font-style: normal;
-                text-transform: none;
+              &_num:last-child {
+                margin-bottom: 0;
               }
             }
-          }
-        }
-        &_foot {
-          padding: 20px;
-          padding-top: 0;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          &_item {
-            &_num {
-              height: 17px;
-              font-family: PingFang SC, PingFang SC;
-              font-weight: 400;
-              font-size: 12px;
-              color: #666666;
-              line-height: 14px;
-              text-align: left;
-              font-style: normal;
-              text-transform: none;
-              margin-bottom: 4px;
-              text-align: center;
+            .el-divider--vertical {
+              height: 32px;
             }
-            &_num:last-child {
-              margin-bottom: 0;
+            .el-divider {
+              background: rgba(112, 124, 151, 0.15);
             }
-          }
-          .el-divider--vertical {
-            height: 32px;
-          }
-          .el-divider {
-            background: rgba(112, 124, 151, 0.15);
           }
         }
       }
