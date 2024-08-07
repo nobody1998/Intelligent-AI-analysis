@@ -211,19 +211,18 @@
           <div class="listItem_top">
             <div class="listItem_top_left">
               <div class="listItem_top_left_img">
-                <img
-                  src="https://bpic.51yuansu.com/pic3/cover/03/67/79/65be2e88aa2ba_800.jpg?x-oss-process=image/sharpen,100"
-                />
+                <img src="../assets/img/list_icon.png" />
               </div>
               <div class="listItem_top_left_main">
-                <div class="itemTopText_top">{{ item.ad_caption }}</div>
-                <!-- <div class="itemTopText_main">
-                <img
+                <div class="itemTopText_top">{{ item.brand_name }}</div>
+                <div class="itemTopText_main">
+                  <img src="../assets/img/Tiktok.png" />
+                  <!-- <img
                   v-for="(subItem, subIndex) in item.source.split(',')"
                   :key="subIndex"
                   :src="subItem || sourceImg"
-                />
-              </div> -->
+                /> -->
+                </div>
               </div>
             </div>
             <div class="listItem_top_right">
@@ -232,8 +231,8 @@
           </div>
           <div class="listItem_main">
             <div class="listItem_main_content">
-              <!-- <img src="../assets/img/login_bg.png" /> -->
-              <video controls width="312" height="220">
+              <!-- <img src="../assets/img/listItemBg.png" /> -->
+              <video controls width="100%" height="220">
                 <source :src="item.video_download_url" type="video/mp4" />
               </video>
             </div>
@@ -1181,13 +1180,16 @@ video::-webkit-media-controls {
       margin: 40px 24px;
       margin-bottom: 16px;
       margin-top: 20px;
-      display: flex;
-      flex-wrap: wrap;
+      // display: flex;
+      // flex-wrap: wrap;
+      // gap: 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 24px;
       &_item {
-        flex-shrink: 0;
+        // flex-shrink: 0;
         // width: 330px;
-        width: 312px;
+        // width: 312px;
         margin-bottom: 24px;
         background: #ffffff;
         box-shadow: 0px 20px 60px 0px rgba(46, 33, 61, 0.08);
@@ -1203,11 +1205,13 @@ video::-webkit-media-controls {
             padding-top: 23px;
             &_left {
               display: flex;
+              align-items: center;
               &_img {
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
                 overflow: hidden;
+                flex-shrink: 0;
                 img {
                   width: 40px;
                   height: 40px;
@@ -1217,7 +1221,7 @@ video::-webkit-media-controls {
                 margin-left: 12px;
                 .itemTopText {
                   &_top {
-                    height: 18px;
+                    // height: 18px;
                     font-family: PingFang SC, PingFang SC;
                     font-weight: 600;
                     font-size: 12px;
@@ -1225,15 +1229,23 @@ video::-webkit-media-controls {
                     line-height: 14px;
                     text-align: left;
                     font-style: normal;
-                    text-transform: none;
-                    width: 200px;
-                    white-space: nowrap;
+                    // text-transform: none;
+                    // width: 200px;
+                    // white-space: nowrap;
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 1; /* 显示的行数 */
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    white-space: normal;
+                    word-break: break-all;
                   }
                   &_main {
                     display: flex;
                     align-items: center;
+                    margin-top: 2px;
                     img {
                       width: 18px;
                       height: 18px;
@@ -1259,26 +1271,33 @@ video::-webkit-media-controls {
               // background: rgba(0, 0, 0, 0.5);
               border-radius: 0px 0px 0px 0px;
               // filter: blur(3px);
+              position: relative;
+              background: url(../assets/img/listItemBg.png) no-repeat;
+              background-size: cover;
               img {
                 width: 100%;
                 height: 220px;
+                position: absolute;
               }
             }
             &_footer {
               padding: 20px;
               &_title {
-                height: 22px;
                 font-family: PingFang SC, PingFang SC;
-                font-weight: 600;
+                font-weight: bold;
                 font-size: 16px;
                 color: #333333;
-                line-height: 19px;
+                line-height: 28px;
                 text-align: left;
                 font-style: normal;
                 text-transform: none;
-                white-space: nowrap;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2; /* 显示的行数 */
                 overflow: hidden;
                 text-overflow: ellipsis;
+                white-space: normal;
+                word-break: break-all;
               }
               &_attribute {
                 margin-top: 14px;
