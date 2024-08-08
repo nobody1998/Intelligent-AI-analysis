@@ -191,11 +191,11 @@
         >
           <span>综合排序</span>
         </div>
-        <div class="homePage_main_filterate_item"><span>热门下载</span></div>
+        <!-- <div class="homePage_main_filterate_item"><span>热门下载</span></div>
         <div class="homePage_main_filterate_item">
           <span>最新上传</span>
           <span class="homePage_main_filterate_item_new">NEW</span>
-        </div>
+        </div> -->
       </div>
       <div
         class="homePage_main_list"
@@ -302,10 +302,11 @@ export default {
       fieldChinese: {
         objective: "目标",
         region: "国家/地区",
-        language: "语言",
+        // language: "语言",
         source: "渠道",
       },
-      baseField: ["objective", "region", "language"],
+      // , "language"
+      baseField: ["objective", "region"],
       list: [],
       total: 0,
       filterOptions: {
@@ -713,9 +714,15 @@ export default {
       console.log(this.selectedList, "selectedList");
       let data = JSON.parse(JSON.stringify(this.query));
       let obj = {};
-      obj.source = this.selectedList
-        .filter((item) => item.id === "source")
-        .map((item) => item.label);
+      // obj.source = this.selectedList
+      //   .filter((item) => item.id === "source")
+      //   .map((item) => item.label);
+      obj.source = [
+        {
+          label: 'Tiktok',
+          icon: require("../assets/img/Tiktok.png"),
+        }
+      ]
       this.selectedList.map((item) => {
         if (item.id === "baseList") {
           if (obj[item.subId] && !obj[item.subId].includes(item.label)) {

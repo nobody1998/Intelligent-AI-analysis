@@ -271,7 +271,7 @@
           </el-dialog>
         </div>
         <div class="personalCenter_main_content_item">
-          <div class="personalItem_title">{{ $t('zhu-ce-shi-jian') }}</div>
+          <!-- <div class="personalItem_title">{{ $t('zhu-ce-shi-jian') }}</div> -->
           <div class="personalItem_content">
             <!-- <span>139****6864</span> -->
           </div>
