@@ -328,7 +328,7 @@ export default {
     };
 
     return {
-      sendCodeStatus: 1,
+      sendCodeStatus: null,
       countdown: 60, // 倒计时初始值
       timer: null, // 存储定时器的引用
       updateInforObj: {
