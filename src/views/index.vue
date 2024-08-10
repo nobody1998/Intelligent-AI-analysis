@@ -253,22 +253,22 @@
           <div class="listItem_foot">
             <div class="listItem_foot_item">
               <div class="listItem_foot_item_num">{{ item.likes }}</div>
-              <div class="listItem_foot_item_num">点赞数</div>
+              <div class="listItem_foot_item_text">点赞数</div>
             </div>
             <el-divider direction="vertical"></el-divider>
             <div class="listItem_foot_item">
               <div class="listItem_foot_item_num">{{ item.comments }}</div>
-              <div class="listItem_foot_item_num">评论数</div>
+              <div class="listItem_foot_item_text">评论数</div>
             </div>
             <el-divider direction="vertical"></el-divider>
             <div class="listItem_foot_item">
               <div class="listItem_foot_item_num">{{ item.shares }}</div>
-              <div class="listItem_foot_item_num">转发数</div>
+              <div class="listItem_foot_item_text">转发数</div>
             </div>
             <!-- <el-divider direction="vertical"></el-divider>
             <div class="listItem_foot_item">
               <div class="listItem_foot_item_num">{{ item.likes }}</div>
-              <div class="listItem_foot_item_num">展示估值</div>
+              <div class="listItem_foot_item_text">展示估值</div>
             </div> -->
           </div>
         </div>
@@ -292,6 +292,8 @@
 
 <script>
 import { getList, getFilterItems } from "../api/material";
+import { COUNTRY, OBJECTIVES } from "../../src/const/index";
+import functions from "../../src/functions/index";
 
 export default {
   name: "HomePage",
@@ -527,9 +529,12 @@ export default {
       },
       // immediate: true,
     },
-    selectedList(val) {
-      this.search();
-    },
+    selectedList: {
+      handler() {
+        this.search();
+      },
+      deep: true
+    }
   },
   created() {
     this.$nextTick(() => {
@@ -684,7 +689,16 @@ export default {
                 let obj = {};
                 obj.key = key;
                 obj.label = this.fieldChinese[key];
-                obj.list = res.data.short_video_items[key];
+                if (key === 'source') {
+                  obj.list = [
+                    {
+                      name: 'Tiktok',
+                      icon: require("../assets/img/Tiktok.png"),
+                    }
+                  ];
+                } else {
+                  obj.list = res.data.short_video_items[key];
+                }
                 if (this.baseField.includes(key)) {
                   obj.value = undefined;
                   if (this.baseFieldIsMultiple.includes(key)) {
@@ -714,15 +728,9 @@ export default {
       console.log(this.selectedList, "selectedList");
       let data = JSON.parse(JSON.stringify(this.query));
       let obj = {};
-      // obj.source = this.selectedList
-      //   .filter((item) => item.id === "source")
-      //   .map((item) => item.label);
-      obj.source = [
-        {
-          label: 'Tiktok',
-          icon: require("../assets/img/Tiktok.png"),
-        }
-      ]
+      obj.source = this.selectedList
+        .filter((item) => item.id === "source")
+        .map((item) => item.label);
       this.selectedList.map((item) => {
         if (item.id === "baseList") {
           if (obj[item.subId] && !obj[item.subId].includes(item.label)) {
@@ -732,8 +740,16 @@ export default {
           }
         }
       });
-      // data = Object.assign(data, obj);
-      data.source = obj.source;
+      if (obj.objective && obj.objective.length) {
+        obj.objective = functions.mappingFn(OBJECTIVES, obj.objective[0], "label", "value");
+      }
+      if (obj.region && obj.region.length) {
+        obj.country = obj.region.map((item) => {
+          return functions.mappingFn(COUNTRY, item, "label", "value")
+        })
+        delete obj.region;
+      }
+      data = Object.assign(data, obj);
       getList(data)
         .then((res) => {
           window.scrollTo(0, 0);
@@ -994,7 +1010,6 @@ video::-webkit-media-controls {
         border-bottom: 1px solid rgba(112, 124, 151, 0.1);
         .screenItem {
           &_title {
-            height: 20px;
             font-family: PingFang SC, PingFang SC;
             font-weight: 400;
             font-size: 14px;
@@ -1072,7 +1087,6 @@ video::-webkit-media-controls {
               margin-right: 22px;
               color: #999999;
               span {
-                height: 20px;
                 font-family: PingFang SC, PingFang SC;
                 font-weight: 400;
                 font-size: 14px;
@@ -1083,8 +1097,8 @@ video::-webkit-media-controls {
                 margin-left: 3px;
               }
               img {
-                width: 14px;
-                height: 14px;
+                width: 16px;
+                height: 16px;
               }
               &-active {
                 color: #6956e5;
@@ -1092,6 +1106,9 @@ video::-webkit-media-controls {
             }
             &_option:last-child {
               margin-right: 0;
+            }
+            &_option:hover {
+              color: #AEA6EF;
             }
           }
           &_content6 {
@@ -1289,6 +1306,7 @@ video::-webkit-media-controls {
             }
             &_footer {
               padding: 20px;
+              padding-bottom: 24px;
               &_title {
                 font-family: PingFang SC, PingFang SC;
                 font-weight: bold;
@@ -1343,18 +1361,19 @@ video::-webkit-media-controls {
             justify-content: space-between;
             align-items: center;
             &_item {
+              font-family: PingFang SC, PingFang SC;
+              font-size: 12px;
+              color: #666666;
+              line-height: 14px;
+              text-align: left;
+              font-style: normal;
+              text-transform: none;
+              text-align: center;
               &_num {
                 height: 17px;
-                font-family: PingFang SC, PingFang SC;
-                font-weight: 400;
-                font-size: 12px;
-                color: #666666;
-                line-height: 14px;
-                text-align: left;
-                font-style: normal;
-                text-transform: none;
+                font-weight: 600;
+                font-size: 14px;
                 margin-bottom: 4px;
-                text-align: center;
               }
               &_num:last-child {
                 margin-bottom: 0;

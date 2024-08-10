@@ -64,7 +64,7 @@
               {{ $t('qing-tian-xie-shou-ji-hao-ma-dian-ji-fa-song-yan-zheng-ma-ni-jiang-hui-shou-dao-yi-feng-dai-you-liu-wei-shu-zi-yan-zheng-ma-duan-xin') }}
             </div>
             <div class="openEmail_main">
-              <el-form ref="phoneForm" :model="phoneForm" label-width="104px">
+              <el-form ref="phoneForm" :model="phoneForm" label-width="108px">
                 <el-form-item
                   class="openEmail_main_input1"
                   :label="$t('shou-ji-hao-ma-0')"
@@ -144,7 +144,7 @@
               {{ $t('qing-tian-xie-you-xiang-dian-ji-fa-song-yan-zheng-ma-ni-jiang-hui-shou-dao-yi-feng-dai-you-liu-wei-shu-zi-yan-zheng-ma-you-jian') }}
             </div>
             <div class="openEmail_main">
-              <el-form ref="emailForm" :model="emailForm" label-width="104px">
+              <el-form ref="emailForm" :model="emailForm" label-width="108px">
                 <el-form-item
                   class="openEmail_main_input1"
                   :label="$t('dian-zi-you-xiang-0')"
