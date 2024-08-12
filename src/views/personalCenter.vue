@@ -292,16 +292,16 @@
         <div class="personalCenter_main_content_item">
           <div class="personalItem_title">{{ $t('yong-hu-ni-cheng') }}</div>
           <div class="personalItem_content">
-            <el-input v-model="form.nick_name" disabled></el-input>
+            <el-input v-model="form.nick_name" :disabled="!isEdit"></el-input>
           </div>
         </div>
         <div class="personalCenter_main_content_item">
           <div class="personalItem_title">{{ $t('suo-zai-gong-si') }}</div>
           <div class="personalItem_content">
-            <el-input v-model="form.company_name" disabled></el-input>
+            <el-input v-model="form.company_name" :disabled="!isEdit"></el-input>
           </div>
         </div>
-        <!-- <div class="personalCenter_main_content_item">
+        <div class="personalCenter_main_content_item">
           <div class="personalItem_title">使用信息：</div>
           <div class="personalItem_content">
             <el-input
@@ -309,10 +309,14 @@
               type="textarea"
               :rows="2"
               resize="none"
-              disabled
+              :disabled="!isEdit"
             ></el-input>
           </div>
-        </div> -->
+        </div>
+        <div class="personalCenter_main_content_foot">
+          <el-button @click="toChangeIsEdit">{{ isEdit ? '取消' : '修改' }}</el-button>
+          <el-button type="primary" :loading="updateInforLoading" @click="updateInforFn">保存</el-button>
+        </div>
       </div>
     </div>
     <div class="personalCenter_main" v-if="chooseTab === 3">
@@ -405,6 +409,8 @@ export default {
   name: "PersonalCenter",
   data() {
     return {
+      isEdit: false,
+      updateInforLoading: false,
       passwordFormLoading: false,
       phoneFormLoading: false,
       emailFormLoading: false,
@@ -430,6 +436,11 @@ export default {
         date: "",
         start_time: "",
         end_datetime: "",
+      },
+      temForm: {
+        nick_name: '',
+        company_name: '',
+        user_needs: '',
       },
       phoneDialog: false,
       emailDialog: false,
@@ -475,7 +486,6 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      console.log(this.$route, 79878);
       this.init();
     });
   },
@@ -485,6 +495,37 @@ export default {
     }
   },
   methods: {
+    toChangeIsEdit() {
+      if (this.isEdit) {
+        this.form.nick_name = this.temForm.nick_name;
+        this.form.company_name = this.temForm.company_name;
+        this.form.user_needs = this.temForm.user_needs;
+      } else {
+        this.temForm.nick_name = this.form.nick_name;
+        this.temForm.company_name = this.form.company_name;
+        this.temForm.user_needs = this.form.user_needs;
+      }
+      this.isEdit = !this.isEdit;
+    },
+    updateInforFn() {
+      this.updateInforLoading = !this.updateInforLoading;
+      let data = {
+        company_name: this.form.company_name,
+        name: this.form.nick_name,
+        user_needs: this.form.user_needs
+      }
+      updateInfor(data)
+        .then((res) => {
+          this.updateInforLoading = !this.updateInforLoading;
+          this.$message({
+            type: "success",
+            message: '修改成功',
+          });
+          this.isEdit = !this.isEdit;
+        }).catch((err) => {
+          this.updateInforLoading = !this.updateInforLoading;
+        });
+    },
     checkPassword2(rule, value, callback) {
       if (value !== this.passwordForm.newPassword) {
         callback(new Error(this.$t('liang-ci-shu-ru-mi-ma-bu-yi-zhi')));
@@ -1003,6 +1044,17 @@ export default {
       }
       &_item:last-child {
         margin-bottom: 0;
+      }
+      &_foot {
+        margin-left: 80px;
+        .el-button {
+          width: 116px;
+          height: 40px;
+          font-size: 14px;
+        }
+        .el-button:first-child {
+          margin-right: 24px;
+        }
       }
     }
     &_footer {
