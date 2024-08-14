@@ -106,7 +106,7 @@ export default {
         },
         {
           value: 2,
-          label: "广告创意",
+          label: "短剧素材",
         },
         {
           value: 3,
@@ -114,11 +114,13 @@ export default {
         },
         {
           value: 4,
-          label: "市场洞察",
+          label: "海外短剧KOL推广方案",
+          path: "/KOLDetail",
         },
         {
           value: 5,
-          label: "投放分析",
+          label: "海外短剧Tiktok矩阵推广方案",
+          path: "/TiktokDetail",
         },
       ],
     };

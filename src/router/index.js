@@ -40,6 +40,18 @@ const routes = [
     component: () => import("../views/personalCenter.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/KOLDetail",
+    name: "KOLDetail",
+    component: () => import("../views/KOLDetail.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/TiktokDetail",
+    name: "TiktokDetail",
+    component: () => import("../views/TiktokDetail.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({

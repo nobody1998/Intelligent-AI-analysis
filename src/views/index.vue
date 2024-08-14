@@ -232,7 +232,7 @@
           <div class="listItem_main">
             <div class="listItem_main_content">
               <!-- <img src="../assets/img/listItemBg.png" /> -->
-              <video controls width="100%" height="220">
+              <video controls width="100%" height="220" :key="item.id">
                 <source :src="item.video_download_url" type="video/mp4" />
               </video>
             </div>
