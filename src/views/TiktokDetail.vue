@@ -1,74 +1,74 @@
 <template>
   <div class="KOLDetail">
-    <div class="KOLDetail_item">
-      <div class="KOLDetail_item_img">
-        <img src="../assets/img/illustration1.png" />
-      </div>
-      <div class="KOLDetail_item_text">
-        <div class="main_title">
-          汇聚<span class="main_title_keynote">140+</span
-          >国家优质KOL资源<br />助力品牌及短剧精准覆盖国际市场
-        </div>
-        <div class="main_divider"></div>
-        <div class="main_content">
-          <div
-            class="main_content_item"
-            v-for="(item, index) in list1"
-            :key="index"
-          >
-            <div class="main_content_item_icon">
-              <img src="../assets/img/target.png" />
+    <div class="KOLDetail_item1">
+      <div class="KOLDetail_item1_box">
+        <div class="KOLDetail_item_text" style="padding: 60px 280px 64px 48px">
+          <div class="main_logo">
+            <div class="main_logo-1">
+              <img src="../assets/img/logo.png" />
             </div>
-            <div class="main_content_item_text">
-              {{ item }}
+            <div class="main_logo-2">
+              <img src="../assets/img/tiktok_btn.png" />
             </div>
           </div>
+          <div class="main_title">
+            全球多地区tiktok等账号提供<br />形成短视频矩阵推广您的短剧
+          </div>
+          <div class="main_content">
+            <div
+              class="main_content_item"
+              v-for="(item, index) in list1"
+              :key="index"
+            >
+              <div class="main_content_item_icon">
+                <img src="../assets/img/target.png" />
+              </div>
+              <div class="main_content_item_text">
+                {{ item }}
+              </div>
+            </div>
+          </div>
+          <div class="main_foot">
+            <el-button>了解更多</el-button>
+          </div>
         </div>
-        <div class="main_foot">
-          <el-button>了解更多</el-button>
+        <div class="KOLDetail_item_img">
+          <img src="../assets/img/illustration4.png" />
         </div>
       </div>
     </div>
-    <div class="KOLDetail_item" style="background: #f5f7fb">
-      <div class="KOLDetail_item_text">
-        <div class="main_title">
-          深度剖析短剧场景与国家，<span class="main_title_keynote"
-            >精准匹配</span
-          ><br />简化合作流程，轻松对接当地达人
+    <div class="KOLDetail_item2" style="background: #f5f7fb">
+      <div class="KOLDetail_item2_box">
+        <div class="KOLDetail_item_img">
+          <img src="../assets/img/illustration5.png" />
         </div>
-        <div class="main_divider"></div>
-        <div class="main_content">
-          <div
-            class="main_content_item"
-            v-for="(item, index) in list2"
-            :key="index"
-          >
-            <div class="main_content_item_icon">
-              <img src="../assets/img/target.png" />
-            </div>
-            <div class="main_content_item_text">
-              {{ item }}
+        <div class="KOLDetail_item_text">
+          <div class="main_title">
+            无需提供账号，仅需授权短剧，<br />以视频发布量结算，轻松实现大量引流
+          </div>
+          <div class="main_content">
+            <div
+              class="main_content_item"
+              v-for="(item, index) in list2"
+              :key="index"
+            >
+              <div class="main_content_item_icon">
+                <img src="../assets/img/target.png" />
+              </div>
+              <div class="main_content_item_text">
+                {{ item }}
+              </div>
             </div>
           </div>
+          <div class="main_foot">
+            <el-button>了解更多</el-button>
+          </div>
         </div>
-        <div class="main_foot">
-          <el-button>了解更多</el-button>
-        </div>
-      </div>
-      <div class="KOLDetail_item_img">
-        <img src="../assets/img/illustration2.png" />
       </div>
     </div>
-    <div class="KOLDetail_item">
-      <div class="KOLDetail_item_img">
-        <img src="../assets/img/illustration3.png" />
-      </div>
+    <div class="KOLDetail_item3">
       <div class="KOLDetail_item_text">
-        <div class="main_title">
-          低成本高效率，<span class="main_title_keynote">一站式</span
-          >达人合作方案<br />轻松实现品牌国际化推广，无忧托付
-        </div>
-        <div class="main_divider"></div>
+        <div class="main_title">多账号运营,支持多种短剧出海方案</div>
         <div class="main_content">
           <div
             class="main_content_item"
@@ -87,6 +87,9 @@
           <el-button>了解更多</el-button>
         </div>
       </div>
+      <div class="KOLDetail_item_img">
+        <img src="../assets/img/illustration6.png" />
+      </div>
     </div>
   </div>
 </template>
@@ -97,22 +100,18 @@ export default {
   data() {
     return {
       list1: [
-        "汇聚全球140多个国家的优质KOL资源，拓展品牌国际影响力。",
-        "精准匹配海外达人，让您的产品轻松走向世界。",
-        "助力短剧全球化，连接全球观众，讲述精彩故事。",
-        "一站式服务，轻松实现品牌与短剧的国际市场覆盖。",
+        "全球多地区TikTok账号支持，构建强大短视频矩阵",
+        "利用短视频矩阵，全方位推广您的短剧",
+        "跨越国界，让您的短剧触达全球每一个角落",
       ],
       list2: [
-        "深度洞察，精准匹配短剧与当地达人。",
-        "精选达人，为您的短剧量身定制最佳推广方案。",
-        "流程简化，让达人合作更加高效顺畅。",
-        "无缝对接，轻松管理达人联络与结算。",
+        "无需提供账号，只需授权短剧即可",
+        "视频发布量结算，轻松透明",
+        "快速引流，轻松扩大影响力",
       ],
       list3: [
-        "低成本高效率，轻松实现品牌国际化推广。",
-        "一站式达人合作方案，让您的品牌迅速接轨全球。",
-        "无忧托付，简化达人合作流程，专注品牌成长。",
-        "高效链接全球达人资源，助力品牌快速扩张。",
+        "多账号运营，助力短剧全球覆盖",
+        "支持多种出海方案，轻松拓展海外市场",
       ],
     };
   },
@@ -132,22 +131,36 @@ export default {
 <style lang="scss" scoped>
 .KOLDetail {
   &_item {
-    display: flex;
-    align-items: end;
-    justify-content: center;
-    padding-top: 70px;
-    padding-bottom: 150px;
-    gap: 50px;
     &_img {
       img {
+        height: 100%;
       }
     }
     &_text {
+      flex-shrink: 0;
       .main {
+        &_logo {
+          display: flex;
+          align-items: center;
+          &-1 {
+            img {
+              width: 34px;
+              height: 34px;
+            }
+          }
+          &-2 {
+            margin-left: 12px;
+            img {
+              width: 128px;
+              height: 36px;
+            }
+          }
+        }
         &_title {
+          margin-top: 30px;
           font-family: PingFang SC, PingFang SC;
           font-weight: 600;
-          font-size: 40px;
+          font-size: 36px;
           color: #0d1545;
           line-height: 55px;
           text-align: left;
@@ -157,14 +170,8 @@ export default {
             color: #6956e5;
           }
         }
-        &_divider {
-          margin-top: 20px;
-          width: 88px;
-          height: 8px;
-          background: #6956e5;
-        }
         &_content {
-          margin-top: 40px;
+          margin-top: 24px;
           &_item {
             display: flex;
             align-items: center;
@@ -195,21 +202,48 @@ export default {
         &_foot {
           margin-top: 48px;
           .el-button {
-            width: 168px;
-            height: 56px;
-            background: #6956e5;
-            border-radius: 10px 10px 10px 10px;
+            height: 48px;
+            padding: 14px 48px;
+            box-sizing: border-box;
+            border-radius: 30px 30px 30px 30px;
+            border: 2px solid #6956e5;
             font-family: PingFang SC, PingFang SC;
             font-weight: 500;
             font-size: 14px;
-            color: #ffffff;
+            color: #6956e5;
             line-height: 16px;
-            text-align: center;
+            text-align: left;
             font-style: normal;
             text-transform: none;
           }
         }
       }
+    }
+  }
+  &_item1 {
+    display: flex;
+    justify-content: center;
+    padding-top: 110px;
+    padding-bottom: 110px;
+    &_box {
+      display: flex;
+      justify-content: center;
+      box-shadow: 0px 0 40px 0px rgba(46, 33, 61, 0.15);
+      border-radius: 20px 20px 20px 20px;
+      overflow: hidden;
+    }
+  }
+  &_item2 {
+    display: flex;
+    justify-content: center;
+    padding-top: 110px;
+    padding-bottom: 110px;
+    &_box {
+      display: flex;
+      justify-content: center;
+      box-shadow: 0px 0 40px 0px rgba(46, 33, 61, 0.15);
+      border-radius: 20px 20px 20px 20px;
+      overflow: hidden;
     }
   }
 }
