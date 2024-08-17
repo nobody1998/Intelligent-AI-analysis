@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="main_foot">
-          <el-button>了解更多</el-button>
+          <el-button @click="showAboutDialog">了解更多</el-button>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="main_foot">
-          <el-button>了解更多</el-button>
+          <el-button @click="showAboutDialog">了解更多</el-button>
         </div>
       </div>
       <div class="KOLDetail_item_img">
@@ -84,16 +84,21 @@
           </div>
         </div>
         <div class="main_foot">
-          <el-button>了解更多</el-button>
+          <el-button @click="showAboutDialog">了解更多</el-button>
         </div>
       </div>
     </div>
+    <learnMoreAboutDialog ref="aboutDialog"></learnMoreAboutDialog>
   </div>
 </template>
 
 <script>
+import learnMoreAboutDialog from "@/components/learnMoreAboutDialog.vue";
 export default {
   name: "KOLDetail",
+  components: {
+    learnMoreAboutDialog,
+  },
   data() {
     return {
       list1: [
@@ -124,6 +129,9 @@ export default {
   methods: {
     init() {
       //
+    },
+    showAboutDialog() {
+      this.$refs.aboutDialog.show();
     },
   },
 };

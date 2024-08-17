@@ -29,11 +29,11 @@
             </div>
           </div>
           <div class="main_foot">
-            <el-button>了解更多</el-button>
+            <el-button @click="showAboutDialog">了解更多</el-button>
           </div>
         </div>
         <div class="KOLDetail_item_img">
-          <img src="../assets/img/illustration4.png" />
+          <img src="../assets/img/illustration4.png" style="height: 100%" />
         </div>
       </div>
     </div>
@@ -42,7 +42,26 @@
         <div class="KOLDetail_item_img">
           <img src="../assets/img/illustration5.png" />
         </div>
-        <div class="KOLDetail_item_text">
+        <div
+          class="KOLDetail_item_text"
+          style="
+            background: #ffffff;
+            box-shadow: 0px 0 40px 0px rgba(46, 33, 61, 0.15);
+            border-radius: 20px 20px 20px 20px;
+            padding: 48px 64px 56px 84px;
+            height: 504px;
+            margin-top: 110px;
+            margin-left: -125px;
+          "
+        >
+          <div class="main_logo">
+            <div class="main_logo-1">
+              <img src="../assets/img/logo.png" />
+            </div>
+            <div class="main_logo-2">
+              <img src="../assets/img/tiktok_btn.png" />
+            </div>
+          </div>
           <div class="main_title">
             无需提供账号，仅需授权短剧，<br />以视频发布量结算，轻松实现大量引流
           </div>
@@ -61,42 +80,60 @@
             </div>
           </div>
           <div class="main_foot">
-            <el-button>了解更多</el-button>
+            <el-button @click="showAboutDialog">了解更多</el-button>
           </div>
         </div>
       </div>
     </div>
     <div class="KOLDetail_item3">
-      <div class="KOLDetail_item_text">
-        <div class="main_title">多账号运营,支持多种短剧出海方案</div>
-        <div class="main_content">
-          <div
-            class="main_content_item"
-            v-for="(item, index) in list3"
-            :key="index"
-          >
-            <div class="main_content_item_icon">
-              <img src="../assets/img/target.png" />
+      <div class="KOLDetail_item3_box">
+        <div class="KOLDetail_item_text" style="padding: 45px 198px 53px 48px">
+          <div class="main_logo">
+            <div class="main_logo-1">
+              <img src="../assets/img/logo.png" />
             </div>
-            <div class="main_content_item_text">
-              {{ item }}
+            <div class="main_logo-2">
+              <img src="../assets/img/tiktok_btn.png" />
             </div>
           </div>
+          <div class="main_title">多账号运营,支持多种短剧出海方案</div>
+          <div class="main_content">
+            <div
+              class="main_content_item"
+              v-for="(item, index) in list3"
+              :key="index"
+            >
+              <div class="main_content_item_icon">
+                <img src="../assets/img/target.png" />
+              </div>
+              <div class="main_content_item_text">
+                {{ item }}
+              </div>
+            </div>
+          </div>
+          <div class="main_foot">
+            <el-button @click="showAboutDialog">了解更多</el-button>
+          </div>
         </div>
-        <div class="main_foot">
-          <el-button>了解更多</el-button>
+        <div class="KOLDetail_item_img">
+          <img
+            src="../assets/img/illustration6.png"
+            style="margin-top: -100px; margin-right: -40px"
+          />
         </div>
-      </div>
-      <div class="KOLDetail_item_img">
-        <img src="../assets/img/illustration6.png" />
       </div>
     </div>
+    <learnMoreAboutDialog ref="aboutDialog"></learnMoreAboutDialog>
   </div>
 </template>
 
 <script>
+import learnMoreAboutDialog from "@/components/learnMoreAboutDialog.vue";
 export default {
   name: "KOLDetail",
+  components: {
+    learnMoreAboutDialog,
+  },
   data() {
     return {
       list1: [
@@ -124,6 +161,9 @@ export default {
     init() {
       //
     },
+    showAboutDialog() {
+      this.$refs.aboutDialog.show();
+    },
   },
 };
 </script>
@@ -133,7 +173,7 @@ export default {
   &_item {
     &_img {
       img {
-        height: 100%;
+        // height: 100%;
       }
     }
     &_text {
@@ -236,6 +276,17 @@ export default {
   &_item2 {
     display: flex;
     justify-content: center;
+    padding-top: 30px;
+    padding-bottom: 100px;
+    &_box {
+      display: flex;
+      justify-content: center;
+      border-radius: 20px 20px 20px 20px;
+    }
+  }
+  &_item3 {
+    display: flex;
+    justify-content: center;
     padding-top: 110px;
     padding-bottom: 110px;
     &_box {
@@ -243,7 +294,8 @@ export default {
       justify-content: center;
       box-shadow: 0px 0 40px 0px rgba(46, 33, 61, 0.15);
       border-radius: 20px 20px 20px 20px;
-      overflow: hidden;
+      // overflow: hidden;
+      height: 401px;
     }
   }
 }
