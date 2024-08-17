@@ -13,6 +13,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
+            disabled
           >
           </el-option>
         </el-select>
