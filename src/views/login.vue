@@ -1,299 +1,309 @@
 <template>
   <div class="login">
     <div class="login_main">
-      <div class="login_main_LB"></div>
-      <div class="login_main_RT"></div>
-      <div class="login_main_left"></div>
-      <div class="login_main_right">
-        <div class="loginForm">
-          <div class="loginForm_header">
-            <div class="loginForm_header_title">{{ title }}</div>
-            <div class="loginForm_header_btn" @click="switchLanguage">
-              <el-button class="nopadding" type="text">
-                <span>{{ $t('qie-huan-en') }}</span>
-              </el-button>
-            </div>
+      <div class="login_main_title">
+        <img src="../assets/img/LOGO-NAME.png" />
+      </div>
+      <div class="loginForm">
+        <div class="loginForm_title">{{ title }}</div>
+        <div class="loginForm_header">
+          <div class="loginForm_header_title">{{ headerTitle }}</div>
+          <div class="loginForm_header_btn" @click="switchLanguage">
+            <el-button class="nopadding" type="text">
+              {{ $t("qie-huan-en") }}
+              <i class="el-icon-sort"></i>
+            </el-button>
           </div>
-          <div class="loginForm_body">
-            <el-form ref="form" :model="form" :rules="formRules">
-              <el-tabs
-                v-if="type === 1"
-                v-model="type1Active"
-                @tab-click="handleClick1"
-              >
-                <el-tab-pane :label="$t('zhang-hao-deng-lu')" name="1">
-                  <div v-if="type1Active === '1'">
-                    <el-form-item label="" prop="account">
-                      <el-input
-                        v-model="form.account"
-                        :placeholder="$t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang')"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item label="" prop="password">
-                      <el-input
-                        v-model="form.password"
-                        show-password
-                        :placeholder="$t('qing-shu-ru-mi-ma')"
-                        @keyup.enter.native="submitForm"
-                      ></el-input>
-                    </el-form-item>
-                    <div class="loginForm_body_password">
-                      <!-- <el-form-item label=""> -->
-                      <el-checkbox v-model="form.isRemember"
-                        ><span class="loginForm_body_password_text"
-                          >{{ $t('ji-zhu-mi-ma') }}</span
-                        ></el-checkbox
-                      >
-                      <!-- </el-form-item> -->
-                      <el-button
-                        class="nopadding"
-                        type="text"
-                        @click="changeType(4)"
-                      >
-                        <div class="loginForm_body_password_text">
-                          {{ $t('wang-ji-mi-ma') }}
-                        </div>
-                      </el-button>
-                    </div>
-                  </div>
-                </el-tab-pane>
-                <el-tab-pane :label="$t('yan-zheng-ma-deng-lu')" name="2">
-                  <div v-if="type1Active === '2'">
-                    <el-form-item
-                      label=""
-                      prop="account"
-                      class="loginForm_body_tab2"
-                    >
-                      <el-input
-                        :placeholder="$t('qing-shu-ru-shou-ji-hao-ma')"
-                        v-model="form.account"
-                      >
-                        <template slot="prepend">+86</template>
-                      </el-input>
-                    </el-form-item>
-                    <div class="loginForm_body_code">
-                      <el-form-item label="" prop="code">
-                        <el-input
-                          class="loginForm_body_code_input"
-                          v-model="form.code"
-                          :placeholder="$t('qing-shu-ru-yan-zheng-ma')"
-                          @keyup.enter.native="submitForm"
-                        ></el-input>
-                      </el-form-item>
-                      <el-button
-                        class="loginForm_body_code_btn"
-                        type="primary"
-                        :disabled="sendCodeStatus === 1"
-                        @click="sendCodeFn"
-                        >{{
-                          sendCodeStatus === 1
-                            ? `${countdown}${$t('miao')}`
-                            : sendCodeStatus === 2
-                            ? `${$t('chong-xin-fa-song')}`
-                            : `${$t('fa-song-yan-zheng-ma')}`
-                        }}</el-button
-                      >
-                    </div>
-                  </div>
-                </el-tab-pane>
-              </el-tabs>
-              <div v-if="type === 2">
-                <el-form-item label="" prop="account">
-                  <el-input
-                    v-model="form.account"
-                    :placeholder="$t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang-0')"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="" prop="password">
-                  <el-input
-                    v-model="form.password"
-                    :placeholder="$t('qing-shu-ru-mi-ma-0')"
-                    show-password
-                  ></el-input>
-                </el-form-item>
-                <div class="loginForm_body_code">
-                  <el-form-item label="" prop="code">
+        </div>
+        <div class="loginForm_body">
+          <el-form ref="form" :model="form" :rules="formRules">
+            <el-tabs
+              v-if="type === 1"
+              v-model="type1Active"
+              @tab-click="handleClick1"
+            >
+              <el-tab-pane :label="$t('zhang-hao-deng-lu')" name="1">
+                <div v-if="type1Active === '1'">
+                  <el-form-item label="" prop="account">
                     <el-input
-                      class="loginForm_body_code_input"
-                      v-model="form.code"
-                      :placeholder="$t('qing-shu-ru-yan-zheng-ma-0')"
+                      v-model="form.account"
+                      :placeholder="
+                        $t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang')
+                      "
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="" prop="password">
+                    <el-input
+                      v-model="form.password"
+                      show-password
+                      :placeholder="$t('qing-shu-ru-mi-ma')"
                       @keyup.enter.native="submitForm"
                     ></el-input>
                   </el-form-item>
-                  <el-button
-                    class="loginForm_body_code_btn"
-                    type="primary"
-                    :disabled="sendCodeStatus === 1"
-                    @click="sendCodeFn"
-                    >{{
-                      sendCodeStatus === 1
-                        ? `${countdown}${$t('miao')}`
-                        : sendCodeStatus === 2
-                        ? `${$t('chong-xin-fa-song')}`
-                        : `${$t('fa-song-yan-zheng-ma')}`
-                    }}</el-button
-                  >
+                  <div class="loginForm_body_password">
+                    <!-- <el-form-item label=""> -->
+                    <el-checkbox v-model="form.isRemember"
+                      ><span class="loginForm_body_password_text">{{
+                        $t("ji-zhu-mi-ma")
+                      }}</span></el-checkbox
+                    >
+                    <!-- </el-form-item> -->
+                    <el-button
+                      class="nopadding"
+                      type="text"
+                      @click="changeType(4)"
+                    >
+                      <div class="loginForm_body_password_text">
+                        {{ $t("wang-ji-mi-ma") }}
+                      </div>
+                    </el-button>
+                  </div>
                 </div>
-              </div>
-              <div v-if="type === 3">
-                <el-form-item label="" prop="name">
+              </el-tab-pane>
+              <el-tab-pane :label="$t('yan-zheng-ma-deng-lu')" name="2">
+                <div v-if="type1Active === '2'">
+                  <el-form-item
+                    label=""
+                    prop="account"
+                    class="loginForm_body_tab2"
+                  >
+                    <el-input
+                      :placeholder="$t('qing-shu-ru-shou-ji-hao-ma')"
+                      v-model="form.account"
+                    >
+                      <!-- <template slot="prepend">+86</template> -->
+                    </el-input>
+                  </el-form-item>
+                  <div class="loginForm_body_code">
+                    <el-form-item label="" prop="code">
+                      <el-input
+                        class="loginForm_body_code_input"
+                        v-model="form.code"
+                        :placeholder="$t('qing-shu-ru-yan-zheng-ma')"
+                        @keyup.enter.native="submitForm"
+                      ></el-input>
+                    </el-form-item>
+                    <el-button
+                      class="loginForm_body_code_btn"
+                      type="primary"
+                      :disabled="sendCodeStatus === 1"
+                      @click="sendCodeFn"
+                      >{{
+                        sendCodeStatus === 1
+                          ? `${countdown}${$t("miao")}`
+                          : sendCodeStatus === 2
+                          ? `${$t("chong-xin-fa-song")}`
+                          : `${$t("fa-song-yan-zheng-ma")}`
+                      }}</el-button
+                    >
+                  </div>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+            <div v-if="type === 2">
+              <el-form-item label="" prop="account">
+                <el-input
+                  v-model="form.account"
+                  :placeholder="
+                    $t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang-0')
+                  "
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="" prop="password">
+                <el-input
+                  v-model="form.password"
+                  :placeholder="$t('qing-shu-ru-mi-ma-0')"
+                  show-password
+                ></el-input>
+              </el-form-item>
+              <div class="loginForm_body_code">
+                <el-form-item label="" prop="code">
                   <el-input
-                    v-model="form.name"
-                    :placeholder="$t('qing-shu-ru-yong-hu-ni-cheng')"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="" prop="company_name">
-                  <el-input
-                    v-model="form.company_name"
-                    :placeholder="$t('qing-shu-ru-suo-zai-gong-si-ming-cheng')"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="" prop="user_needs">
-                  <el-input
-                    v-model="form.user_needs"
-                    type="textarea"
-                    :rows="4"
-                    resize="none"
-                    :placeholder="$t('nin-xi-wang-cong-zhe-li-huo-qu-dao-shi-mo-bang-zhu-xin-xi')"
+                    class="loginForm_body_code_input"
+                    v-model="form.code"
+                    :placeholder="$t('qing-shu-ru-yan-zheng-ma-0')"
                     @keyup.enter.native="submitForm"
                   ></el-input>
                 </el-form-item>
+                <el-button
+                  class="loginForm_body_code_btn"
+                  type="primary"
+                  :disabled="sendCodeStatus === 1"
+                  @click="sendCodeFn"
+                  >{{
+                    sendCodeStatus === 1
+                      ? `${countdown}${$t("miao")}`
+                      : sendCodeStatus === 2
+                      ? `${$t("chong-xin-fa-song")}`
+                      : `${$t("fa-song-yan-zheng-ma")}`
+                  }}</el-button
+                >
               </div>
-              <el-tabs
-                v-if="type === 4"
-                v-model="type4Active"
-                @tab-click="handleClick4"
-              >
-                <el-tab-pane :label="$t('shou-ji-yan-zheng')" name="1">
-                  <div v-if="type4Active === '1'">
-                    <el-form-item label="" prop="account">
+            </div>
+            <div v-if="type === 3">
+              <el-form-item label="" prop="name">
+                <el-input
+                  v-model="form.name"
+                  :placeholder="$t('qing-shu-ru-yong-hu-ni-cheng')"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="" prop="company_name">
+                <el-input
+                  v-model="form.company_name"
+                  :placeholder="$t('qing-shu-ru-suo-zai-gong-si-ming-cheng')"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="" prop="user_needs">
+                <el-input
+                  v-model="form.user_needs"
+                  type="textarea"
+                  :rows="4"
+                  resize="none"
+                  :placeholder="
+                    $t(
+                      'nin-xi-wang-cong-zhe-li-huo-qu-dao-shi-mo-bang-zhu-xin-xi'
+                    )
+                  "
+                  @keyup.enter.native="submitForm"
+                ></el-input>
+              </el-form-item>
+            </div>
+            <el-tabs
+              v-if="type === 4"
+              v-model="type4Active"
+              @tab-click="handleClick4"
+            >
+              <el-tab-pane :label="$t('shou-ji-yan-zheng')" name="1">
+                <div v-if="type4Active === '1'">
+                  <el-form-item label="" prop="account">
+                    <el-input
+                      v-model="form.account"
+                      :placeholder="$t('qing-shu-ru-shou-ji-hao-ma-0')"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="" prop="password">
+                    <el-input
+                      v-model="form.password"
+                      show-password
+                      :placeholder="$t('qing-shu-ru-xin-mi-ma')"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="" prop="password2">
+                    <el-input
+                      v-model="form.password2"
+                      show-password
+                      :placeholder="$t('qing-zai-ci-shu-ru-xin-mi-ma')"
+                    ></el-input>
+                  </el-form-item>
+                  <div class="loginForm_body_code">
+                    <el-form-item label="" prop="code">
                       <el-input
-                        v-model="form.account"
-                        :placeholder="$t('qing-shu-ru-shou-ji-hao-ma-0')"
+                        class="loginForm_body_code_input"
+                        v-model="form.code"
+                        :placeholder="$t('qing-shu-ru-yan-zheng-ma-1')"
+                        @keyup.enter.native="submitForm"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="" prop="password">
-                      <el-input
-                        v-model="form.password"
-                        show-password
-                        :placeholder="$t('qing-shu-ru-xin-mi-ma')"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item label="" prop="password2">
-                      <el-input
-                        v-model="form.password2"
-                        show-password
-                        :placeholder="$t('qing-zai-ci-shu-ru-xin-mi-ma')"
-                      ></el-input>
-                    </el-form-item>
-                    <div class="loginForm_body_code">
-                      <el-form-item label="" prop="code">
-                        <el-input
-                          class="loginForm_body_code_input"
-                          v-model="form.code"
-                          :placeholder="$t('qing-shu-ru-yan-zheng-ma-1')"
-                          @keyup.enter.native="submitForm"
-                        ></el-input>
-                      </el-form-item>
-                      <el-button
-                        class="loginForm_body_code_btn"
-                        type="primary"
-                        @click="sendCodeFn"
-                        >{{ $t('fa-song-yan-zheng-ma') }}</el-button
-                      >
-                    </div>
+                    <el-button
+                      class="loginForm_body_code_btn"
+                      type="primary"
+                      @click="sendCodeFn"
+                      >{{ $t("fa-song-yan-zheng-ma") }}</el-button
+                    >
                   </div>
-                </el-tab-pane>
-                <el-tab-pane :label="$t('you-xiang-yan-zheng')" name="2">
-                  <div v-if="type4Active === '2'">
-                    <el-form-item label="" prop="account">
+                </div>
+              </el-tab-pane>
+              <el-tab-pane :label="$t('you-xiang-yan-zheng')" name="2">
+                <div v-if="type4Active === '2'">
+                  <el-form-item label="" prop="account">
+                    <el-input
+                      v-model="form.account"
+                      :placeholder="$t('qing-shu-ru-dian-zi-you-xiang')"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="" prop="password">
+                    <el-input
+                      v-model="form.password"
+                      show-password
+                      :placeholder="$t('qing-shu-ru-xin-mi-ma-0')"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="" prop="password2">
+                    <el-input
+                      v-model="form.password2"
+                      show-password
+                      :placeholder="$t('qing-zai-ci-shu-ru-xin-mi-ma-0')"
+                    ></el-input>
+                  </el-form-item>
+                  <div class="loginForm_body_code">
+                    <el-form-item label="" prop="code">
                       <el-input
-                        v-model="form.account"
-                        :placeholder="$t('qing-shu-ru-dian-zi-you-xiang')"
+                        class="loginForm_body_code_input"
+                        v-model="form.code"
+                        :placeholder="$t('qing-shu-ru-yan-zheng-ma-2')"
+                        @keyup.enter.native="submitForm"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="" prop="password">
-                      <el-input
-                        v-model="form.password"
-                        show-password
-                        :placeholder="$t('qing-shu-ru-xin-mi-ma-0')"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item label="" prop="password2">
-                      <el-input
-                        v-model="form.password2"
-                        show-password
-                        :placeholder="$t('qing-zai-ci-shu-ru-xin-mi-ma-0')"
-                      ></el-input>
-                    </el-form-item>
-                    <div class="loginForm_body_code">
-                      <el-form-item label="" prop="code">
-                        <el-input
-                          class="loginForm_body_code_input"
-                          v-model="form.code"
-                          :placeholder="$t('qing-shu-ru-yan-zheng-ma-2')"
-                          @keyup.enter.native="submitForm"
-                        ></el-input>
-                      </el-form-item>
-                      <el-button
-                        class="loginForm_body_code_btn"
-                        type="primary"
-                        @click="sendCodeFn"
-                        >{{ $t('fa-song-yan-zheng-ma-0') }}</el-button
-                      >
-                    </div>
+                    <el-button
+                      class="loginForm_body_code_btn"
+                      type="primary"
+                      @click="sendCodeFn"
+                      >{{ $t("fa-song-yan-zheng-ma-0") }}</el-button
+                    >
                   </div>
-                </el-tab-pane>
-              </el-tabs>
-              <el-button
-                class="loginForm_body_logOn"
-                type="primary"
-                :loading="submitBtnLoading"
-                @click="submitForm"
-                >{{
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+            <el-button
+              class="loginForm_body_logOn"
+              type="primary"
+              :loading="submitBtnLoading"
+              @click="submitForm"
+              >{{
+                type === 1
+                  ? `${$t("deng-lu")}`
+                  : type === 2
+                  ? `${$t("zhu-ce")}`
+                  : type === 3
+                  ? `${$t("li-ji-shi-yong")}`
+                  : type === 4
+                  ? `确认`
+                  : ""
+              }}</el-button
+            >
+            <div class="loginForm_body_noAccount">
+              <span>{{
+                type === 1
+                  ? `${$t("hai-mei-zhang-hao")}`
+                  : [2, 4].indexOf(type) !== -1
+                  ? `${$t("yi-you-zhang-hao")}`
+                  : ""
+              }}</span>
+              <el-button class="nopadding" type="text" @click="changeType">
+                <span style="color: #7a68f1">{{
                   type === 1
-                    ? `${$t('deng-lu')}`
-                    : type === 2
-                    ? `${$t('zhu-ce')}`
-                    : type === 3
-                    ? `${$t('li-ji-shi-yong')}`
-                    : type === 4
-                    ? `${$t('zhong-zhi-mi-ma')}`
-                    : ""
-                }}</el-button
-              >
-              <div class="loginForm_body_noAccount">
-                <span>{{
-                  type === 1
-                    ? `${$t('hai-mei-zhang-hao')}`
+                    ? `${$t("li-ji-zhu-ce")}`
                     : [2, 4].indexOf(type) !== -1
-                    ? `${$t('yi-you-zhang-hao')}`
+                    ? `${$t("zhi-jie-deng-lu")}`
                     : ""
                 }}</span>
-                <el-button class="nopadding" type="text" @click="changeType">
-                  <span style="color: #7a68f1">{{
-                    type === 1
-                      ? `${$t('li-ji-zhu-ce')}`
-                      : [2, 4].indexOf(type) !== -1
-                      ? `${$t('zhi-jie-deng-lu')}`
-                      : ""
-                  }}</span>
-                </el-button>
-              </div>
-              <el-form-item
-                class="loginForm_body_agreement"
-                label=""
-                prop="isRead"
-                v-if="[1, 2].indexOf(type) !== -1"
+              </el-button>
+            </div>
+            <el-form-item
+              class="loginForm_body_agreement"
+              label=""
+              prop="isRead"
+              v-if="[1, 2].indexOf(type) !== -1"
+            >
+              <el-checkbox v-model="form.isRead" style="display: flex"
+                ><span class="loginForm_body_agreement">{{
+                  $t(
+                    "yi-yue-du-bing-tong-yi-zhi-shu-ai-yong-hu-xie-yi-he-yin-si-zheng-ce"
+                  )
+                }}</span></el-checkbox
               >
-                <el-checkbox v-model="form.isRead" style="display: flex;"
-                  ><span class="loginForm_body_agreement"
-                    >{{ $t('yi-yue-du-bing-tong-yi-zhi-shu-ai-yong-hu-xie-yi-he-yin-si-zheng-ce') }}</span
-                  ></el-checkbox
-                >
-              </el-form-item>
-            </el-form>
-          </div>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
     </div>
@@ -314,14 +324,20 @@ export default {
   data() {
     var checkIsRead = (rule, value, callback) => {
       if (!value) {
-        callback(new Error(this.$t('qing-yue-du-bing-tong-yi-zhi-shu-ai-yong-hu-xie-yi-he-yin-si-zheng-ce')));
+        callback(
+          new Error(
+            this.$t(
+              "qing-yue-du-bing-tong-yi-zhi-shu-ai-yong-hu-xie-yi-he-yin-si-zheng-ce"
+            )
+          )
+        );
       } else {
         callback();
       }
     };
     var checkPassword2 = (rule, value, callback) => {
       if (value !== this.form.password) {
-        callback(new Error(this.$t('liang-ci-shu-ru-mi-ma-bu-yi-zhi')));
+        callback(new Error(this.$t("liang-ci-shu-ru-mi-ma-bu-yi-zhi")));
       } else {
         callback();
       }
@@ -354,14 +370,14 @@ export default {
         account: [
           {
             required: true,
-            message: this.$t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang-1'),
+            message: this.$t("qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang-1"),
             trigger: "blur",
           },
         ],
         password: [
           {
             required: true,
-            message: this.$t('qing-shu-ru-mi-ma-1'),
+            message: this.$t("qing-shu-ru-mi-ma-1"),
             trigger: "blur",
           },
         ],
@@ -369,7 +385,7 @@ export default {
         code: [
           {
             required: true,
-            message: this.$t('qing-shu-ru-yan-zheng-ma-3'),
+            message: this.$t("qing-shu-ru-yan-zheng-ma-3"),
             trigger: "blur",
           },
         ],
@@ -382,16 +398,36 @@ export default {
       let text = "";
       switch (this.type) {
         case 1:
-          text = this.$t('huan-ying-lai-dao-zhi-shu-ai');
+          text = this.$t("deng-lu");
           break;
         case 2:
-          text = this.$t('huan-ying-zhu-ce-zhi-shu-ai');
+          text = this.$t("zhu-ce");
           break;
         case 3:
-          text = this.$t('wan-shan-shen-fen-xin-xi');
+          text = "开通账号";
           break;
         case 4:
-          text = this.$t('zhong-zhi-mi-ma');
+          text = this.$t("zhong-zhi-mi-ma");
+          break;
+        default:
+          break;
+      }
+      return text;
+    },
+    headerTitle() {
+      let text = "";
+      switch (this.type) {
+        case 1:
+          text = this.$t("huan-ying-lai-dao-zhi-shu-ai");
+          break;
+        case 2:
+          text = this.$t("huan-ying-zhu-ce-zhi-shu-ai");
+          break;
+        case 3:
+          text = this.$t("wan-shan-shen-fen-xin-xi");
+          break;
+        case 4:
+          text = "欢迎来到智数AI中国版CN";
           break;
         default:
           break;
@@ -438,7 +474,7 @@ export default {
     sendCodeFn() {
       if (!this.form.account) {
         return this.$message({
-          message: this.$t('qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang-2'),
+          message: this.$t("qing-shu-ru-shou-ji-hao-ma-dian-zi-you-xiang-2"),
           type: "warning",
         });
       }
@@ -483,11 +519,15 @@ export default {
                   localStorage.removeItem("isRemember");
                 }
                 this.$message({
-                  message: this.$t('deng-lu-cheng-gong'),
+                  message: this.$t("deng-lu-cheng-gong"),
                   type: "success",
                 });
                 this.submitBtnLoading = !this.submitBtnLoading;
-                if (this.$route.query.redirect && this.$route.query.redirect !== '/personalCenter?tab=1&action=1') {
+                if (
+                  this.$route.query.redirect &&
+                  this.$route.query.redirect !==
+                    "/personalCenter?tab=1&action=1"
+                ) {
                   this.$router.push(this.$route.query.redirect);
                 } else {
                   this.$router.push("/");
@@ -505,7 +545,7 @@ export default {
             register(data)
               .then((res) => {
                 this.$message({
-                  message: this.$t('zhu-ce-cheng-gong'),
+                  message: this.$t("zhu-ce-cheng-gong"),
                   type: "success",
                 });
                 this.submitBtnLoading = !this.submitBtnLoading;
@@ -547,7 +587,7 @@ export default {
             resetPassword(data)
               .then((res) => {
                 this.$message({
-                  message: this.$t('zhong-zhi-mi-ma-cheng-gong'),
+                  message: this.$t("zhong-zhi-mi-ma-cheng-gong"),
                   type: "success",
                 });
                 this.submitBtnLoading = !this.submitBtnLoading;
@@ -570,10 +610,10 @@ export default {
         } else {
           if (this.type === 1) {
             this.type = 2;
-          this.resetForm(2);
+            this.resetForm(2);
           } else if ([2, 4].indexOf(this.type) !== -1) {
             this.type = 1;
-          this.resetForm(1);
+            this.resetForm(1);
           }
         }
       });
@@ -608,9 +648,13 @@ export default {
             break;
         }
         this.$refs.form.clearValidate();
-      })
+      });
     },
     switchLanguage() {
+      return this.$message({
+        message: "功能尚未开放",
+        type: "warning",
+      });
       if (this.$i18n.locale === "zh") {
         this.$i18n.locale = "en";
       } else if (this.$i18n.locale === "en") {
@@ -660,18 +704,26 @@ export default {
 ::v-deep .el-tabs__item {
   height: 22px;
   font-family: PingFang SC, PingFang SC;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 16px;
-  color: #333333;
+  color: #565656;
   line-height: 19px;
   text-align: left;
   font-style: normal;
   text-transform: none;
   margin-bottom: 11px;
+  padding: 0 12px;
+}
+::v-deep .el-tabs__item.is-active {
+  color: #333333;
+  font-weight: 600;
+}
+::v-deep .el-tabs__nav-wrap::after {
+  background: #f2f3f6;
 }
 ::v-deep .el-input__inner {
   height: 48px;
-  background: #f3f1ff;
+  background: #f7f6fd;
   border-radius: 4px 4px 4px 4px;
   border: none;
   font-family: PingFang SC, PingFang SC;
@@ -695,7 +747,7 @@ export default {
   // text-transform: none;
 }
 ::v-deep .el-textarea__inner {
-  background: #f3f1ff;
+  background: #f7f6fd;
   border-radius: 4px 4px 4px 4px;
   border: none;
   font-family: PingFang SC, PingFang SC;
@@ -715,7 +767,7 @@ export default {
   border: none;
   border-right: 1px solid rgba(112, 124, 151, 0.15);
   height: 48px;
-  background: #f3f1ff;
+  background: #f7f6fd;
   border-radius: 4px 0 0 4px;
   font-family: PingFang TC, PingFang TC;
   font-weight: 400;
@@ -750,18 +802,18 @@ export default {
 ::v-deep .el-tabs__nav-next {
   line-height: 20px;
 }
-.loginForm_body_agreement ::v-deep .el-checkbox__label {  
-  white-space: normal !important; /* 允许文本换行 */  
-  word-break: break-all; /* 在必要时打断单词以换行 */  
-  display: block; /* 如果需要的话，使标签成为块级元素以占用整行 */  
-  /* 可能还需要设置一些宽度、内边距等属性来适应你的布局 */  
-}  
-  
-/* 如果你的 span 有一个特定的类，也可以直接对这个类应用样式 */  
-.loginForm_body_agreement {  
-  white-space: normal; /* 允许文本换行 */  
-  word-break: break-all; /* 在必要时打断单词以换行 */  
-  /* 其他样式 */  
+.loginForm_body_agreement ::v-deep .el-checkbox__label {
+  white-space: normal !important; /* 允许文本换行 */
+  word-break: break-all; /* 在必要时打断单词以换行 */
+  display: block; /* 如果需要的话，使标签成为块级元素以占用整行 */
+  /* 可能还需要设置一些宽度、内边距等属性来适应你的布局 */
+}
+
+/* 如果你的 span 有一个特定的类，也可以直接对这个类应用样式 */
+.loginForm_body_agreement {
+  white-space: normal; /* 允许文本换行 */
+  word-break: break-all; /* 在必要时打断单词以换行 */
+  /* 其他样式 */
 }
 
 .login {
@@ -769,152 +821,145 @@ export default {
   justify-content: center; /* 水平居中 */
   align-items: center; /* 垂直居中 */
   height: 100vh;
+  background: url("../assets/img/login_bgImg.png") no-repeat;
+  background-size: cover;
   &_main {
-    width: 1040px;
-    height: 600px;
+    // width: 1040px;
+    // width: 448px;
+    width: 460px;
+    // height: 600px;
     // width: 72.2%;
     // height: 66.7%;
-    display: flex;
     position: relative;
-    &_LB {
-      position: absolute;
-      top: -48px;
-      right: -56px;
-      width: 96px;
-      height: 96px;
-      background: linear-gradient(224deg, #9181f4 0%, #5038ed 100%);
-      border-radius: 50%;
-      z-index: -1;
+    &_title {
+      text-align: center;
     }
-    &_RT {
-      position: absolute;
-      bottom: -40px;
-      left: -41px;
-      width: 96px;
-      height: 96px;
-      background: #e6e2ff;
-      border-radius: 50%;
-      z-index: -1;
-    }
-    &_left {
-      width: 50%;
-      height: 100%;
-      // background: linear-gradient(224deg, #9181f4 0%, #5038ed 100%), #7c69f1;
-      background: no-repeat url("../assets/img/login_bg.png");
-      border-radius: 24px 0 0 24px;
-    }
-    &_right {
-      width: 50%;
-      height: 100%;
+    .loginForm {
+      margin-top: 36px;
+      width: 100%;
       background: #ffffff;
-      box-shadow: 0px 0 60px 0px rgba(10, 0, 73, 0.2);
-      border-radius: 0 24px 24px 0;
-      // padding: 82px 79px;
-      padding: 82px 72px;
-      display: flex;
-      align-items: center;
-      .loginForm {
-        width: 100%;
-        &_header {
+      box-shadow: 0px 0 40px 0px rgba(10, 0, 73, 0.1);
+      border-radius: 16px 16px 16px 16px;
+      padding: 56px 62px 26px;
+      &_title {
+        font-family: PingFang SC, PingFang SC;
+        font-weight: 600;
+        font-size: 32px;
+        color: #333333;
+        line-height: 38px;
+        text-align: left;
+        font-style: normal;
+        text-transform: none;
+      }
+      &_header {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        &_title {
+          font-family: PingFang SC, PingFang SC;
+          font-weight: 400;
+          font-size: 16px;
+          color: #727272;
+          line-height: 19px;
+          text-align: left;
+          font-style: normal;
+          text-transform: none;
+        }
+        &_btn {
+          .el-button {
+            font-family: PingFang SC, PingFang SC;
+            font-weight: 400;
+            font-size: 14px;
+            color: #999999;
+            line-height: 16px;
+            text-align: left;
+            font-style: normal;
+            text-transform: none;
+          }
+          .el-icon-sort {
+            font-size: 16px;
+            transform: rotate(90deg) scaleY(-1);
+            color: #999999;
+            margin-left: 2px;
+          }
+        }
+      }
+      &_body {
+        margin-top: 39px;
+        &_password {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          &_title {
-            font-family: Poppins, Poppins;
-            font-weight: 600;
-            font-size: 24px;
-            color: #333333;
-            text-align: left;
-            font-style: normal;
-            text-transform: none;
-          }
-          &_btn {
-            span {
-              font-family: PingFang SC, PingFang SC;
-              font-weight: 400;
-              font-size: 16px;
-              color: #525252;
-              text-align: left;
-              font-style: normal;
-              text-transform: none;
-            }
-          }
-        }
-        &_body {
-          margin-top: 39px;
-          &_password {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 21px;
-            &_text {
-              font-family: PingFang SC, PingFang SC;
-              font-weight: 400;
-              font-size: 12px;
-              color: #999999;
-              text-align: left;
-              font-style: normal;
-              text-transform: none;
-              vertical-align: bottom;
-            }
-          }
-          &_code {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            &_btn {
-              width: 152px;
-              height: 48px;
-              border-radius: 5px;
-              background: #6853ef;
-              margin-bottom: 20px;
-              margin-left: 20px;
-              flex-shrink: 0;
-              font-size: 14px;
-            }
-          }
-          &_logOn {
-            margin-top: 6px;
-            width: 100%;
-            height: 48px;
+          margin-bottom: 21px;
+          &_text {
             font-family: PingFang SC, PingFang SC;
             font-weight: 400;
-            font-size: 18px;
-            color: #ffffff;
-            line-height: 21px;
+            font-size: 12px;
+            color: #999999;
+            text-align: left;
             font-style: normal;
             text-transform: none;
-            background: linear-gradient(224deg, #5038ed 0%, #9181f4 100%);
-            border-radius: 6px;
+            vertical-align: bottom;
           }
-          &_noAccount {
-            margin-top: 16px;
-            text-align: center;
-            span {
-              height: 20px;
-              font-family: PingFang SC, PingFang SC;
-              font-weight: 400;
-              font-size: 16px;
-              color: #999999;
-              line-height: 16px;
-              text-align: left;
-              font-style: normal;
-              text-transform: none;
-            }
+        }
+        &_code {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          &_btn {
+            width: 152px;
+            height: 48px;
+            border-radius: 5px;
+            background: #6853ef;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            flex-shrink: 0;
+            font-size: 14px;
           }
-          &_agreement {
-            margin-top: 32px;
+        }
+        &_logOn {
+          margin-top: 6px;
+          width: 100%;
+          height: 48px;
+          font-family: PingFang SC, PingFang SC;
+          font-weight: 400;
+          font-size: 18px;
+          color: #ffffff;
+          line-height: 21px;
+          font-style: normal;
+          text-transform: none;
+          background: linear-gradient(224deg, #5038ed 0%, #9181f4 100%);
+          border-radius: 6px;
+          box-shadow: 0px 0 40px 0px rgba(10, 0, 73, 0.1);
+        }
+        &_noAccount {
+          margin-top: 16px;
+          text-align: center;
+          span {
+            height: 20px;
+            font-family: PingFang SC, PingFang SC;
+            font-weight: 400;
+            font-size: 14px;
+            color: #999999;
+            line-height: 16px;
             text-align: left;
-            span {
-              font-family: PingFang SC, PingFang SC;
-              font-weight: 400;
-              font-size: 14px;
-              color: #999999;
-              text-align: left;
-              font-style: normal;
-              text-transform: none;
-              vertical-align: bottom;
-            }
+            font-style: normal;
+            text-transform: none;
+          }
+        }
+        &_agreement {
+          margin-top: 93px;
+          text-align: left;
+          span {
+            font-family: PingFang SC, PingFang SC;
+            font-weight: 400;
+            font-size: 14px;
+            color: #999999;
+            text-align: left;
+            font-style: normal;
+            text-transform: none;
+            vertical-align: bottom;
           }
         }
       }
