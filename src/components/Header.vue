@@ -41,7 +41,7 @@
           <div class="usage_title">{{ $t("sheng-yu-xia-zai-ci-shu") }}</div>
           <div class="usage_times">{{ times }}</div>
         </div> -->
-        <el-dropdown @command="handleCommand">
+        <el-dropdown @command="handleCommand" v-if="isLogin">
           <span class="el-dropdown-link">
             <img src="../assets/img/defaultAvatar.png" />
           </span>
@@ -54,6 +54,9 @@
             >
           </el-dropdown-menu>
         </el-dropdown>
+        <div v-else class="header_right_btn_login" @click="toLogin">
+          登录/注册
+        </div>
       </div>
     </div>
   </div>
@@ -100,11 +103,11 @@ export default {
         },
       ],
       list: [
-        {
-          value: 1,
-          label: this.$t("shou-ye"),
-          path: "/",
-        },
+        // {
+        //   value: 1,
+        //   label: this.$t("shou-ye"),
+        //   path: "/",
+        // },
         {
           value: 2,
           label: "短剧素材",
@@ -134,6 +137,9 @@ export default {
       return localStorage.getItem("user")
         ? JSON.parse(localStorage.getItem("user")).download_times
         : 0;
+    },
+    isLogin() {
+      return localStorage.getItem("token");
     },
   },
   methods: {
@@ -167,6 +173,7 @@ export default {
         });
       } else if (type === 5) {
         this.$store.dispatch("user/logout");
+        window.location.reload();
       }
     },
     toJump(item) {
@@ -188,16 +195,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header_right_btn ::v-deep .el-button {
-  width: 88px;
-  height: 36px;
-  font-family: PingFang SC, PingFang SC;
-  font-weight: 400;
-  font-size: 14px;
-  font-style: normal;
-  text-transform: none;
-  line-height: 0;
-}
+// .header_right_btn ::v-deep .el-button {
+//   width: 88px;
+//   height: 36px;
+//   font-family: PingFang SC, PingFang SC;
+//   font-weight: 400;
+//   font-size: 14px;
+//   font-style: normal;
+//   text-transform: none;
+//   line-height: 0;
+// }
 .header_right_btn ::v-deep .el-button:last-child {
   margin-left: 24px;
 }
@@ -316,6 +323,24 @@ export default {
             color: #6956e5;
           }
         }
+      }
+      &_login {
+        width: 96px;
+        height: 36px;
+        background: #6956e5;
+        border-radius: 4px 4px 4px 4px;
+        text-align: center;
+        font-family: PingFang SC, PingFang SC;
+        font-weight: 500;
+        font-size: 14px;
+        color: #ffffff;
+        line-height: 21px;
+        font-style: normal;
+        text-transform: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
       }
     }
   }

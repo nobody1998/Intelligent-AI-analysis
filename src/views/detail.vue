@@ -243,6 +243,12 @@ export default {
       form: {},
     };
   },
+  props: {
+    detailId: {
+      type: String,
+      default: "",
+    },
+  },
   watch: {
     $route(to, from) {
       this.init();
@@ -276,19 +282,16 @@ export default {
       }
     },
     init() {
-      if (this.$route.query.id) {
-        this.getDetailFn(this.$route.query.id);
+      if (this.detailId) {
+        this.getDetailFn(this.detailId);
         this.getListFn();
       }
     },
     toDetail(item) {
       window.scrollTo(0, 0);
-      if (this.$route.query.id !== item.id) {
+      if (this.detailId !== item.id) {
         this.$router.push({
-          path: "/detail",
-          query: {
-            id: item.id,
-          },
+          path: `/detail/${item.id}`,
         });
       }
     },

@@ -7,6 +7,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
+    redirect: "/KOLDetail",
     name: "HomePage",
     component: HomePage,
     meta: { requiresAuth: true },
@@ -17,10 +18,14 @@ const routes = [
     component: () => import("../views/login.vue"),
   },
   {
-    path: "/detail",
+    path: "/detail/:id",
     name: "PageDetail",
     component: () => import("../views/detail.vue"),
     meta: { requiresAuth: true },
+    // props: true
+    props: (route) => ({
+      detailId: route.params.id,
+    }),
   },
   {
     path: "/setMeal",
@@ -55,25 +60,26 @@ const routes = [
 ];
 
 const router = new VueRouter({
+  mode: "history",
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (
-      !localStorage.getItem("token") &&
-      localStorage.getItem("token") === null
-    ) {
-      next({
-        path: "/login",
-        query: { redirect: to.fullPath },
-      });
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     if (
+//       !localStorage.getItem("token") &&
+//       localStorage.getItem("token") === null
+//     ) {
+//       next({
+//         path: "/login",
+//         query: { redirect: to.fullPath },
+//       });
+//     } else {
+//       next();
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

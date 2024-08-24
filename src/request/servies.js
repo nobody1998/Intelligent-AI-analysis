@@ -52,7 +52,7 @@ export function request(config) {
     (error) => {
       const { response } = error;
       if (response && response.status === 401) {
-        store.dispatch("user/logout");
+        // store.dispatch("user/logout");
         router.push({ path: "/login" }); // 保留历史记录
         // 拒绝Promise，阻止后续操作
         return Promise.reject(new Error("未授权，请登录"));

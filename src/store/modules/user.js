@@ -20,7 +20,6 @@ export default {
     logout() {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      window.location.reload();
     },
     // login({ commit }, userInfo) {
     //   // 登录逻辑，可能包括API调用

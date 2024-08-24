@@ -99,11 +99,11 @@ export default {
           title: "联系我们",
           list: [
             {
-              text: "联系电话：0755-86002348",
+              text: "联系电话：18676740509",
               // url: "/"
             },
             {
-              text: "电子邮箱：sz_aidata8600@163.com",
+              text: "电子邮箱：870795800@qq.com",
               // url: "/"
             },
             {

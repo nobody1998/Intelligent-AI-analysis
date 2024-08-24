@@ -12,10 +12,10 @@
         了解相关推广方案，请联系我们的客服人员！
       </div>
       <div class="learnMoreAbout_content">
-        <div class="learnMoreAbout_content_text">客服电话：0755-86002348</div>
-        <div class="learnMoreAbout_content_text">客服微信：sz_aidata@8220</div>
+        <div class="learnMoreAbout_content_text">客服电话：18676740509</div>
+        <div class="learnMoreAbout_content_text">客服微信：18676740509</div>
         <div class="learnMoreAbout_content_text">
-          电子邮箱：sz_aidata8600@163.com
+          电子邮箱：870795800@qq.com
         </div>
       </div>
       <div class="learnMoreAbout_footer">

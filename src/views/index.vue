@@ -1,5 +1,5 @@
 <template>
-  <div class="homePage">
+  <div class="homePage" v-cloak>
     <!-- <div class="homePage_search"> -->
     <!-- <div class="homePage_search_keyWords">
         <div class="homePage_search_keyWords_title">热门搜索：</div>
@@ -538,7 +538,7 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      this.init();
+      // this.init();
     });
   },
   methods: {
@@ -772,10 +772,7 @@ export default {
     },
     toDetail(item) {
       this.$router.push({
-        path: "/detail",
-        query: {
-          id: item.id,
-        },
+        path: `/detail/${item.id}`,
       });
     },
     init() {
@@ -787,6 +784,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+[v-cloak] {display: none;}
 video::-internal-media-controls-download-button {
   display: none;
 }
