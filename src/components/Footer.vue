@@ -107,7 +107,7 @@ export default {
               // url: "/"
             },
             {
-              text: "客服微信：sz_aidata8866202",
+              text: "客服微信：18676740509",
               // url: "/"
             },
           ],
