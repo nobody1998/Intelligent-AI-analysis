@@ -148,29 +148,27 @@ export default {
     },
     handleCommand(type) {
       if (type === 1) {
-        this.$router.push({
-          path: "/personalCenter",
-          query: {
-            tab: 1,
-          },
-        });
+        if (this.$route.fullPath !== "/personalCenter?tab=1") {
+          this.$router.push({
+            path: "/personalCenter?tab=1",
+          });
+        }
       } else if (type === 2) {
-        this.$router.push({
-          path: "/personalCenter",
-          query: {
-            tab: 3,
-          },
-        });
+        if (this.$route.fullPath !== "/personalCenter?tab=3") {
+          this.$router.push({
+            path: "/personalCenter?tab=3",
+          });
+        }
       } else if (type === 3) {
-        this.$router.push("/setMeal");
+        if (this.$route.path !== "/setMeal") {
+          this.$router.push("/setMeal");
+        }
       } else if (type === 4) {
-        this.$router.push({
-          path: "/personalCenter",
-          query: {
-            tab: 1,
-            action: 1,
-          },
-        });
+        if (this.$route.fullPath !== "/personalCenter?tab=1&&action=1") {
+          this.$router.push({
+            path: "/personalCenter?tab=1&&action=1",
+          });
+        }
       } else if (type === 5) {
         this.$store.dispatch("user/logout");
         window.location.reload();
