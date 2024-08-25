@@ -21,12 +21,12 @@
           </div>
         </div>
         <div class="code">
-          <div class="code_item">
+          <!-- <div class="code_item">
             <div class="code_item_main">
               <img src="../assets/img/wx_code.png" />
             </div>
             <div class="code_item_text">客服微信</div>
-          </div>
+          </div> -->
           <div class="code_item">
             <div class="code_item_main">
               <img src="../assets/img/wx_code.png" />
